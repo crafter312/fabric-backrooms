@@ -11,13 +11,16 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.PillarBlock;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.Inventories;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.BlockLocating;
 import net.minecraft.world.World;
+import net.thesquire.backroomsmod.BackroomsMod;
 import net.thesquire.backroomsmod.block.ModBlocks;
 import net.thesquire.backroomsmod.config.ModConfig;
 import net.thesquire.backroomsmod.dimension.ModDimensionKeys;
@@ -46,6 +49,8 @@ public class MagneticDistortionSystemControlComputerBlockEntity extends GenericM
     private boolean portalActive = false;
     private final int initEnergyUsage = ModConfig.magneticDistortionSystemControlComputerInitEnergyUsage;
     private final int energyUsage = ModConfig.magneticDistortionSystemControlComputerEnergyUsage;
+
+    private boolean checkPortalActive = true;
 
     public MagneticDistortionSystemControlComputerBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlockEntities.MAGNETIC_DISTORTION_SYSTEM_CONTROL_COMPUTER, pos, state, "MagneticDistortionSystemControlComputer",
@@ -87,14 +92,24 @@ public class MagneticDistortionSystemControlComputerBlockEntity extends GenericM
         super.tick(world, pos, state, blockEntity);
 
         if(world == null || world.isClient) return;
+
         BlockPos lightLoc = getPortalLightLocation();
+        BlockPos oppositeLightLoc = getOppositePortalLightLocation();
         if(!isMultiblockValid()) {
-            if(hasPortal()) world.setBlockState(lightLoc, Blocks.AIR.getDefaultState(), Block.NOTIFY_ALL);
+            if(hasPortal(lightLoc)) world.setBlockState(lightLoc, Blocks.AIR.getDefaultState(), Block.NOTIFY_ALL);
+            if(hasOppositePortal(oppositeLightLoc)) world.setBlockState(oppositeLightLoc, Blocks.AIR.getDefaultState(), Block.NOTIFY_ALL);
             setActive(false);
             portalActive = false;
             return;
         }
         if(active) {
+
+            // This runs once on first tick to check if the portal is already lit upon loading the world
+            if(checkPortalActive) {
+                portalActive = !world.isAir(lightLoc);
+                checkPortalActive = false;
+            }
+
             if(!portalActive && getEnergy() > initEnergyUsage) {
                 PortalPlacer.attemptPortalLight(world, lightLoc, PortalIgnitionSource.CustomSource(ModPortals.KV31_PORTAL_IGNITION_SOURCE));
                 makePortalDestination(lightLoc);
@@ -117,9 +132,7 @@ public class MagneticDistortionSystemControlComputerBlockEntity extends GenericM
     @Override
     public void onBreak(World world, PlayerEntity playerEntity, BlockPos blockPos, BlockState blockState) {
         super.onBreak(world, playerEntity, blockPos, blockState);
-
-        BlockPos portalLoc = getPortalLightLocation();
-        world.setBlockState(portalLoc, Blocks.AIR.getDefaultState(), Block.NOTIFY_ALL);
+        world.setBlockState(getPortalLightLocation(), Blocks.AIR.getDefaultState(), Block.NOTIFY_ALL);
     }
 
     @Override
@@ -153,10 +166,19 @@ public class MagneticDistortionSystemControlComputerBlockEntity extends GenericM
         return pos.add(dir.multiply(2)).add(0,1,0);
     }
 
-    private boolean hasPortal() {
-        BlockPos portalLoc = getPortalLightLocation();
+    private BlockPos getOppositePortalLightLocation() {
+        Vec3i dir = getFacing().rotateYCounterclockwise().getVector().multiply(-1 + (2 * (side ? 1 : 0)));
+        return pos.add(dir.multiply(-2)).add(0,1,0);
+    }
+
+    private boolean hasPortal(BlockPos lightLoc) {
         assert world != null;
-        return world.getBlockState(portalLoc).isOf(CustomPortalsMod.portalBlock);
+        return world.getBlockState(lightLoc).isOf(CustomPortalsMod.portalBlock);
+    }
+
+    private boolean hasOppositePortal(BlockPos oppositeLightLoc) {
+        assert world != null;
+        return world.getBlockState(oppositeLightLoc).isOf(CustomPortalsMod.portalBlock);
     }
 
     private void makePortalDestination(BlockPos portalPos) {
