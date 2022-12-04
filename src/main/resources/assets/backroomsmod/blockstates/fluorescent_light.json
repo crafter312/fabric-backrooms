@@ -1,0 +1,20 @@
+{
+  "variants": {
+    "luminance=15": { "model": "backroomsmod:block/level_0/lights/fluorescent_light_15" },
+    "luminance=14": { "model": "backroomsmod:block/level_0/lights/fluorescent_light_14" },
+    "luminance=13": { "model": "backroomsmod:block/level_0/lights/fluorescent_light_13" },
+    "luminance=12": { "model": "backroomsmod:block/level_0/lights/fluorescent_light_12" },
+    "luminance=11": { "model": "backroomsmod:block/level_0/lights/fluorescent_light_11" },
+    "luminance=10": { "model": "backroomsmod:block/level_0/lights/fluorescent_light_10" },
+    "luminance=9": { "model": "backroomsmod:block/level_0/lights/fluorescent_light_9" },
+    "luminance=8": { "model": "backroomsmod:block/level_0/lights/fluorescent_light_8" },
+    "luminance=7": { "model": "backroomsmod:block/level_0/lights/fluorescent_light_7" },
+    "luminance=6": { "model": "backroomsmod:block/level_0/lights/fluorescent_light_6" },
+    "luminance=5": { "model": "backroomsmod:block/level_0/lights/fluorescent_light_5" },
+    "luminance=4": { "model": "backroomsmod:block/level_0/lights/fluorescent_light_4" },
+    "luminance=3": { "model": "backroomsmod:block/level_0/lights/fluorescent_light_3" },
+    "luminance=2": { "model": "backroomsmod:block/level_0/lights/fluorescent_light_2" },
+    "luminance=1": { "model": "backroomsmod:block/level_0/lights/fluorescent_light_1" },
+    "luminance=0": { "model": "backroomsmod:block/level_0/lights/fluorescent_light_0" }
+  }
+}

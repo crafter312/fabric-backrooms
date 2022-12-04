@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "RCR",
+    "AFA",
+    "RHR"
+  ],
+  "key": {
+    "F": {
+      "item": "techreborn:advanced_machine_frame"
+    },
+    "A": {
+      "item": "techreborn:alloy_smelter"
+    },
+    "R": {
+      "tag": "c:aluminum_plates"
+    },
+    "H": {
+      "item": "techreborn:cupronickel_heating_coil"
+    },
+    "C": {
+      "item": "techreborn:advanced_circuit"
+    }
+  },
+  "result": {
+    "item": "backroomsmod:industrial_alloy_smelter"
+  }
+}

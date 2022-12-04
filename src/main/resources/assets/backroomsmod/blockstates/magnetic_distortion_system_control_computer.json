@@ -1,0 +1,8 @@
+{
+    "variants": {
+        "facing=north": { "model": "techreborn:block/machines/generators/fusion_control_computer" },
+        "facing=south": { "model": "techreborn:block/machines/generators/fusion_control_computer", "y": 180 },
+        "facing=west":  { "model": "techreborn:block/machines/generators/fusion_control_computer", "y": 270 },
+        "facing=east":  { "model": "techreborn:block/machines/generators/fusion_control_computer", "y": 90 }
+    }
+}

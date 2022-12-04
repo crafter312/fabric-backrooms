@@ -1,0 +1,20 @@
+{
+  "type": "techreborn:industrial_electrolyzer",
+  "power": 50,
+  "time": 1000,
+  "ingredients": [
+    {
+      "item": "backroomsmod:crushed_lead"
+    }
+  ],
+  "results": [
+    {
+      "item": "techreborn:lead_nugget",
+      "count": 10
+    },
+    {
+      "item": "backroomsmod:bismuth_small_dust",
+      "count": 1
+    }
+  ]
+}

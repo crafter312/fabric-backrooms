@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "NNN",
+	"SMS",
+	"FPF"
+  ],
+  "key": {
+    "M": {
+      "item": "techreborn:advanced_machine_frame"
+    },
+	"S": {
+	  "item": "backroomsmod:superconductor_magnet"
+	},
+    "N": {
+      "item": "backroomsmod:ln2_coolant_cell"
+    },
+    "F": {
+      "item": "techreborn:energy_flow_chip"
+    },
+    "P": {
+      "tag": "c:steel_plates"
+    }
+  },
+  "result": {
+    "item": "backroomsmod:tfmc_magnet"
+  }
+}

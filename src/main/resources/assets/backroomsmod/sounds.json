@@ -1,0 +1,24 @@
+{
+  "music.none": {
+    "subtitle": "sound.backroomsmod.music.none",
+    "sounds": []
+  },
+  "level_0_dark.music": {
+    "subtitle": "sound.backroomsmod.level_0_dark.music",
+    "sounds": [
+      {
+        "name": "backroomsmod:music/level_0/desolate_planet",
+        "stream": true
+      }
+    ]
+  },
+  "level_0.ambient.loop": {
+    "subtitle": "sound.backroomsmod.level_0.ambient.loop",
+    "sounds": [
+      {
+        "name": "backroomsmod:ambient/level_0/fluorescent_light_hum_loop",
+        "stream": true
+      }
+    ]
+  }
+}

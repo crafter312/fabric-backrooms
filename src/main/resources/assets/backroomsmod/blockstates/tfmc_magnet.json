@@ -1,0 +1,16 @@
+{
+    "variants": {
+        "axis=x": {
+            "model": "backroomsmod:block/machines/structure/tfmc_magnet_horizontal",
+            "x": 90,
+            "y": 90
+        },
+        "axis=y": {
+            "model": "backroomsmod:block/machines/structure/tfmc_magnet"
+        },
+        "axis=z": {
+            "model": "backroomsmod:block/machines/structure/tfmc_magnet_horizontal",
+            "x": 90
+        }
+    }
+}
