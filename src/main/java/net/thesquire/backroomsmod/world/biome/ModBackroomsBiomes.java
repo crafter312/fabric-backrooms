@@ -71,11 +71,11 @@ public class ModBackroomsBiomes {
         SpawnSettings.Builder spawnBuilder = new SpawnSettings.Builder();
 
         GenerationSettings.Builder biomeBuilder = new GenerationSettings.Builder();
-        biomeBuilder.feature(GenerationStep.Feature.UNDERGROUND_ORES, ModPlacedFeatures.LEVEL_0_THIN_CROOKED_WALL_PLACED);
-        biomeBuilder.feature(GenerationStep.Feature.UNDERGROUND_ORES, ModPlacedFeatures.LEVEL_0_THIN_STRAIGHT_WALL_PLACED);
-        biomeBuilder.feature(GenerationStep.Feature.UNDERGROUND_ORES, ModPlacedFeatures.LEVEL_0_WALL_PLACED);
-        biomeBuilder.feature(GenerationStep.Feature.UNDERGROUND_ORES, ModPlacedFeatures.FLUORESCENT_LIGHT_FLICKERING_PLACED);
-        biomeBuilder.feature(GenerationStep.Feature.UNDERGROUND_ORES, ModPlacedFeatures.FLUORESCENT_LIGHT_PLACED);
+        biomeBuilder.feature(GenerationStep.Feature.LOCAL_MODIFICATIONS, ModPlacedFeatures.LEVEL_0_THIN_CROOKED_WALL_PLACED);
+        biomeBuilder.feature(GenerationStep.Feature.LOCAL_MODIFICATIONS, ModPlacedFeatures.LEVEL_0_THIN_STRAIGHT_WALL_PLACED);
+        biomeBuilder.feature(GenerationStep.Feature.LOCAL_MODIFICATIONS, ModPlacedFeatures.LEVEL_0_WALL_PLACED);
+        biomeBuilder.feature(GenerationStep.Feature.LOCAL_MODIFICATIONS, ModPlacedFeatures.FLUORESCENT_LIGHT_FLICKERING_PLACED);
+        biomeBuilder.feature(GenerationStep.Feature.LOCAL_MODIFICATIONS, ModPlacedFeatures.FLUORESCENT_LIGHT_PLACED);
 
         return biome(Biome.Precipitation.NONE, 0.8f, 0f, 4159204,
                 0x919191, spawnBuilder, biomeBuilder, NO_MUSIC, ModSounds.LEVEL_0_LOOP);
@@ -86,10 +86,10 @@ public class ModBackroomsBiomes {
         DefaultBiomeFeatures.addBatsAndMonsters(spawnBuilder);
 
         GenerationSettings.Builder biomeBuilder = new GenerationSettings.Builder();
-        biomeBuilder.feature(GenerationStep.Feature.UNDERGROUND_ORES, ModPlacedFeatures.LEVEL_0_THIN_CROOKED_WALL_PLACED);
-        biomeBuilder.feature(GenerationStep.Feature.UNDERGROUND_ORES, ModPlacedFeatures.LEVEL_0_THIN_STRAIGHT_WALL_PLACED);
-        biomeBuilder.feature(GenerationStep.Feature.UNDERGROUND_ORES, ModPlacedFeatures.LEVEL_0_WALL_PLACED);
-        biomeBuilder.feature(GenerationStep.Feature.UNDERGROUND_ORES, ModPlacedFeatures.FLUORESCENT_LIGHT_FLICKERING_PLACED);
+        biomeBuilder.feature(GenerationStep.Feature.LOCAL_MODIFICATIONS, ModPlacedFeatures.LEVEL_0_THIN_CROOKED_WALL_PLACED);
+        biomeBuilder.feature(GenerationStep.Feature.LOCAL_MODIFICATIONS, ModPlacedFeatures.LEVEL_0_THIN_STRAIGHT_WALL_PLACED);
+        biomeBuilder.feature(GenerationStep.Feature.LOCAL_MODIFICATIONS, ModPlacedFeatures.LEVEL_0_WALL_PLACED);
+        biomeBuilder.feature(GenerationStep.Feature.LOCAL_MODIFICATIONS, ModPlacedFeatures.FLUORESCENT_LIGHT_FLICKERING_PLACED);
 
         return biome(Biome.Precipitation.NONE, 0.8f, 0f, 4159204,
                 0x919191, spawnBuilder, biomeBuilder, LEVEL_0_DARK_MUSIC);
