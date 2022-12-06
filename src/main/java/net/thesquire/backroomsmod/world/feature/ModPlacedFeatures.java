@@ -45,7 +45,7 @@ public class ModPlacedFeatures {
 
         FLUORESCENT_LIGHT_FLICKERING_PLACED = PlacedFeatures.register("fluorescent_light_flickering_placed",
                 ModConfiguredFeatures.FLUORESCENT_LIGHT_FLICKERING,
-                modifiersWithRarity(64, LEVEL_0_CEILING, LIGHT_BLOCK_MODIFIER));
+                modifiersWithRarity(48, LEVEL_0_CEILING, LIGHT_BLOCK_MODIFIER));
 
         LEVEL_0_WALL_PLACED = PlacedFeatures.register("level_0_wall_placed",
                 ModConfiguredFeatures.LEVEL_0_WALL,
