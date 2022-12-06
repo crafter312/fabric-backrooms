@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "MCM",
+    "SIS",
+    "MOM"
+  ],
+  "key": {
+    "M": {
+      "item": "techreborn:industrial_machine_frame"
+    },
+    "O": {
+      "item": "techreborn:lapotronic_orb"
+    },
+    "C": {
+      "item": "techreborn:energy_flow_chip"
+    },
+    "I": {
+      "item": "techreborn:industrial_circuit"
+    },
+    "S": {
+      "item": "backroomsmod:superconductor_magnet_coil"
+    }
+  },
+  "result": {
+    "item": "backroomsmod:magnetic_distortion_system_control_computer"
+  }
+}

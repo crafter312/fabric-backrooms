@@ -1,4 +1,5 @@
 {
+  "_comment1": "Mod Blocks",
   "block.backroomsmod.bismuthinite_ore": "Bismuthinite Ore",
   "block.backroomsmod.industrial_alloy_smelter": "Industrial Alloy Smelter",
   "block.backroomsmod.tfmc_magnet": "TFMC Magnet",
@@ -7,6 +8,7 @@
   "block.backroomsmod.yellow_wallpaper": "Yellow Wallpaper",
   "block.backroomsmod.fluorescent_light": "Fluorescent Light",
 
+  "_comment2": "Mod Items",
   "item.backroomsmod.raw_bismuthinite": "Raw Bismuthinite",
   "item.backroomsmod.bismuthinite_dust": "Bismuthinite Dust",
   "item.backroomsmod.bismuth_dust": "Bismuth Dust",
@@ -23,18 +25,23 @@
   "item.backroomsmod.ln2_coolant_cell": "LN2 Coolant Cell",
   "item.backroomsmod.superconductor_magnet": "Superconducting Magnet",
 
+  "_comment3": "Sound Names",
   "sound.backroomsmod.music.none": "",
   "sound.backroomsmod.level_0_dark": "Level 0 Dark Biome Music",
   "sound.backroomsmod.level_0.ambient.loop": "Fluorescent Lights Humming",
 
+  "_comment4": "Tooltips",
+  "tooltip.backroomsmod.generic": "Press §eSHIFT§r for more Information",
   "item.backroomsmod.low_temp_solder_ingot.tooltip_1": "§8§oBased on the Cerrolow 136 low",
   "item.backroomsmod.low_temp_solder_ingot.tooltip_2": "§8§otemperature solder alloy.",
   "item.backroomsmod.ln2_coolant_cell.tooltip": "§8§oEveryone loves liquid nitrogen!",
-
   "block.backroomsmod.tfmc_magnet.tooltip_1": "§8§oToroidal Field Model Coil Magnet,",
   "block.backroomsmod.tfmc_magnet.tooltip_2": "§8§onow with cryostat!",
 
+  "_comment6": "Item Group Names",
   "itemGroup.backroomsmod.backrooms": "The Backrooms",
 
-  "tooltip.backroomsmod.generic": "Press §eSHIFT§r for more Information"
+  "_comment7": "REI Integration",
+  "backroomsmod:industrial_alloy_smelter": "Industrial Alloy Smelter"
+
 }
