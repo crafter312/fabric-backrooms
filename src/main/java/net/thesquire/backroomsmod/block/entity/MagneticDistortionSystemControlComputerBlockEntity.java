@@ -11,16 +11,13 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.PillarBlock;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.Inventories;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.BlockLocating;
 import net.minecraft.world.World;
-import net.thesquire.backroomsmod.BackroomsMod;
 import net.thesquire.backroomsmod.block.ModBlocks;
 import net.thesquire.backroomsmod.config.ModConfig;
 import net.thesquire.backroomsmod.dimension.ModDimensionKeys;
@@ -118,6 +115,7 @@ public class MagneticDistortionSystemControlComputerBlockEntity extends GenericM
             } else if(world.isAir(lightLoc)) {
                 setActive(false);
                 portalActive = false;
+                return;
             }
 
             if(getEnergy() > energyUsage) useEnergy(maxInput / 2);

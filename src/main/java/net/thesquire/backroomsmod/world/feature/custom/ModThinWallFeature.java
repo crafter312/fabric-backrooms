@@ -36,7 +36,11 @@ public class ModThinWallFeature extends Feature<ModThinWallFeatureConfig> {
     private boolean generateStraightWall(BlockPos origin, StructureWorldAccess world, ModThinWallFeatureConfig config, Random random,
                                          int length, int height, Vec3i dir) {
         boolean setBlocks = false;
+
+        // limit wall length to chunk size
+        length = Math.min(length, 16);
         int total = length * height;
+
         for (int t = 0; t < total; t++) {
             int h = t % height;
             int l = t / height;
@@ -59,15 +63,24 @@ public class ModThinWallFeature extends Feature<ModThinWallFeatureConfig> {
         int segments = config.segments().get(random);
         Vec3i dir = getRandomDirection(random);
 
-        boolean setBlocks= false;
+        boolean setBlocks = false;
         BlockPos pos = origin;
         Vec3i oldDir = dir;
+        int[] dirLengths = {0, 0, 0, 0};
         for (int i = 0; i < segments; i++) {
             int length = config.lengths().get(random);
             int height = config.height().get(random);
+
+            int index = 0;
             while (dir.equals(oldDir)) {
-                dir = getRandomDirection(random);
+                index = (int) (random.nextFloat() * directions.length);
+                dir = directions[index].getVector();
             }
+            dirLengths[index] += length;
+
+            // limit wall length in any direction to chunk size
+            if(dirLengths[index] > 16) return setBlocks;
+
             setBlocks = generateStraightWall(pos, world, config, random, length, height, dir);
             pos = pos.add(dir.multiply(length));
             oldDir = dir;
