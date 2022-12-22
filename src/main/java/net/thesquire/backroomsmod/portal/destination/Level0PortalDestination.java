@@ -4,6 +4,7 @@ import net.kyrptonaught.customportalapi.CustomPortalApiRegistry;
 import net.kyrptonaught.customportalapi.CustomPortalsMod;
 import net.kyrptonaught.customportalapi.portal.frame.PortalFrameTester;
 import net.kyrptonaught.customportalapi.util.PortalLink;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Pair;
@@ -11,13 +12,32 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.BlockLocating;
+import net.minecraft.world.World;
 import net.minecraft.world.border.WorldBorder;
 import net.minecraft.world.dimension.DimensionType;
+import net.thesquire.backroomsmod.block.ModBlocks;
+import net.thesquire.backroomsmod.dimension.ModDimensionKeys;
 import net.thesquire.backroomsmod.world.structure.ModStructureUtils;
 
 import java.util.Optional;
 
 public class Level0PortalDestination {
+
+    public static final Block portalBase = ModBlocks.TFMC_MAGNET;
+
+    public static void makePortalDestination(World world, BlockPos portalPos, Direction.Axis portalAxis) {
+        if(world instanceof ServerWorld) {
+            ServerWorld serverWorld = (ServerWorld) world;
+            if (serverWorld.getRegistryKey() != World.OVERWORLD) return;
+
+            ServerWorld destServerWorld = serverWorld.getServer().getWorld(ModDimensionKeys.LEVEL_0);
+            assert destServerWorld != null;
+
+            PortalFrameTester.PortalFrameTesterFactory portalFrameTesterFactory = CustomPortalApiRegistry.getPortalLinkFromBase(portalBase).getFrameTester();
+            BlockLocating.Rectangle fromPortalRectangle = portalFrameTesterFactory.createInstanceOfPortalFrameTester().init(world, portalPos, portalAxis, portalBase).getRectangle();
+            createDestinationPortal(serverWorld, destServerWorld, portalPos, portalAxis, fromPortalRectangle, portalBase.getDefaultState());
+        }
+    }
 
     public static void createDestinationPortal(ServerWorld initial, ServerWorld destination, BlockPos portalPos, Direction.Axis axis, BlockLocating.Rectangle portalFramePos, BlockState frameBlock) {
         WorldBorder worldBorder = destination.getWorldBorder();

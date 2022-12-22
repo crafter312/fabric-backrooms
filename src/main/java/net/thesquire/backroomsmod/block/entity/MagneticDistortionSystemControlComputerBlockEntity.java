@@ -109,7 +109,7 @@ public class MagneticDistortionSystemControlComputerBlockEntity extends GenericM
 
             if(!portalActive && getEnergy() > initEnergyUsage) {
                 PortalPlacer.attemptPortalLight(world, lightLoc, PortalIgnitionSource.CustomSource(ModPortals.KV31_PORTAL_IGNITION_SOURCE));
-                makePortalDestination(lightLoc);
+                Level0PortalDestination.makePortalDestination(world, lightLoc, this.getFacing().getAxis());
                 useEnergy(initEnergyUsage);
                 portalActive = true;
             } else if(world.isAir(lightLoc)) {
@@ -177,21 +177,6 @@ public class MagneticDistortionSystemControlComputerBlockEntity extends GenericM
     private boolean hasOppositePortal(BlockPos oppositeLightLoc) {
         assert world != null;
         return world.getBlockState(oppositeLightLoc).isOf(CustomPortalsMod.portalBlock);
-    }
-
-    private void makePortalDestination(BlockPos portalPos) {
-        if(world instanceof ServerWorld) {
-            ServerWorld serverWorld = (ServerWorld) world;
-            if (serverWorld.getRegistryKey() != World.OVERWORLD) return;
-
-            ServerWorld destServerWorld = serverWorld.getServer().getWorld(ModDimensionKeys.LEVEL_0);
-            Direction.Axis portalAxis = CustomPortalHelper.getAxisFrom(world.getBlockState(portalPos));
-            Block portalBase = CustomPortalHelper.getPortalBaseDefault(world, portalPos);
-            PortalFrameTester.PortalFrameTesterFactory portalFrameTesterFactory = CustomPortalApiRegistry.getPortalLinkFromBase(portalBase).getFrameTester();
-            BlockLocating.Rectangle fromPortalRectangle = portalFrameTesterFactory.createInstanceOfPortalFrameTester().init(world, portalPos, portalAxis, portalBase).getRectangle();
-            assert destServerWorld != null;
-            Level0PortalDestination.createDestinationPortal(serverWorld, destServerWorld, getPortalLightLocation(), portalAxis, fromPortalRectangle, portalBase.getDefaultState());
-        }
     }
 
     /***************************************************************/

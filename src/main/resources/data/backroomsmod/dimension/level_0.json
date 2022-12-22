@@ -3,7 +3,7 @@
   "generator": {
     "type": "minecraft:noise",
     "seed": 1177471420,
-    "settings": "backroomsmod:overworld_no_caves",
+    "settings": "backroomsmod:flat_no_caves",
     "biome_source": {
       "type": "minecraft:multi_noise",
       "biomes": [
