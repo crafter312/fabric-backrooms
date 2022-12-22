@@ -34,7 +34,7 @@ dependencies {
 	// TerraBlender API. This is used for creating new biomes.
 	modImplementation "com.github.glitchfiend:TerraBlender-fabric:${project.terrablender_version}"
 
-	// TechReborn mod implementation
+	// TechReborn mod api
 	include modApi("TechReborn:TechReborn-${project.techreborn_version}") {
 		exclude(group: "net.fabricmc.fabric-api")
 	}

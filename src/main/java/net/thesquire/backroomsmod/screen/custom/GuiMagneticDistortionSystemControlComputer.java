@@ -1,6 +1,11 @@
 package net.thesquire.backroomsmod.screen.custom;
 
+import com.mojang.blaze3d.systems.RenderSystem;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.widget.ButtonWidget;
+import net.minecraft.client.gui.widget.ClickableWidget;
+import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.text.Text;
@@ -12,23 +17,27 @@ import reborncore.client.gui.builder.GuiBase;
 import reborncore.client.gui.builder.widget.GuiButtonExtended;
 import reborncore.common.screen.BuiltScreenHandler;
 
+import java.awt.*;
+
 public class GuiMagneticDistortionSystemControlComputer extends GuiBase<BuiltScreenHandler> {
 
     private final MagneticDistortionSystemControlComputerBlockEntity blockEntity;
-    private GuiButtonExtended ACTIVATE_BUTTON; // 56, 40
+    private final GuiButtonExtended ACTIVATE_BUTTON; // 56, 40
+    private final int activeX = 67;
+    private final int activeY = 40;
 
     public GuiMagneticDistortionSystemControlComputer(int syncID, final PlayerEntity player, final MagneticDistortionSystemControlComputerBlockEntity blockEntity) {
         super(player, blockEntity, blockEntity.createScreenHandler(syncID, player));
         this.blockEntity = blockEntity;
-        ACTIVATE_BUTTON  = new GuiButtonExtended(x + 209, y + 80, 64, 16, Text.literal("ACTIVATE").formatted(Formatting.GREEN),
+        ACTIVATE_BUTTON  = new GuiButtonExtended(x + activeX, y + activeY, 64, 16, Text.literal("ACTIVATE").formatted(Formatting.GREEN),
                 (ButtonWidget buttonWidget) -> activate());
     }
 
     @Override
     public void init() {
         super.init();
-        addDrawableChild(new GuiButtonExtended(x + 44, y + 76, 40, 12, Text.literal("Left"), (ButtonWidget buttonWidget) -> sendSideChange(false)));
-        addDrawableChild(new GuiButtonExtended(x + 44 + 48, y + 76, 40, 12, Text.literal("Right"), (ButtonWidget buttonWidget) -> sendSideChange(true)));
+        addDrawableChild(new GuiButtonExtended(x + 54, y + 76, 40, 12, Text.literal("Left"), (ButtonWidget buttonWidget) -> sendSideChange(false)));
+        addDrawableChild(new GuiButtonExtended(x + 54 + 48, y + 76, 40, 12, Text.literal("Right"), (ButtonWidget buttonWidget) -> sendSideChange(true)));
     }
 
     @Override
@@ -41,7 +50,10 @@ public class GuiMagneticDistortionSystemControlComputer extends GuiBase<BuiltScr
         builder.drawJEIButton(matrixStack, this, 158, 5, layer);
         if (blockEntity.isMultiblockValid()) {
             builder.drawHologramButton(matrixStack, this, 6, 4, mouseX, mouseY, layer);
+
             if (!children().contains(ACTIVATE_BUTTON)) addDrawableChild(ACTIVATE_BUTTON);
+            ACTIVATE_BUTTON.x = x + activeX;
+            ACTIVATE_BUTTON.y = y + activeY;
         }
         else if (children().contains(ACTIVATE_BUTTON)) remove(ACTIVATE_BUTTON);
     }
