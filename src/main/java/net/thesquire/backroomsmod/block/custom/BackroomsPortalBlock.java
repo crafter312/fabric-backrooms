@@ -5,8 +5,9 @@ import net.kyrptonaught.customportalapi.interfaces.EntityInCustomPortal;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
-import net.thesquire.backroomsmod.portal.BackroomsTeleporter;
+import net.thesquire.backroomsmod.portal.teleport.Level0Teleporter;
 
 /*
  * This class is virtually identical to CustomPortalAPI's CustomPortalBlock!
@@ -29,8 +30,9 @@ public class BackroomsPortalBlock extends CustomPortalBlock {
         if (!entityInPortal.didTeleport()) {
             if (entityInPortal.getTimeInPortal() >= entity.getMaxNetherPortalTime()) {
                 entityInPortal.setDidTP(true);
-                if (!world.isClient)
-                    BackroomsTeleporter.TPToDim(world, entity, getPortalBase(world, pos), pos);
+                if (!world.isClient) {
+                    Level0Teleporter.TPToDim(world, entity, getPortalBase(world, pos), pos);
+                }
             }
         }
     }

@@ -7,7 +7,7 @@ import net.thesquire.backroomsmod.BackroomsMod;
 import net.thesquire.backroomsmod.block.ModBlocks;
 import net.thesquire.backroomsmod.block.custom.BackroomsPortalBlock;
 import net.thesquire.backroomsmod.dimension.ModDimensionKeys;
-import net.thesquire.backroomsmod.portal.destination.Level0PortalDestination;
+import net.thesquire.backroomsmod.portal.teleport.Level0PortalDestination;
 import net.thesquire.backroomsmod.portal.frame.Level0PortalAreaHelper;
 
 public class ModPortals {

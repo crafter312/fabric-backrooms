@@ -1,4 +1,4 @@
-package net.thesquire.backroomsmod.portal.destination;
+package net.thesquire.backroomsmod.portal.teleport;
 
 import net.kyrptonaught.customportalapi.CustomPortalApiRegistry;
 import net.kyrptonaught.customportalapi.CustomPortalsMod;

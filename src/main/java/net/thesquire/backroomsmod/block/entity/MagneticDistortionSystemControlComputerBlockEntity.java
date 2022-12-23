@@ -1,28 +1,22 @@
 package net.thesquire.backroomsmod.block.entity;
 
-import net.kyrptonaught.customportalapi.CustomPortalApiRegistry;
 import net.kyrptonaught.customportalapi.CustomPortalsMod;
 import net.kyrptonaught.customportalapi.portal.PortalIgnitionSource;
 import net.kyrptonaught.customportalapi.portal.PortalPlacer;
-import net.kyrptonaught.customportalapi.portal.frame.PortalFrameTester;
-import net.kyrptonaught.customportalapi.util.CustomPortalHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.PillarBlock;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3i;
-import net.minecraft.world.BlockLocating;
 import net.minecraft.world.World;
 import net.thesquire.backroomsmod.block.ModBlocks;
 import net.thesquire.backroomsmod.config.ModConfig;
-import net.thesquire.backroomsmod.dimension.ModDimensionKeys;
 import net.thesquire.backroomsmod.portal.ModPortals;
-import net.thesquire.backroomsmod.portal.destination.Level0PortalDestination;
+import net.thesquire.backroomsmod.portal.teleport.Level0PortalDestination;
 import reborncore.common.blockentity.MachineBaseBlockEntity;
 import reborncore.common.blockentity.MultiblockWriter;
 import reborncore.common.blocks.BlockMachineBase;
@@ -109,8 +103,8 @@ public class MagneticDistortionSystemControlComputerBlockEntity extends GenericM
 
             if(!portalActive && getEnergy() > initEnergyUsage) {
                 PortalPlacer.attemptPortalLight(world, lightLoc, PortalIgnitionSource.CustomSource(ModPortals.KV31_PORTAL_IGNITION_SOURCE));
-                Direction.Axis portalAxis = this.getFacing().getAxis() == Direction.Axis.X ? Direction.Axis.Z : Direction.Axis.X;
-                Level0PortalDestination.makePortalDestination(world, lightLoc, portalAxis);
+//                Direction.Axis portalAxis = this.getFacing().getAxis() == Direction.Axis.X ? Direction.Axis.Z : Direction.Axis.X;
+//                Level0PortalDestination.makePortalDestination(world, lightLoc, portalAxis);
                 useEnergy(initEnergyUsage);
                 portalActive = true;
             } else if(world.isAir(lightLoc)) {
