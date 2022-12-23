@@ -109,7 +109,8 @@ public class MagneticDistortionSystemControlComputerBlockEntity extends GenericM
 
             if(!portalActive && getEnergy() > initEnergyUsage) {
                 PortalPlacer.attemptPortalLight(world, lightLoc, PortalIgnitionSource.CustomSource(ModPortals.KV31_PORTAL_IGNITION_SOURCE));
-                Level0PortalDestination.makePortalDestination(world, lightLoc, this.getFacing().getAxis());
+                Direction.Axis portalAxis = this.getFacing().getAxis() == Direction.Axis.X ? Direction.Axis.Z : Direction.Axis.X;
+                Level0PortalDestination.makePortalDestination(world, lightLoc, portalAxis);
                 useEnergy(initEnergyUsage);
                 portalActive = true;
             } else if(world.isAir(lightLoc)) {

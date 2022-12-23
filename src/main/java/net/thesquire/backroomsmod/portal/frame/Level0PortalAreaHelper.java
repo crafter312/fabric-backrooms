@@ -11,7 +11,7 @@ import java.util.Optional;
 import java.util.function.Predicate;
 
 public class Level0PortalAreaHelper extends VanillaPortalAreaHelper {
-    
+
     public Level0PortalAreaHelper() {
         super();
     }
