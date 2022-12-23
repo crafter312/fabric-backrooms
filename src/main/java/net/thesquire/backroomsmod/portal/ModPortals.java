@@ -7,7 +7,6 @@ import net.thesquire.backroomsmod.BackroomsMod;
 import net.thesquire.backroomsmod.block.ModBlocks;
 import net.thesquire.backroomsmod.block.custom.BackroomsPortalBlock;
 import net.thesquire.backroomsmod.dimension.ModDimensionKeys;
-import net.thesquire.backroomsmod.portal.teleport.Level0PortalDestination;
 import net.thesquire.backroomsmod.portal.frame.Level0PortalAreaHelper;
 
 public class ModPortals {
@@ -19,7 +18,7 @@ public class ModPortals {
         CustomPortalApiRegistry.registerPortalFrameTester(LEVEL_0_PORTAL_FRAME_TESTER, Level0PortalAreaHelper::new);
 
         CustomPortalBuilder.beginPortal()
-                .frameBlock(Level0PortalDestination.portalBase)
+                .frameBlock(ModBlocks.TFMC_MAGNET)
                 .customPortalBlock((BackroomsPortalBlock) ModBlocks.BACKROOMS_PORTAL_BLOCK)
                 .customFrameTester(LEVEL_0_PORTAL_FRAME_TESTER)
                 .customIgnitionSource(KV31_PORTAL_IGNITION_SOURCE)

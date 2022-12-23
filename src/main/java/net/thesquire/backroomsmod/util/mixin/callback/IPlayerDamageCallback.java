@@ -1,4 +1,4 @@
-package net.thesquire.backroomsmod.util.callback;
+package net.thesquire.backroomsmod.util.mixin.callback;
 
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;

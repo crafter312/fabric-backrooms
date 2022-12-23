@@ -8,7 +8,7 @@ import net.thesquire.backroomsmod.portal.ModPortals;
 import net.thesquire.backroomsmod.recipe.ModRecipes;
 import net.thesquire.backroomsmod.screen.ModClientGuis;
 import net.thesquire.backroomsmod.screen.ModGuis;
-import net.thesquire.backroomsmod.util.MixinCallbacks;
+import net.thesquire.backroomsmod.util.mixin.MixinCallbacks;
 import net.thesquire.backroomsmod.util.ModRegistries;
 import net.thesquire.backroomsmod.util.ModServerboundPackets;
 import net.thesquire.backroomsmod.world.ModBiomes;

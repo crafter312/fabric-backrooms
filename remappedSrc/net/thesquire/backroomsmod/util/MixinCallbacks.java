@@ -8,7 +8,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.TeleportTarget;
 import net.minecraft.world.World;
 import net.thesquire.backroomsmod.dimension.ModDimensionKeys;
-import net.thesquire.backroomsmod.util.callback.IPlayerDamageCallback;
+import net.thesquire.backroomsmod.util.mixin.callback.IPlayerDamageCallback;
 
 /**
  * For information on how to properly set up a mixin callback,

@@ -16,7 +16,6 @@ import net.minecraft.world.World;
 import net.thesquire.backroomsmod.block.ModBlocks;
 import net.thesquire.backroomsmod.config.ModConfig;
 import net.thesquire.backroomsmod.portal.ModPortals;
-import net.thesquire.backroomsmod.portal.teleport.Level0PortalDestination;
 import reborncore.common.blockentity.MachineBaseBlockEntity;
 import reborncore.common.blockentity.MultiblockWriter;
 import reborncore.common.blocks.BlockMachineBase;

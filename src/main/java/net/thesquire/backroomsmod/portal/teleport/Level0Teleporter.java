@@ -3,7 +3,6 @@ package net.thesquire.backroomsmod.portal.teleport;
 import net.kyrptonaught.customportalapi.CustomPortalApiRegistry;
 import net.kyrptonaught.customportalapi.CustomPortalsMod;
 import net.kyrptonaught.customportalapi.interfaces.CustomTeleportingEntity;
-import net.kyrptonaught.customportalapi.portal.PortalPlacer;
 import net.kyrptonaught.customportalapi.portal.frame.PortalFrameTester;
 import net.kyrptonaught.customportalapi.portal.linking.DimensionalBlockPos;
 import net.kyrptonaught.customportalapi.util.CustomPortalHelper;
@@ -26,16 +25,13 @@ import net.minecraft.world.TeleportTarget;
 import net.minecraft.world.World;
 import net.minecraft.world.border.WorldBorder;
 import net.minecraft.world.dimension.DimensionType;
+import net.thesquire.backroomsmod.portal.frame.Level0PortalAreaHelper;
 import net.thesquire.backroomsmod.world.structure.ModStructureUtils;
 
 import java.util.Optional;
 
-/*
- * This class is an identical copy of CustomPortalAPI's CustomTeleporter
- * class! This is done purely for debugging purposes, and is not intended
- * to otherwise be used. It should only be used in the BackroomsPortalBlock
- * class, which is also intended for debugging only.
- */
+//TODO fix TP target direction in dest portal
+//TODO fix TP target position in dest portal
 
 public class Level0Teleporter {
 
@@ -73,7 +69,6 @@ public class Level0Teleporter {
         return RegistryKey.of(Registry.WORLD_KEY, dimID);
     }
 
-    //TODO fix linking between non-axis-aligned portals
     public static Optional<TeleportTarget> customTPTarget(ServerWorld destinationWorld, Entity entity, BlockPos enteredPortalPos, Block frameBlock, PortalFrameTester.PortalFrameTesterFactory portalFrameTesterFactory) {
         Direction.Axis portalAxis = CustomPortalHelper.getAxisFrom(entity.getEntityWorld().getBlockState(enteredPortalPos));
         BlockLocating.Rectangle fromPortalRectangle = portalFrameTesterFactory.createInstanceOfPortalFrameTester().init(entity.getEntityWorld(), enteredPortalPos, portalAxis, frameBlock).getRectangle();
@@ -81,12 +76,12 @@ public class Level0Teleporter {
 
         if (destinationPos != null && destinationPos.dimensionType.equals(destinationWorld.getRegistryKey().getValue())) {
             Direction.Axis destAxis = CustomPortalHelper.getAxisFrom(destinationWorld.getBlockState(destinationPos.pos));
-            PortalFrameTester portalFrameTester = portalFrameTesterFactory.createInstanceOfPortalFrameTester().init(destinationWorld, destinationPos.pos, destAxis, frameBlock);
+            Level0PortalAreaHelper portalFrameTester = (Level0PortalAreaHelper) portalFrameTesterFactory.createInstanceOfPortalFrameTester().init(destinationWorld, destinationPos.pos, destAxis, frameBlock);
             if (portalFrameTester.isValidFrame()) {
                 if (!portalFrameTester.isAlreadyLitPortalFrame()) {
                     portalFrameTester.lightPortal(frameBlock);
                 }
-                return Optional.of(portalFrameTester.getTPTargetInPortal(portalFrameTester.getRectangle(), portalAxis, portalFrameTester.getEntityOffsetInPortal(fromPortalRectangle, entity, portalAxis), entity));
+                return Optional.of(portalFrameTester.getTPTargetInPortal(portalFrameTester.getRectangle(), destAxis, portalAxis, portalFrameTester.getEntityOffsetInPortal(fromPortalRectangle, entity, portalAxis), entity));
             }
         }
         else if (destinationPos == null && entity.getWorld().getRegistryKey() != World.OVERWORLD) return Optional.empty();
@@ -111,7 +106,7 @@ public class Level0Teleporter {
 
         if (destFrame.isPresent()) {
             BlockPos destPos = destFrame.get().lowerLeft;
-            PortalFrameTester portalFrameTester = CustomPortalApiRegistry.getPortalLinkFromBase(frameBlock.getBlock()).getFrameTester().createInstanceOfPortalFrameTester();
+            Level0PortalAreaHelper portalFrameTester = (Level0PortalAreaHelper) CustomPortalApiRegistry.getPortalLinkFromBase(frameBlock.getBlock()).getFrameTester().createInstanceOfPortalFrameTester();
             PortalFrameTester destPortalFrameTester = CustomPortalApiRegistry.getPortalLinkFromBase(frameBlock.getBlock()).getFrameTester().createInstanceOfPortalFrameTester()
                     .init(destination, destPos, destAxisPerpendicular, frameBlock.getBlock());
 
@@ -120,7 +115,7 @@ public class Level0Teleporter {
 
                 CustomPortalsMod.portalLinkingStorage.createLink(portalFramePos.lowerLeft, entity.world.getRegistryKey(), destPos, destination.getRegistryKey());
                 Vec3d inPortalOffset = portalFrameTester.getEntityOffsetInPortal(portalFramePos, entity, axis).rotateY(90 * (axis.equals(destAxis) ? 0 : 1));
-                return portalFrameTester.getTPTargetInPortal(destFrame.get(), destAxis, inPortalOffset, entity);
+                return portalFrameTester.getTPTargetInPortal(destFrame.get(), destAxisPerpendicular, axis, inPortalOffset, entity);
             }
         }
         return idkWhereToPutYou(destination, entity, blockPos3);
