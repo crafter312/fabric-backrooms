@@ -71,17 +71,19 @@ public class Level0Teleporter {
 
     public static Optional<TeleportTarget> customTPTarget(ServerWorld destinationWorld, Entity entity, BlockPos enteredPortalPos, Block frameBlock, PortalFrameTester.PortalFrameTesterFactory portalFrameTesterFactory) {
         Direction.Axis portalAxis = CustomPortalHelper.getAxisFrom(entity.getEntityWorld().getBlockState(enteredPortalPos));
+        Direction portalEntityDir = Direction.getLookDirectionForAxis(entity, Level0PortalAreaHelper.flipHorizontalAxis(portalAxis));
         BlockLocating.Rectangle fromPortalRectangle = portalFrameTesterFactory.createInstanceOfPortalFrameTester().init(entity.getEntityWorld(), enteredPortalPos, portalAxis, frameBlock).getRectangle();
         DimensionalBlockPos destinationPos = CustomPortalsMod.portalLinkingStorage.getDestination(fromPortalRectangle.lowerLeft, entity.getEntityWorld().getRegistryKey());
 
         if (destinationPos != null && destinationPos.dimensionType.equals(destinationWorld.getRegistryKey().getValue())) {
-            Direction.Axis destAxis = CustomPortalHelper.getAxisFrom(destinationWorld.getBlockState(destinationPos.pos));
-            Level0PortalAreaHelper portalFrameTester = (Level0PortalAreaHelper) portalFrameTesterFactory.createInstanceOfPortalFrameTester().init(destinationWorld, destinationPos.pos, destAxis, frameBlock);
+            Direction destEntityDir = Level0PortalAreaHelper.getDirectionFrom(destinationWorld, destinationWorld.getBlockState(destinationPos.pos), destinationPos.pos);
+            Level0PortalAreaHelper portalFrameTester = (Level0PortalAreaHelper) portalFrameTesterFactory.createInstanceOfPortalFrameTester()
+                    .init(destinationWorld, destinationPos.pos, Level0PortalAreaHelper.flipHorizontalAxis(destEntityDir.getAxis()), frameBlock);
             if (portalFrameTester.isValidFrame()) {
                 if (!portalFrameTester.isAlreadyLitPortalFrame()) {
                     portalFrameTester.lightPortal(frameBlock);
                 }
-                return Optional.of(portalFrameTester.getTPTargetInPortal(portalFrameTester.getRectangle(), destAxis, portalAxis, portalFrameTester.getEntityOffsetInPortal(fromPortalRectangle, entity, portalAxis), entity));
+                return Optional.of(portalFrameTester.getTPTargetInPortal(portalFrameTester.getRectangle(), destEntityDir, portalEntityDir, portalFrameTester.getEntityOffsetInPortal(fromPortalRectangle, entity, portalAxis), entity));
             }
         }
         else if (destinationPos == null && entity.getWorld().getRegistryKey() != World.OVERWORLD) return Optional.empty();
@@ -97,12 +99,13 @@ public class Level0Teleporter {
         double zMax = Math.min(2.9999872E7D, worldBorder.getBoundSouth() - 16.0D);
         double scaleFactor = DimensionType.getCoordinateScaleFactor(entity.world.getDimension(), destination.getDimension());
         BlockPos blockPos3 = new BlockPos(MathHelper.clamp(entity.getX() * scaleFactor, xMin, xMax), entity.getY(), MathHelper.clamp(entity.getZ() * scaleFactor, zMin, zMax));
+        Direction portalEntityDir = Direction.getLookDirectionForAxis(entity, Level0PortalAreaHelper.flipHorizontalAxis(axis));
 
-        Pair<Optional<BlockLocating.Rectangle>, Direction.Axis> portal = findDestinationPortal(destination, blockPos3, frameBlock);
-        if (portal.getLeft().isEmpty()) portal = makeDestinationPortal(destination, blockPos3, frameBlock, axis);
+        Pair<Optional<BlockLocating.Rectangle>, Direction> portal = findDestinationPortal(destination, blockPos3, frameBlock);
+        if (portal.getLeft().isEmpty()) portal = makeDestinationPortal(destination, blockPos3, frameBlock, portalEntityDir);
         Optional<BlockLocating.Rectangle> destFrame = portal.getLeft();
-        Direction.Axis destAxis = portal.getRight();
-        Direction.Axis destAxisPerpendicular = destAxis == Direction.Axis.X ? Direction.Axis.Z : Direction.Axis.X;
+        Direction.Axis destAxis = portal.getRight().getAxis();
+        Direction.Axis destAxisPerpendicular = Level0PortalAreaHelper.flipHorizontalAxis(destAxis);
 
         if (destFrame.isPresent()) {
             BlockPos destPos = destFrame.get().lowerLeft;
@@ -115,16 +118,17 @@ public class Level0Teleporter {
 
                 CustomPortalsMod.portalLinkingStorage.createLink(portalFramePos.lowerLeft, entity.world.getRegistryKey(), destPos, destination.getRegistryKey());
                 Vec3d inPortalOffset = portalFrameTester.getEntityOffsetInPortal(portalFramePos, entity, axis).rotateY(90 * (axis.equals(destAxis) ? 0 : 1));
-                return portalFrameTester.getTPTargetInPortal(destFrame.get(), destAxisPerpendicular, axis, inPortalOffset, entity);
+                return portalFrameTester.getTPTargetInPortal(destFrame.get(), portal.getRight(), portalEntityDir, inPortalOffset, entity);
             }
         }
         return idkWhereToPutYou(destination, entity, blockPos3);
     }
 
-    private static Pair<Optional<BlockLocating.Rectangle>, Direction.Axis> makeDestinationPortal(ServerWorld destWorld, BlockPos blockPos, BlockState frameBlock, Direction.Axis axis) {
+    private static Pair<Optional<BlockLocating.Rectangle>, Direction> makeDestinationPortal(ServerWorld destWorld, BlockPos blockPos, BlockState frameBlock, Direction dir) {
         WorldBorder worldBorder = destWorld.getWorldBorder();
         PortalLink link = CustomPortalApiRegistry.getPortalLinkFromBase(frameBlock.getBlock());
         PortalFrameTester portalFrameTester = link.getFrameTester().createInstanceOfPortalFrameTester();
+        Direction.Axis axis = Level0PortalAreaHelper.flipHorizontalAxis(dir.getAxis());
 
         for (BlockPos.Mutable mutable : BlockPos.iterateInSquare(blockPos, 16, Direction.WEST, Direction.SOUTH)) {
             BlockPos testingPos = mutable.toImmutable();
@@ -138,48 +142,43 @@ public class Level0Teleporter {
 
             if (pos != null) {
                 portalFrameTester.createPortal(destWorld, pos, frameBlock, axis);
-                return new Pair<>(Optional.of(portalFrameTester.getRectangle()), axis);
+                return new Pair<>(Optional.of(portalFrameTester.getRectangle()), dir);
             }
         }
         portalFrameTester.createPortal(destWorld, blockPos, frameBlock, axis);
-        return new Pair<>(Optional.of(portalFrameTester.getRectangle()), axis);
+        return new Pair<>(Optional.of(portalFrameTester.getRectangle()), dir);
     }
 
     private static boolean canHoldPortal(BlockState state) {
         return state.getMaterial().isSolid();
     }
 
-    public static Pair<Optional<BlockLocating.Rectangle>, Direction.Axis> findDestinationPortal(ServerWorld world, BlockPos blockPos, BlockState frameBlock) {
+    public static Pair<Optional<BlockLocating.Rectangle>, Direction> findDestinationPortal(ServerWorld world, BlockPos blockPos, BlockState frameBlock) {
         WorldBorder worldBorder = world.getWorldBorder();
         PortalLink link = CustomPortalApiRegistry.getPortalLinkFromBase(frameBlock.getBlock());
 
         BlockPos structurePos = ModStructureUtils.findStructure(world, blockPos).orElseThrow();
-        Pair<BlockPos, Direction.Axis> portalInfo = findPortalInfo(world, structurePos, frameBlock).orElseThrow();
-        if(!worldBorder.contains(portalInfo.getLeft())) return new Pair<>(Optional.empty(), portalInfo.getRight());
+        Pair<BlockPos, Direction> portalInfo = findPortalInfo(world, structurePos, frameBlock).orElseThrow();
+        if (!worldBorder.contains(portalInfo.getLeft())) return new Pair<>(Optional.empty(), portalInfo.getRight());
 
-        Optional<PortalFrameTester> optional = link.getFrameTester().createInstanceOfPortalFrameTester().getNewPortal(world, portalInfo.getLeft(), portalInfo.getRight(), frameBlock.getBlock());
+        Optional<PortalFrameTester> optional = link.getFrameTester().createInstanceOfPortalFrameTester().getNewPortal(world, portalInfo.getLeft(), portalInfo.getRight().getAxis(), frameBlock.getBlock());
         return new Pair<>(optional.map(PortalFrameTester::getRectangle), portalInfo.getRight());
     }
 
-    private static Optional<Pair<BlockPos, Direction.Axis>> findPortalInfo(ServerWorld world, BlockPos structurePos, BlockState frameBlock) {
+    private static Optional<Pair<BlockPos, Direction>> findPortalInfo(ServerWorld world, BlockPos structurePos, BlockState frameBlock) {
 
         // first two elements are z axis offsets for portal location
         // second two elements are x axis offsets for portal location
         BlockPos[] portalLocs = {
-                structurePos.add(24, 20, 1),
-                structurePos.add(-24, 20, -1),
-                structurePos.add(1, 20, -24),
-                structurePos.add(-1, 20, 24)
+                structurePos.add(-24, 20, -1), // -z north
+                structurePos.add(24, 20, 1),   // +z south
+                structurePos.add(-1, 20, 24),  // -x west
+                structurePos.add(1, 20, -24)   // +x east
         };
 
         for(int i = 0; i < 4; i++) {
-            if(world.getBlockState(portalLocs[i].add(0,-1,0)).isOf(frameBlock.getBlock())) {
-                Direction.Axis portalAxis;
-                if(i==0 || i==1) portalAxis = Direction.Axis.Z;
-                else portalAxis = Direction.Axis.X;
-
-                return Optional.of(new Pair<>(portalLocs[i], portalAxis));
-            }
+            if (world.getBlockState(portalLocs[i].add(0,-1,0)).isOf(frameBlock.getBlock()))
+                return Optional.of(new Pair<>(portalLocs[i], Direction.byId(i + 2)));
         }
 
         return Optional.empty();
