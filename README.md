@@ -1,11 +1,11 @@
-# fabric-backrooms-1.18.2
+# fabric-backrooms-1.19.2
 My take on a Backrooms mod for minecraft fabric!
 
 CURRENT FEATURES
 ----------------
 
-Ores, materials, and machines extending TechReborn's features with the end product 
-of creating Async's KV31 low-proximity magnetic distortion system (aka the Backrooms door).
+Ores, materials, and machines extending TechReborn's features with the end product of creating Async's KV31 low-proximity magnetic distortion system (aka the Backrooms door).
+
 These include but are not limited to:
   - Bismuthinite ore
   - Bismuth ingot
@@ -32,17 +32,22 @@ Backrooms level 0 dimension:
   - added rare light feature with larger chance of flickering light, found in both normal and dark biomes
   - added thin straight wall feature
   - added thin crooked wall feature
+  - added threshold chamber structure
+    - designed according to Kane Pixel's backrooms series
+    - contains pre-built destination portal
+    - any KV31 portal built in the overworld links to one of these threshold chamber portals
+    - portals built in range of the same threshold chamber all link to the same destination portal
+    - new portals built inside Level 0 will not work
+    - however, any non-activated threshold chamber portals in Level 0 can be re-activated by placing a KV31 control computer next to it
 
 Other features:
-  - "no-clipping" (teleporting) into Backrooms Level 0 when taking suffocation or void damage; this currently happens 100% of the time (will reduce in the future)
+  - "no-clipping" (teleporting) into Backrooms Level 0 when taking suffocation or void damage; this currently happens 1% of the time (might change in the future)
 
 
 IN PROGRESS FEATURES
 --------------------
 
 The following features are currently in progress or next on the list of things to implement:
-  - KV31 magnetic distortion system
-    - make custom PortalFrameTester class so that destination portals generated in Level 0 look the same as the original multiblock structure
   - Backrooms Level 0 dimension
     - custom colored carpet block
     - other less common features, like grids of wall pillars in large open spaces or something like that (to make things more interesting)
@@ -56,6 +61,14 @@ The following are some features I've thought of which I hope to implement in the
   - Backrooms Level 0 entity (as shown in Kane Pixels' YouTube series)
   - If possible, apply some kind of color map to the carpets in level 0 so they appear stained?
   - More backrooms dimensions, according to the standard Backrooms wiki (https://backrooms.fandom.com/wiki/Backrooms_Wiki)
+    - specifically, minimum dimensions required to get back to the overworld via dimension 3999
+    - one possible route is the following:
+      - 0, 1, 2, 4, 11, 3999
+      - this route depends on implementing windows and weather in level 4
+    - another possible route is the following:
+      - 0, 1, 2, 4, 6, 8, 9, 11, 3999
+      - this route depends partially on implementing dimension-wide lights out feature in level 4
+    - additionally, one could also visit level 5 in between 4 and 6 by entering a specific door, but level 5 sounds complicated to generate and is not necessary in the near future
 
 
 FAQ
