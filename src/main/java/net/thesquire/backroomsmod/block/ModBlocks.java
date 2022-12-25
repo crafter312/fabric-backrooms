@@ -42,8 +42,7 @@ public class ModBlocks {
     public static final Block TFMC_MAGNET = registerBlock("tfmc_magnet", new TFMCMagnetBlock(),
             "block.backroomsmod.tfmc_magnet.tooltip_1", "block.backroomsmod.tfmc_magnet.tooltip_2");
 
-    // NOTE: this block is for DEBUGGING purposes only! Comment out when not debugging in a development environment.
-    public static final Block BACKROOMS_PORTAL_BLOCK = registerBlock("backrooms_portal_block",
+    public static final Block BACKROOMS_PORTAL_BLOCK = registerBlockWithoutBlockItem("backrooms_portal_block",
             new BackroomsPortalBlock(FabricBlockSettings.of(Material.PORTAL).noCollision().ticksRandomly()
                     .strength(-1.0f).sounds(BlockSoundGroup.GLASS).luminance(state -> 11)));
 
@@ -85,7 +84,7 @@ public class ModBlocks {
                 });
     }
 
-    private static Block registerBlockWithoutBlockItem(String name, Block block, ItemGroup group) {
+    private static Block registerBlockWithoutBlockItem(String name, Block block) {
         return Registry.register(Registry.BLOCK, new Identifier(BackroomsMod.MOD_ID, name), block);
     }
 

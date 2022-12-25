@@ -30,9 +30,6 @@ import net.thesquire.backroomsmod.world.structure.ModStructureUtils;
 
 import java.util.Optional;
 
-//TODO fix TP target direction in dest portal
-//TODO fix TP target position in dest portal
-
 public class Level0Teleporter {
 
     public static void TPToDim(World world, Entity entity, Block portalBase, BlockPos portalPos) {

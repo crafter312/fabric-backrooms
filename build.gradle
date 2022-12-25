@@ -32,12 +32,10 @@ dependencies {
 	modApi fabricApi.module("fabric-transfer-api-v1", project.fabric_version)
 
 	// TerraBlender API. This is used for creating new biomes.
-	modImplementation "com.github.glitchfiend:TerraBlender-fabric:${project.terrablender_version}"
+	modApi "com.github.glitchfiend:TerraBlender-fabric:${project.terrablender_version}"
 
-	// TechReborn mod api
-	include modApi("TechReborn:TechReborn-${project.techreborn_version}") {
-		exclude(group: "net.fabricmc.fabric-api")
-	}
+	// TechReborn mod dependency
+	modImplementation "TechReborn:TechReborn-${project.techreborn_version}"
 
 	// Custom Portal API
 	modImplementation "net.kyrptonaught:customportalapi:${project.customportalapi_verson}"
