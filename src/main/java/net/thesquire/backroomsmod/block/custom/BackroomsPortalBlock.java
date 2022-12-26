@@ -8,8 +8,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.thesquire.backroomsmod.portal.teleport.Level0Teleporter;
 
-//TODO fix portal block color tinting
-
 public class BackroomsPortalBlock extends CustomPortalBlock {
 
     public BackroomsPortalBlock(Settings settings) {
