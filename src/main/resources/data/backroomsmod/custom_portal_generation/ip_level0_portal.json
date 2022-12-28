@@ -1,6 +1,0 @@
-{
-  "schema_version": "imm_ptl:v1",
-  "from": ["minecraft:overworld"],"to": "backroomsmod:level_0",
-  "form": {"type": "imm_ptl:convert_conventional_portal","portal_block": "backroomsmod:backrooms_portal_block"},
-  "trigger": {"type": "imm_ptl:conventional_dimension_change"}
-}

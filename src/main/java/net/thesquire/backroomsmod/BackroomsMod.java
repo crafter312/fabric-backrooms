@@ -4,13 +4,12 @@ import net.fabricmc.api.ModInitializer;
 import net.thesquire.backroomsmod.block.ModBlocks;
 import net.thesquire.backroomsmod.block.entity.ModBlockEntities;
 import net.thesquire.backroomsmod.item.ModItems;
-import net.thesquire.backroomsmod.portal.ModPortals;
 import net.thesquire.backroomsmod.recipe.ModRecipes;
 import net.thesquire.backroomsmod.screen.ModClientGuis;
 import net.thesquire.backroomsmod.screen.ModGuis;
-import net.thesquire.backroomsmod.util.mixin.MixinCallbacks;
 import net.thesquire.backroomsmod.util.ModRegistries;
 import net.thesquire.backroomsmod.util.ModServerboundPackets;
+import net.thesquire.backroomsmod.util.mixin.MixinCallbacks;
 import net.thesquire.backroomsmod.world.ModBiomes;
 import net.thesquire.backroomsmod.world.ModWorldGen;
 import net.thesquire.backroomsmod.world.feature.ModConfiguredFeatures;
@@ -45,6 +44,6 @@ public class BackroomsMod implements ModInitializer {
 		ModWorldGen.generateModWorldGen();
 		ModBlockEntities.registerBlockEntities();
 		ModRecipes.registerRecipes();
-		ModPortals.registerModPortals();
 	}
+
 }

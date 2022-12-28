@@ -17,7 +17,6 @@ repositories {
 	// See https://docs.gradle.org/current/userguide/declaring_repositories.html
 	// for more information about repositories.
 	maven { url = 'https://maven.minecraftforge.net/' }
-	maven { url = 'https://maven.kyrptonaught.dev' }
 	maven { url = 'https://maven.architectury.dev/' }
 	maven { url 'https://jitpack.io' }
 }
@@ -38,18 +37,14 @@ dependencies {
 	// TechReborn mod dependency
 	modImplementation "TechReborn:TechReborn-${project.techreborn_version}"
 
-	// Custom Portal API
-	modImplementation "net.kyrptonaught:customportalapi:${project.customportalapi_verson}"
-	include "net.kyrptonaught:customportalapi:${project.customportalapi_verson}"
-
 	// Dependency of Immersive Portals Core:
-	modImplementation ('com.github.iPortalTeam.ImmersivePortalsMod:imm_ptl_core:v2.3.1-1.19'){
+	modImplementation ("com.github.iPortalTeam.ImmersivePortalsMod:imm_ptl_core:${immersiveportals_version}"){
 		exclude(group: "net.fabricmc.fabric-api")
 		transitive(false)
 	}
 
 	// Dependency of the Miscellaneous Utility Library from qouteall
-	modImplementation ('com.github.iPortalTeam.ImmersivePortalsMod:q_misc_util:v2.3.1-1.19'){
+	modImplementation ("com.github.iPortalTeam.ImmersivePortalsMod:q_misc_util:${immersiveportals_version}"){
 		exclude(group: "net.fabricmc.fabric-api")
 		transitive(false)
 	}

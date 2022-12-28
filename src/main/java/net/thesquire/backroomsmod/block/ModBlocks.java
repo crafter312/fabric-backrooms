@@ -7,15 +7,12 @@ import net.minecraft.block.Material;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.item.BlockItem;
-import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
-import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 import net.thesquire.backroomsmod.BackroomsMod;
-import net.thesquire.backroomsmod.block.custom.BackroomsPortalBlock;
 import net.thesquire.backroomsmod.block.custom.CeilingTileBlock;
 import net.thesquire.backroomsmod.block.custom.FluorescentLightBlock;
 import net.thesquire.backroomsmod.block.custom.TFMCMagnetBlock;
@@ -41,10 +38,6 @@ public class ModBlocks {
 
     public static final Block TFMC_MAGNET = registerBlock("tfmc_magnet", new TFMCMagnetBlock(),
             "block.backroomsmod.tfmc_magnet.tooltip_1", "block.backroomsmod.tfmc_magnet.tooltip_2");
-
-    public static final Block BACKROOMS_PORTAL_BLOCK = registerBlockWithoutBlockItem("backrooms_portal_block",
-            new BackroomsPortalBlock(FabricBlockSettings.of(Material.PORTAL).noCollision().ticksRandomly()
-                    .strength(-1.0f).sounds(BlockSoundGroup.GLASS).luminance(state -> 11)));
 
     // Blocks with a GUI or BlockEntity have to be registered in the method below to ensure proper register order!
     public static Block INDUSTRIAL_ALLOY_SMELTER;

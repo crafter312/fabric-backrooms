@@ -1,21 +1,25 @@
 package net.thesquire.backroomsmod.block.entity;
 
-import net.kyrptonaught.customportalapi.CustomPortalsMod;
-import net.kyrptonaught.customportalapi.portal.PortalIgnitionSource;
-import net.kyrptonaught.customportalapi.portal.PortalPlacer;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
 import net.minecraft.block.PillarBlock;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.Vec3i;
+import net.minecraft.server.world.ServerWorld;
+import net.minecraft.util.Pair;
+import net.minecraft.util.math.*;
+import net.minecraft.util.registry.RegistryKey;
+import net.minecraft.world.BlockLocating;
 import net.minecraft.world.World;
 import net.thesquire.backroomsmod.block.ModBlocks;
 import net.thesquire.backroomsmod.config.ModConfig;
-import net.thesquire.backroomsmod.portal.ModPortals;
+import net.thesquire.backroomsmod.dimension.ModDimensionKeys;
+import net.thesquire.backroomsmod.portal.teleport.Level0Teleporter;
+import net.thesquire.backroomsmod.util.ModUtils;
+import net.thesquire.backroomsmod.portal.util.PortalUtils;
+import qouteall.imm_ptl.core.portal.Portal;
+import qouteall.imm_ptl.core.portal.PortalManipulation;
 import reborncore.common.blockentity.MachineBaseBlockEntity;
 import reborncore.common.blockentity.MultiblockWriter;
 import reborncore.common.blocks.BlockMachineBase;
@@ -26,27 +30,59 @@ import reborncore.common.util.RebornInventory;
 import techreborn.blockentity.machine.GenericMachineBlockEntity;
 import techreborn.init.TRContent;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+
+//TODO fix destination portal 1 block offset
+//TODO fix non-axis-aligned portals facing opposite direction
+//TODO fix crash when loading world with existing destination portal
 
 public class MagneticDistortionSystemControlComputerBlockEntity extends GenericMachineBlockEntity implements BuiltScreenHandlerProvider {
+
+    public static final double portalWidth = 2D;
+    public static final double portalHeight = 3D;
+    public static final Block frameBlock = ModBlocks.TFMC_MAGNET;
+    public static final RegistryKey<World> destDim = ModDimensionKeys.LEVEL_0;
 
     // true gives a multiplier of 1, false gives a multiplier of -1
     // this will be converted later
     public boolean side = true;
     public boolean active = false;
 
-    private boolean portalActive = false;
     private final int initEnergyUsage = ModConfig.magneticDistortionSystemControlComputerInitEnergyUsage;
     private final int energyUsage = ModConfig.magneticDistortionSystemControlComputerEnergyUsage;
 
-    private boolean checkPortalActive = true;
+    private boolean initPortal = true;
+    private UUID portalUUID = null;
+    private Portal portal;
+    private UUID destPortalUUID = null;
+    private Portal destPortal = null;
+    private float destAngle;
+    private Pair<Optional<BlockLocating.Rectangle>, Direction> destPortalInfo;
 
     public MagneticDistortionSystemControlComputerBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlockEntities.MAGNETIC_DISTORTION_SYSTEM_CONTROL_COMPUTER, pos, state, "MagneticDistortionSystemControlComputer",
                 ModConfig.magneticDistortionSystemControlComputerMaxInput, ModConfig.magneticDistortionSystemControlComputerMaxEnergy,
                 ModBlocks.MAGNETIC_DISTORTION_SYSTEM_CONTROL_COMPUTER, 0);
         this.inventory = new RebornInventory<>(1, "MagneticDistortionSystemControlComputerBlockEntity", 64, this);
+    }
+
+    private void initPortal(ServerWorld serverWorld, Direction dir) {
+        portal = Portal.entityType.create(serverWorld);
+        assert portal != null;
+
+        portal.setOriginPos(getPortalOrigin(dir));
+        portal.setDestinationDimension(destDim);
+        portal.setDestination(PortalUtils.getPortalOrigin(destPortalInfo.getLeft().get(), destPortalInfo.getRight().getAxis()));
+
+        portal.setOrientationAndSize(
+                new Vec3d(dir.getOffsetX(), dir.getOffsetY(), dir.getOffsetZ()),
+                new Vec3d(0, 1, 0),
+                portalWidth,
+                portalHeight
+        );
+
+        destAngle = PortalUtils.getAngle(getFacing().getOpposite(), destPortalInfo.getRight());
+        portal.setRotationTransformation(Vec3f.POSITIVE_Y.getDegreesQuaternion(destAngle));
     }
 
     @Override
@@ -82,49 +118,56 @@ public class MagneticDistortionSystemControlComputerBlockEntity extends GenericM
         super.tick(world, pos, state, blockEntity);
 
         if(world == null || world.isClient) return;
+        ServerWorld serverWorld = (ServerWorld) world;
 
-        BlockPos lightLoc = getPortalLightLocation();
-        BlockPos oppositeLightLoc = getOppositePortalLightLocation();
-        if(!isMultiblockValid()) {
-            if(hasPortal(lightLoc)) world.setBlockState(lightLoc, Blocks.AIR.getDefaultState(), Block.NOTIFY_ALL);
-            if(hasOppositePortal(oppositeLightLoc)) world.setBlockState(oppositeLightLoc, Blocks.AIR.getDefaultState(), Block.NOTIFY_ALL);
-            setActive(false);
-            portalActive = false;
-            return;
+        Direction portalDir = getSideDir(side);
+
+        assert portalDir != null;
+        Vec3d portalOrigin = getPortalOrigin(portalDir);
+
+        // This runs once on first tick to check if the portal is already lit upon loading the world
+        if(initPortal) {
+            destPortalInfo = Level0Teleporter.findDestinationPortal(
+                    Objects.requireNonNull(serverWorld.getServer().getWorld(destDim)),
+                    new BlockPos(portalOrigin),
+                    frameBlock);
+            if (destPortalInfo.getLeft().isEmpty())
+                throw new IllegalStateException("Unable to find destination for portal at " + portalOrigin.toString());
+
+            if(active && portalUUID != null) {
+                Entity entity = serverWorld.getEntity(portalUUID);
+                assert entity != null;
+                if(entity.getType().equals(Portal.entityType)) {
+                    portal = (Portal) serverWorld.getEntity(portalUUID);
+                    // TODO check if portal destination matches destPortalInfo
+                    assert portal != null;
+                    destPortal = PortalUtils.findRotatedPortal(portal, destAngle);
+                }
+                else initPortal(serverWorld, portalDir);
+            }
+            else initPortal(serverWorld, portalDir);
+
+            initPortal = false;
         }
+
         if(active) {
 
-            // This runs once on first tick to check if the portal is already lit upon loading the world
-            if(checkPortalActive) {
-                portalActive = !world.isAir(lightLoc);
-                checkPortalActive = false;
-            }
+            // portal deactivation conditions
+            if(!isMultiblockValid() || !portal.isAlive()) setActive(false);
 
-            if(!portalActive && getEnergy() > initEnergyUsage) {
-                PortalPlacer.attemptPortalLight(world, lightLoc, PortalIgnitionSource.CustomSource(ModPortals.KV31_PORTAL_IGNITION_SOURCE));
-//                Direction.Axis portalAxis = this.getFacing().getAxis() == Direction.Axis.X ? Direction.Axis.Z : Direction.Axis.X;
-//                Level0PortalDestination.makePortalDestination(world, lightLoc, portalAxis);
-                useEnergy(initEnergyUsage);
-                portalActive = true;
-            } else if(world.isAir(lightLoc)) {
-                setActive(false);
-                portalActive = false;
-                return;
-            }
-
+            // energy usage
             if(getEnergy() > energyUsage) useEnergy(maxInput / 2);
-            else {
-                world.setBlockState(lightLoc, Blocks.AIR.getDefaultState(), Block.NOTIFY_ALL);
-                setActive(false);
-                portalActive = false;
-            }
+            else setActive(false);
         }
     }
 
     @Override
     public void onBreak(World world, PlayerEntity playerEntity, BlockPos blockPos, BlockState blockState) {
         super.onBreak(world, playerEntity, blockPos, blockState);
-        world.setBlockState(getPortalLightLocation(), Blocks.AIR.getDefaultState(), Block.NOTIFY_ALL);
+        if(portal != null && destPortal != null) {
+            portal.kill();
+            destPortal.kill();
+        }
     }
 
     @Override
@@ -132,6 +175,8 @@ public class MagneticDistortionSystemControlComputerBlockEntity extends GenericM
         super.readNbt(tag);
         this.side = tag.getBoolean("side");
         this.active = tag.getBoolean("active");
+        if(tag.contains("portalUUID")) this.portalUUID = tag.getUuid("portalUUID");
+        if(tag.contains("destPortalUUID")) this.destPortalUUID = tag.getUuid("destPortalUUID");
     }
 
     @Override
@@ -139,38 +184,81 @@ public class MagneticDistortionSystemControlComputerBlockEntity extends GenericM
         super.writeNbt(tag);
         tag.putBoolean("side", this.side);
         tag.putBoolean("active", this.active);
+
+        if(this.portal !=null) tag.putUuid("portalUUID", this.portal.getUuid());
+        if(this.destPortal !=null) tag.putUuid("destPortalUUID", this.destPortal.getUuid());
     }
 
     public boolean getSide() { return side; }
 
-    public void setSide(boolean side) { this.side = side; }
+    public void setSide(boolean side) {
+        if(this.side != side) {
+            setActive(false);
+            portal.setOriginPos(getPortalOrigin(getSideDir(side)));
+        }
+        this.side = side;
+    }
 
     public boolean getActive() { return active; }
 
     public void setActive(boolean active) {
+        if(!this.active && active && isMultiblockValid() && getEnergy()>initEnergyUsage) activatePortal();
+        else if(this.active && !active) deactivatePortal();
         this.active = active;
+    }
+
+    private void activatePortal() {
+        portal.myUnsetRemoved();
+        portal.world.spawnEntity(portal);
+
+        if(destPortal == null) destPortal = PortalManipulation.completeBiWayPortal(portal, Portal.entityType);
+        else {
+            destPortal.myUnsetRemoved();
+            destPortal.world.spawnEntity(destPortal);
+        }
+
         assert world != null;
-        world.setBlockState(pos, world.getBlockState(pos).with(BlockMachineBase.ACTIVE, active));
+        world.setBlockState(pos, world.getBlockState(pos).with(BlockMachineBase.ACTIVE, true));
     }
 
-    private BlockPos getPortalLightLocation() {
-        Vec3i dir = getFacing().rotateYCounterclockwise().getVector().multiply(-1 + (2 * (side ? 1 : 0)));
-        return pos.add(dir.multiply(2)).add(0,1,0);
-    }
+    private void deactivatePortal() {
+        portal.kill();
+        destPortal.kill();
+        portalUUID = null;
+        destPortalUUID = null;
 
-    private BlockPos getOppositePortalLightLocation() {
-        Vec3i dir = getFacing().rotateYCounterclockwise().getVector().multiply(-1 + (2 * (side ? 1 : 0)));
-        return pos.add(dir.multiply(-2)).add(0,1,0);
-    }
-
-    private boolean hasPortal(BlockPos lightLoc) {
         assert world != null;
-        return world.getBlockState(lightLoc).isOf(CustomPortalsMod.portalBlock);
+        world.setBlockState(pos, world.getBlockState(pos).with(BlockMachineBase.ACTIVE, false));
     }
 
-    private boolean hasOppositePortal(BlockPos oppositeLightLoc) {
-        assert world != null;
-        return world.getBlockState(oppositeLightLoc).isOf(CustomPortalsMod.portalBlock);
+    private Direction getSideDir(boolean side) {
+        return Direction.fromVector(new BlockPos(getFacing().rotateYCounterclockwise().getVector()
+                .multiply(ModUtils.boolToInt(side, 1, -1))));
+    }
+
+    // "dir" is a Direction object describing on what side of this block entity the portal is located
+    private Vec3d getPortalOrigin(Direction dir) {
+        double x = pos.getX();
+        double y = pos.getY() + 1 + (portalHeight / 2);
+        double z = pos.getZ();
+
+        Vec3d origin = new Vec3d(x, y, z);
+
+        // calculate origin if portal is on positive side of block
+        if(dir.getDirection() == Direction.AxisDirection.POSITIVE) {
+            origin = origin.add(new Vec3d(dir.getUnitVector()).multiply(2 + (portalWidth / 2)));
+            if(getFacing().getAxis() == Direction.Axis.X) origin = origin.add(0.5, 0, 0);
+            else origin = origin.add(0, 0, 0.5);
+
+            return origin;
+        }
+
+        // calculate origin if portal is on negative side of block
+        origin = origin.add(new Vec3d(dir.getUnitVector()).multiply(1 + (portalWidth / 2)));
+        if(getFacing().getAxis() == Direction.Axis.X) origin = origin.add(0.5, 0, 0);
+        else origin = origin.add(0, 0, 0.5);
+
+        return origin;
     }
 
     /***************************************************************/
@@ -179,10 +267,10 @@ public class MagneticDistortionSystemControlComputerBlockEntity extends GenericM
         Map<Vec3i, BlockState> map = new HashMap<>();
 
         BlockState casing = TRContent.MachineBlocks.INDUSTRIAL.casing.getDefaultState();
-        BlockState magnetVertical = ModBlocks.TFMC_MAGNET.getDefaultState().with(PillarBlock.AXIS, Direction.Axis.Y);
+        BlockState magnetVertical = frameBlock.getDefaultState().with(PillarBlock.AXIS, Direction.Axis.Y);
 
         Direction.Axis horizontalAxis = (facing.equals(Direction.NORTH) || facing.equals(Direction.SOUTH)) ? Direction.Axis.X : Direction.Axis.Z;
-        BlockState magnetHorizontal = ModBlocks.TFMC_MAGNET.getDefaultState().with(PillarBlock.AXIS, horizontalAxis);
+        BlockState magnetHorizontal = frameBlock.getDefaultState().with(PillarBlock.AXIS, horizontalAxis);
 
         Vec3i dir = Direction.SOUTH.getVector().multiply(-1 + (2 * (side ? 1 : 0)));
         Vec3i up = Direction.UP.getVector();
