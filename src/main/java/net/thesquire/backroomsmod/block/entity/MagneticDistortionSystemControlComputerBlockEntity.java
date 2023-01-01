@@ -42,6 +42,7 @@ public class MagneticDistortionSystemControlComputerBlockEntity extends GenericM
     public static final double portalHeight = 3D;
     public static final Block frameBlock = ModBlocks.TFMC_MAGNET;
     public static final RegistryKey<World> destDim = ModDimensionKeys.LEVEL_0;
+    public static final int initTries = 10;
 
     // true gives a multiplier of 1, false gives a multiplier of -1
     // this will be converted later
@@ -51,7 +52,7 @@ public class MagneticDistortionSystemControlComputerBlockEntity extends GenericM
     private final int initEnergyUsage = ModConfig.magneticDistortionSystemControlComputerInitEnergyUsage;
     private final int energyUsage = ModConfig.magneticDistortionSystemControlComputerEnergyUsage;
 
-    private boolean initPortal = true;
+    private int initPortalCounter = initTries;
     private UUID portalUUID = null;
     private Portal portal;
     private UUID destPortalUUID = null;
@@ -64,8 +65,12 @@ public class MagneticDistortionSystemControlComputerBlockEntity extends GenericM
                 ModConfig.magneticDistortionSystemControlComputerMaxInput, ModConfig.magneticDistortionSystemControlComputerMaxEnergy,
                 ModBlocks.MAGNETIC_DISTORTION_SYSTEM_CONTROL_COMPUTER, 0);
         this.inventory = new RebornInventory<>(1, "MagneticDistortionSystemControlComputerBlockEntity", 64, this);
-        this.side = false;
+        this.side = true;
         this.active = false;
+    }
+
+    private void checkInitConditions(ServerWorld serverWorld, Direction dir) {
+
     }
 
     private void initPortal(ServerWorld serverWorld, Direction dir) {
@@ -123,33 +128,49 @@ public class MagneticDistortionSystemControlComputerBlockEntity extends GenericM
         ServerWorld serverWorld = (ServerWorld) world;
 
         Direction portalDir = getSideDir(side);
+        if(portalDir == null)
+            throw new IllegalStateException("MagneticDistortionSystemControlComputerBlockEntity::getSideDir returned null value!");
 
-        assert portalDir != null;
         Vec3d portalOrigin = getPortalOrigin(portalDir);
 
-        // This runs once on first tick to check if the portal is already lit upon loading the world
-        if(initPortal) {
-            destPortalInfo = Level0Teleporter.findDestinationPortal(
-                    Objects.requireNonNull(serverWorld.getServer().getWorld(destDim)),
-                    new BlockPos(portalOrigin),
-                    frameBlock);
-            if (destPortalInfo.getLeft().isEmpty())
-                throw new IllegalStateException("Unable to find destination for portal at " + portalOrigin.toString());
+        // This runs for the first initTries number of ticks after the creation of
+        // this BlockEntity to check for an already-lit portal upon loading the world
+        if(initPortalCounter >= 0) {
 
-            if(active && portalUUID != null) {
-                Entity entity = serverWorld.getEntity(portalUUID);
-                assert entity != null;
-                if(entity.getType().equals(Portal.entityType)) {
-                    portal = (Portal) serverWorld.getEntity(portalUUID);
-                    // TODO check if portal destination matches destPortalInfo
-                    assert portal != null;
-                    destPortal = PortalUtils.findRotatedPortal(portal, destAngle);
-                }
-                else initPortal(serverWorld, portalDir);
+            // find the destination portal information for this particular BlockEntity
+            if(initPortalCounter == initTries) {
+                destPortalInfo = Level0Teleporter.findDestinationPortal(
+                        Objects.requireNonNull(serverWorld.getServer().getWorld(destDim)),
+                        new BlockPos(portalOrigin),
+                        frameBlock);
+                if (destPortalInfo.getLeft().isEmpty())
+                    throw new IllegalStateException("Unable to find destination for portal at " + portalOrigin.toString());
             }
-            else initPortal(serverWorld, portalDir);
 
-            initPortal = false;
+            // look for existing portal entity and
+            // create new portal if none are found
+            if(initPortalCounter == 0) {
+                initPortal(serverWorld, portalDir);
+                initPortalCounter -= 1;
+            }
+            else if(active && portalUUID != null) {
+                Entity entity = serverWorld.getEntity(portalUUID);
+                if(entity == null) {
+                    initPortalCounter -= 1;
+                    return;
+                }
+                else if(entity.getType().equals(Portal.entityType)) {
+                    portal = (Portal) entity;
+                    destPortal = PortalUtils.findRotatedPortal(portal, destAngle);
+                    initPortalCounter = -1;
+                }
+                else throw new IllegalStateException("Server returned non-portal BlockEntity!");
+            }
+            else {
+                initPortal(serverWorld, portalDir);
+                initPortalCounter = -1;
+            }
+
         }
 
         if(active) {
@@ -195,9 +216,12 @@ public class MagneticDistortionSystemControlComputerBlockEntity extends GenericM
 
     public void setSide(boolean side) {
         if(this.side != side) {
-//            setActive(false);
-            Vec3d newPos = getPortalOrigin(getSideDir(side));
-            portal.setOriginPos(newPos);
+            setActive(false);
+            assert this.world != null;
+            if(!this.world.isClient()) {
+                Vec3d newPos = getPortalOrigin(getSideDir(side));
+                portal.setOriginPos(newPos);
+            }
         }
 
         this.side = side;
@@ -206,10 +230,14 @@ public class MagneticDistortionSystemControlComputerBlockEntity extends GenericM
     public boolean getActive() { return active; }
 
     public void setActive(boolean active) {
-        if(!this.active && active && isMultiblockValid() && getEnergy()>initEnergyUsage) activatePortal();
-        else if(this.active && !active) deactivatePortal();
+        assert this.world != null;
+        if(!this.world.isClient()) {
+            if (!this.active && active && isMultiblockValid() && getEnergy() > initEnergyUsage) {
+                activatePortal();
+            }
+            else if (this.active && !active) deactivatePortal();
+        }
 
-        assert world != null;
         world.setBlockState(pos, world.getBlockState(pos).with(BlockMachineBase.ACTIVE, active));
         this.active = active;
     }
