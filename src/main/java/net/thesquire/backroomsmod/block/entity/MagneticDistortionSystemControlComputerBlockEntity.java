@@ -45,8 +45,8 @@ public class MagneticDistortionSystemControlComputerBlockEntity extends GenericM
 
     // true gives a multiplier of 1, false gives a multiplier of -1
     // this will be converted later
-    public boolean side = true;
-    public boolean active = false;
+    public boolean side;
+    public boolean active;
 
     private final int initEnergyUsage = ModConfig.magneticDistortionSystemControlComputerInitEnergyUsage;
     private final int energyUsage = ModConfig.magneticDistortionSystemControlComputerEnergyUsage;
@@ -64,6 +64,8 @@ public class MagneticDistortionSystemControlComputerBlockEntity extends GenericM
                 ModConfig.magneticDistortionSystemControlComputerMaxInput, ModConfig.magneticDistortionSystemControlComputerMaxEnergy,
                 ModBlocks.MAGNETIC_DISTORTION_SYSTEM_CONTROL_COMPUTER, 0);
         this.inventory = new RebornInventory<>(1, "MagneticDistortionSystemControlComputerBlockEntity", 64, this);
+        this.side = false;
+        this.active = false;
     }
 
     private void initPortal(ServerWorld serverWorld, Direction dir) {
@@ -193,9 +195,11 @@ public class MagneticDistortionSystemControlComputerBlockEntity extends GenericM
 
     public void setSide(boolean side) {
         if(this.side != side) {
-            setActive(false);
-            portal.setOriginPos(getPortalOrigin(getSideDir(side)));
+//            setActive(false);
+            Vec3d newPos = getPortalOrigin(getSideDir(side));
+            portal.setOriginPos(newPos);
         }
+
         this.side = side;
     }
 
@@ -204,11 +208,14 @@ public class MagneticDistortionSystemControlComputerBlockEntity extends GenericM
     public void setActive(boolean active) {
         if(!this.active && active && isMultiblockValid() && getEnergy()>initEnergyUsage) activatePortal();
         else if(this.active && !active) deactivatePortal();
+
+        assert world != null;
+        world.setBlockState(pos, world.getBlockState(pos).with(BlockMachineBase.ACTIVE, active));
         this.active = active;
     }
 
     private void activatePortal() {
-        portal.myUnsetRemoved();
+        if(portal.isRemoved()) portal.myUnsetRemoved();
         portal.world.spawnEntity(portal);
 
         if(destPortal == null) destPortal = PortalManipulation.completeBiWayPortal(portal, Portal.entityType);
@@ -216,9 +223,6 @@ public class MagneticDistortionSystemControlComputerBlockEntity extends GenericM
             destPortal.myUnsetRemoved();
             destPortal.world.spawnEntity(destPortal);
         }
-
-        assert world != null;
-        world.setBlockState(pos, world.getBlockState(pos).with(BlockMachineBase.ACTIVE, true));
     }
 
     private void deactivatePortal() {
@@ -226,9 +230,6 @@ public class MagneticDistortionSystemControlComputerBlockEntity extends GenericM
         destPortal.kill();
         portalUUID = null;
         destPortalUUID = null;
-
-        assert world != null;
-        world.setBlockState(pos, world.getBlockState(pos).with(BlockMachineBase.ACTIVE, false));
     }
 
     private Direction getSideDir(boolean side) {
