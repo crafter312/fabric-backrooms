@@ -96,7 +96,7 @@ public class PortalUtils {
     }
 
     public static Vec3d getPortalOrigin(BlockLocating.Rectangle rect, Direction.Axis axis) {
-        double x = rect.lowerLeft.getX() + (((double) rect.width) / 2);
+        double x = rect.lowerLeft.getX();
         double y = rect.lowerLeft.getY() + (((double) rect.height) / 2);
         double z = rect.lowerLeft.getZ();
 
@@ -104,12 +104,16 @@ public class PortalUtils {
             x += 0.5D;
             z += ((double) rect.width) / 2;
         }
-        else if (axis == Direction.Axis.Z) z += 0.5D;
+        else if (axis == Direction.Axis.Z) {
+            x += ((double) rect.width) / 2;
+            z += 0.5D;
+        }
 
         // remaining axis is y-axis
         // assumes x used as primaryAxis in BlockLocating.getLargestRectangle() method
         else {
-            y += 0.5D;
+            x += ((double) rect.width) / 2;
+            y = rect.lowerLeft.getY() + 0.5D;
             z += ((double) rect.height) / 2;
         }
 

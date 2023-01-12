@@ -16,8 +16,8 @@ import net.thesquire.backroomsmod.block.ModBlocks;
 import net.thesquire.backroomsmod.config.ModConfig;
 import net.thesquire.backroomsmod.dimension.ModDimensionKeys;
 import net.thesquire.backroomsmod.portal.teleport.Level0Teleporter;
-import net.thesquire.backroomsmod.util.ModUtils;
 import net.thesquire.backroomsmod.portal.util.PortalUtils;
+import net.thesquire.backroomsmod.util.ModUtils;
 import qouteall.imm_ptl.core.portal.Portal;
 import qouteall.imm_ptl.core.portal.PortalManipulation;
 import reborncore.common.blockentity.MachineBaseBlockEntity;
@@ -32,8 +32,6 @@ import techreborn.init.TRContent;
 
 import java.util.*;
 
-//TODO fix destination portal 1 block offset
-//TODO fix non-axis-aligned portals facing opposite direction
 //TODO fix crash when loading world with existing destination portal
 
 public class MagneticDistortionSystemControlComputerBlockEntity extends GenericMachineBlockEntity implements BuiltScreenHandlerProvider {
@@ -42,7 +40,7 @@ public class MagneticDistortionSystemControlComputerBlockEntity extends GenericM
     public static final double portalHeight = 3D;
     public static final Block frameBlock = ModBlocks.TFMC_MAGNET;
     public static final RegistryKey<World> destDim = ModDimensionKeys.LEVEL_0;
-    public static final int initTries = 10;
+    public static final int initTries = 5;
 
     // true gives a multiplier of 1, false gives a multiplier of -1
     // this will be converted later
@@ -69,10 +67,6 @@ public class MagneticDistortionSystemControlComputerBlockEntity extends GenericM
         this.active = false;
     }
 
-    private void checkInitConditions(ServerWorld serverWorld, Direction dir) {
-
-    }
-
     private void initPortal(ServerWorld serverWorld, Direction dir) {
         portal = Portal.entityType.create(serverWorld);
         assert portal != null;
@@ -89,7 +83,7 @@ public class MagneticDistortionSystemControlComputerBlockEntity extends GenericM
         );
 
         destAngle = PortalUtils.getAngle(getFacing().getOpposite(), destPortalInfo.getRight());
-        portal.setRotationTransformation(Vec3f.POSITIVE_Y.getDegreesQuaternion(destAngle));
+        portal.setRotationTransformation(Vec3f.NEGATIVE_Y.getDegreesQuaternion(destAngle));
     }
 
     @Override
@@ -161,16 +155,15 @@ public class MagneticDistortionSystemControlComputerBlockEntity extends GenericM
                 }
                 else if(entity.getType().equals(Portal.entityType)) {
                     portal = (Portal) entity;
-                    destPortal = PortalUtils.findRotatedPortal(portal, destAngle);
+//                    destPortal = PortalUtils.findRotatedPortal(portal, destAngle);
                     initPortalCounter = -1;
                 }
-                else throw new IllegalStateException("Server returned non-portal BlockEntity!");
+                else throw new IllegalStateException("Server world returned non-portal BlockEntity!");
             }
             else {
                 initPortal(serverWorld, portalDir);
                 initPortalCounter = -1;
             }
-
         }
 
         if(active) {
@@ -187,10 +180,8 @@ public class MagneticDistortionSystemControlComputerBlockEntity extends GenericM
     @Override
     public void onBreak(World world, PlayerEntity playerEntity, BlockPos blockPos, BlockState blockState) {
         super.onBreak(world, playerEntity, blockPos, blockState);
-        if(portal != null && destPortal != null) {
-            portal.kill();
-            destPortal.kill();
-        }
+        if(portal != null) portal.kill();
+        if(destPortal != null) destPortal.kill();
     }
 
     @Override
@@ -246,16 +237,25 @@ public class MagneticDistortionSystemControlComputerBlockEntity extends GenericM
         if(portal.isRemoved()) portal.myUnsetRemoved();
         portal.world.spawnEntity(portal);
 
-        if(destPortal == null) destPortal = PortalManipulation.completeBiWayPortal(portal, Portal.entityType);
-        else {
+        if(destPortal != null) {
             destPortal.myUnsetRemoved();
             destPortal.world.spawnEntity(destPortal);
         }
+        else if(destPortalUUID != null) {
+            assert this.world != null;
+            Entity entity = ((ServerWorld) this.world).getEntity(destPortalUUID);
+            if(entity == null || !entity.getType().equals(Portal.entityType))
+                throw new IllegalStateException("Server world returned non-portal BlockEntity!");
+            else {
+                destPortal = (Portal) entity;
+            }
+        }
+        else destPortal = PortalManipulation.completeBiWayPortal(portal, Portal.entityType);
     }
 
     private void deactivatePortal() {
-        portal.kill();
-        destPortal.kill();
+        if(portal != null) portal.kill();
+        if(destPortal != null) destPortal.kill();
         portalUUID = null;
         destPortalUUID = null;
     }
