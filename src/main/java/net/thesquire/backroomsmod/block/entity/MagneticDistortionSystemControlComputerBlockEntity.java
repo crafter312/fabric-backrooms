@@ -51,11 +51,11 @@ public class MagneticDistortionSystemControlComputerBlockEntity extends GenericM
     private final int energyUsage = ModConfig.magneticDistortionSystemControlComputerEnergyUsage;
 
     private int initPortalCounter = initTries;
+    private boolean findDestPortal = false;
     private UUID portalUUID = null;
     private Portal portal;
     private UUID destPortalUUID = null;
     private Portal destPortal = null;
-    private float destAngle;
     private Pair<Optional<BlockLocating.Rectangle>, Direction> destPortalInfo;
 
     public MagneticDistortionSystemControlComputerBlockEntity(BlockPos pos, BlockState state) {
@@ -82,7 +82,7 @@ public class MagneticDistortionSystemControlComputerBlockEntity extends GenericM
                 portalHeight
         );
 
-        destAngle = PortalUtils.getAngle(getFacing().getOpposite(), destPortalInfo.getRight());
+        float destAngle = PortalUtils.getAngle(getFacing().getOpposite(), destPortalInfo.getRight());
         portal.setRotationTransformation(Vec3f.NEGATIVE_Y.getDegreesQuaternion(destAngle));
     }
 
@@ -155,8 +155,8 @@ public class MagneticDistortionSystemControlComputerBlockEntity extends GenericM
                 }
                 else if(entity.getType().equals(Portal.entityType)) {
                     portal = (Portal) entity;
-//                    destPortal = PortalUtils.findRotatedPortal(portal, destAngle);
                     initPortalCounter = -1;
+                    findDestPortal = true;
                 }
                 else throw new IllegalStateException("Server world returned non-portal BlockEntity!");
             }
@@ -164,6 +164,14 @@ public class MagneticDistortionSystemControlComputerBlockEntity extends GenericM
                 initPortal(serverWorld, portalDir);
                 initPortalCounter = -1;
             }
+        }
+
+        // find destination portal object
+        if(findDestPortal && portal.isOtherSideChunkLoaded()) {
+            ServerWorld destServerWorld = Objects.requireNonNull(serverWorld.getServer().getWorld(ModDimensionKeys.LEVEL_0),
+                    "destServerWorld must not be null!");
+            destPortal = (Portal) destServerWorld.getEntity(destPortalUUID);
+            if(destPortal != null) findDestPortal = false;
         }
 
         if(active) {
@@ -238,17 +246,8 @@ public class MagneticDistortionSystemControlComputerBlockEntity extends GenericM
         portal.world.spawnEntity(portal);
 
         if(destPortal != null) {
-            destPortal.myUnsetRemoved();
+            if(destPortal.isRemoved()) destPortal.myUnsetRemoved();
             destPortal.world.spawnEntity(destPortal);
-        }
-        else if(destPortalUUID != null) {
-            assert this.world != null;
-            Entity entity = ((ServerWorld) this.world).getEntity(destPortalUUID);
-            if(entity == null || !entity.getType().equals(Portal.entityType))
-                throw new IllegalStateException("Server world returned non-portal BlockEntity!");
-            else {
-                destPortal = (Portal) entity;
-            }
         }
         else destPortal = PortalManipulation.completeBiWayPortal(portal, Portal.entityType);
     }
