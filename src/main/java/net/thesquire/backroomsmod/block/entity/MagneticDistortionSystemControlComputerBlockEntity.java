@@ -138,7 +138,7 @@ public class MagneticDistortionSystemControlComputerBlockEntity extends GenericM
                         new BlockPos(portalOrigin),
                         frameBlock);
                 if (destPortalInfo.getLeft().isEmpty())
-                    throw new IllegalStateException("Unable to find destination for portal at " + portalOrigin.toString());
+                    throw new IllegalStateException("Unable to find destination for portal at " + portalOrigin);
             }
 
             // look for existing portal entity and
@@ -172,6 +172,7 @@ public class MagneticDistortionSystemControlComputerBlockEntity extends GenericM
                     "destServerWorld must not be null!");
             destPortal = (Portal) destServerWorld.getEntity(destPortalUUID);
             if(destPortal != null) findDestPortal = false;
+            else destPortal = PortalManipulation.completeBiWayPortal(portal, Portal.entityType);
         }
 
         if(active) {
