@@ -12,6 +12,7 @@ import net.minecraft.util.math.*;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.BlockLocating;
 import net.minecraft.world.World;
+import net.thesquire.backroomsmod.BackroomsMod;
 import net.thesquire.backroomsmod.block.ModBlocks;
 import net.thesquire.backroomsmod.config.ModConfig;
 import net.thesquire.backroomsmod.dimension.ModDimensionKeys;
@@ -51,12 +52,13 @@ public class MagneticDistortionSystemControlComputerBlockEntity extends GenericM
     private final int energyUsage = ModConfig.magneticDistortionSystemControlComputerEnergyUsage;
 
     private int initPortalCounter = initTries;
-    private boolean findDestPortal = false;
+    private int findDestPortalCounter = 0;
     private UUID portalUUID = null;
     private Portal portal;
     private UUID destPortalUUID = null;
     private Portal destPortal = null;
     private Pair<Optional<BlockLocating.Rectangle>, Direction> destPortalInfo;
+    private Vec3d destPortalPos;
 
     public MagneticDistortionSystemControlComputerBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlockEntities.MAGNETIC_DISTORTION_SYSTEM_CONTROL_COMPUTER, pos, state, "MagneticDistortionSystemControlComputer",
@@ -69,11 +71,11 @@ public class MagneticDistortionSystemControlComputerBlockEntity extends GenericM
 
     private void initPortal(ServerWorld serverWorld, Direction dir) {
         portal = Portal.entityType.create(serverWorld);
-        assert portal != null;
+        Objects.requireNonNull(portal);
 
         portal.setOriginPos(getPortalOrigin(dir));
         portal.setDestinationDimension(destDim);
-        portal.setDestination(PortalUtils.getPortalOrigin(destPortalInfo.getLeft().get(), destPortalInfo.getRight().getAxis()));
+        portal.setDestination(destPortalPos);
 
         portal.setOrientationAndSize(
                 new Vec3d(dir.getOffsetX(), dir.getOffsetY(), dir.getOffsetZ()),
@@ -139,6 +141,9 @@ public class MagneticDistortionSystemControlComputerBlockEntity extends GenericM
                         frameBlock);
                 if (destPortalInfo.getLeft().isEmpty())
                     throw new IllegalStateException("Unable to find destination for portal at " + portalOrigin);
+                destPortalPos = PortalUtils.getPortalOrigin(destPortalInfo.getLeft().get(), destPortalInfo.getRight().getAxis());
+
+                BackroomsMod.portalStorage.addPortalComputer(this.getPos(), this);
             }
 
             // look for existing portal entity and
@@ -156,7 +161,7 @@ public class MagneticDistortionSystemControlComputerBlockEntity extends GenericM
                 else if(entity.getType().equals(Portal.entityType)) {
                     portal = (Portal) entity;
                     initPortalCounter = -1;
-                    findDestPortal = true;
+                    findDestPortalCounter = initTries;
                 }
                 else throw new IllegalStateException("Server world returned non-portal BlockEntity!");
             }
@@ -167,12 +172,12 @@ public class MagneticDistortionSystemControlComputerBlockEntity extends GenericM
         }
 
         // find destination portal object
-        if(findDestPortal && portal.isOtherSideChunkLoaded()) {
+        if(findDestPortalCounter > 0 && portal.isOtherSideChunkLoaded()) {
             ServerWorld destServerWorld = Objects.requireNonNull(serverWorld.getServer().getWorld(ModDimensionKeys.LEVEL_0),
                     "destServerWorld must not be null!");
             destPortal = (Portal) destServerWorld.getEntity(destPortalUUID);
-            if(destPortal != null) findDestPortal = false;
-            else destPortal = PortalManipulation.completeBiWayPortal(portal, Portal.entityType);
+            if(destPortal != null) findDestPortalCounter = 0;
+            else findDestPortalCounter -= 1;
         }
 
         if(active) {
@@ -189,8 +194,9 @@ public class MagneticDistortionSystemControlComputerBlockEntity extends GenericM
     @Override
     public void onBreak(World world, PlayerEntity playerEntity, BlockPos blockPos, BlockState blockState) {
         super.onBreak(world, playerEntity, blockPos, blockState);
-        if(portal != null) portal.kill();
-        if(destPortal != null) destPortal.kill();
+        setActive(false);
+
+        BackroomsMod.portalStorage.removePortalComputer(this.getPos(), this);
     }
 
     @Override
@@ -215,9 +221,8 @@ public class MagneticDistortionSystemControlComputerBlockEntity extends GenericM
     public boolean getSide() { return side; }
 
     public void setSide(boolean side) {
-        if(this.side != side) {
+        if(this.side != side && this.world != null) {
             setActive(false);
-            assert this.world != null;
             if(!this.world.isClient()) {
                 Vec3d newPos = getPortalOrigin(getSideDir(side));
                 portal.setOriginPos(newPos);
@@ -230,8 +235,7 @@ public class MagneticDistortionSystemControlComputerBlockEntity extends GenericM
     public boolean getActive() { return active; }
 
     public void setActive(boolean active) {
-        assert this.world != null;
-        if(!this.world.isClient()) {
+        if(this.world != null && !this.world.isClient()) {
             if (!this.active && active && isMultiblockValid() && getEnergy() > initEnergyUsage) {
                 activatePortal();
             }
@@ -251,6 +255,11 @@ public class MagneticDistortionSystemControlComputerBlockEntity extends GenericM
             destPortal.world.spawnEntity(destPortal);
         }
         else destPortal = PortalManipulation.completeBiWayPortal(portal, Portal.entityType);
+
+        portalUUID = portal.getUuid();
+        destPortalUUID = destPortal.getUuid();
+
+        BackroomsMod.portalStorage.addDestPortal(new BlockPos(destPortalPos), this.getPos());
     }
 
     private void deactivatePortal() {
@@ -258,6 +267,23 @@ public class MagneticDistortionSystemControlComputerBlockEntity extends GenericM
         if(destPortal != null) destPortal.kill();
         portalUUID = null;
         destPortalUUID = null;
+
+        BackroomsMod.portalStorage.removeDestPortal(new BlockPos(destPortalPos), this.getPos());
+    }
+
+    public void killDestPortal() {
+        if(destPortal != null && !destPortal.world.isClient()) destPortal.kill();
+        destPortalUUID = null;
+    }
+
+    public void spawnDestPortal() {
+        if(destPortal != null && !destPortal.world.isClient()) {
+            destPortal.myUnsetRemoved();
+            destPortal.world.spawnEntity(destPortal);
+            destPortalUUID = destPortal.getUuid();
+        }
+        else if(destPortal == null)
+            destPortal = PortalManipulation.completeBiWayPortal(portal, Portal.entityType);
     }
 
     private Direction getSideDir(boolean side) {
