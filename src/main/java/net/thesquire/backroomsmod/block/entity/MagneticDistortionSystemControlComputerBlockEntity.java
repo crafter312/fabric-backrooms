@@ -33,8 +33,6 @@ import techreborn.init.TRContent;
 
 import java.util.*;
 
-//TODO fix crash when loading world with existing destination portal
-
 public class MagneticDistortionSystemControlComputerBlockEntity extends GenericMachineBlockEntity implements BuiltScreenHandlerProvider {
 
     public static final double portalWidth = 2D;
