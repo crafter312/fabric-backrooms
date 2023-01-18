@@ -7,9 +7,6 @@ env:                                              #Environment variables that ca
   JAVA_VERSION: 17
   MOD_VERSION: 0.3.0-1.19.2
   MOD_RELEASE_NAME: Immersive Portals 0.3.0 for Minecraft 1.19.2
-  MODRINTH_TOKEN: ${{ secrets.PUBLISH_MODRINTH_TOKEN }}
-  CURSEFORGE_TOKEN: ${{ secrets.PUBLISH_CURSEFORGE_TOKEN }}
-  GITHUB_TOKEN: ${{ secrets.PUBLISH_GITHUB_TOKEN }}
 
 permissions:
   contents: write
@@ -43,13 +40,13 @@ jobs:                                             #The place where you actually 
         uses: Kir-Antipov/mc-publish@v3.2                                   #The specified MC-Publish Github Action in the version 3.2
         with:
           curseforge-id: 776288                                             #The id of your curseforge project
-          curseforge-token: "${{env.CURSEFORGE_TOKEN}}"
+          curseforge-token: ${{ secrets.PUBLISH_CURSEFORGE_TOKEN }}
 
           modrinth-id: cdKVhc8A                                             #The id of your modrinth project
-          modrinth-token: "${{env.MODRINTH_TOKEN}}"
+          modrinth-token: ${{ secrets.PUBLISH_MODRINTH_TOKEN }}
 
           github-tag: "v${{env.VERSION}}"
-          github-token: "${{env.GITHUB_TOKEN}}"
+          github-token: ${{ secrets.PUBLISH_GITHUB_TOKEN }}
 
           name: "${{env.RELEASE_NAME}}"
           version: "${{env.VERSION}}"
