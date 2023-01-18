@@ -23,4 +23,8 @@ public class ModUtils {
         return pos;
     }
 
+    public static int boolToInt(boolean b, int first, int second) {
+        return b ? first : second;
+    }
+
 }
