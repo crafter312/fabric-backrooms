@@ -1,4 +1,2 @@
-- reworked portal functionality using Immersive Portals instead of Custom Portal API
-  - Portal entities stored in and managed by MagneticDistortionSystemControlComputerBlockEntity
-  - PortalStorage class extending PersistentState class to track multiple entrance portals for one destination portal
-  - Many other changes related to those listed above which aren't listed explicitly here
+- re-added Immersive Portals dependency in fabric.mod.json for published build
+- incremented version number
