@@ -7,3 +7,4 @@ Before building this mod, REMEMBER TO DO THE FOLLOWING:
 2. Change the mod's version number if necessary
 3. Remove unnecessary library imports from modified class files
 4. Review to-do items to make sure nothing is being missed
+5. CHANGELOG.md must be updated for publishing purposes!
