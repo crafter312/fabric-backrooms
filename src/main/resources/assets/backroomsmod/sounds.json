@@ -3,7 +3,7 @@
     "subtitle": "sound.backroomsmod.music.none",
     "sounds": []
   },
-  "level_0_dark.music": {
+  "level_0.music.dark": {
     "subtitle": "sound.backroomsmod.level_0_dark.music",
     "sounds": [
       {
@@ -20,5 +20,42 @@
         "stream": true
       }
     ]
-  }
+  },
+  "level_1.ambient.drip": {
+    "subtitle": "sound.backroomsmod.level_1.ambient.drip",
+    "sounds": [
+      { "name": "backroomsmod:ambient/level_1/water_drip/water_drip_1" },
+      { "name": "backroomsmod:ambient/level_1/water_drip/water_drip_2" },
+      { "name": "backroomsmod:ambient/level_1/water_drip/water_drip_3" },
+      { "name": "backroomsmod:ambient/level_1/water_drip/water_drip_4" },
+      { "name": "backroomsmod:ambient/level_1/water_drip/water_drip_5" },
+      { "name": "backroomsmod:ambient/level_1/water_drip/water_drip_6" },
+      { "name": "backroomsmod:ambient/level_1/water_drip/water_drip_7" },
+      { "name": "backroomsmod:ambient/level_1/water_drip/water_drip_8" }
+    ]
+  },
+  "level_1.warehouse_concrete.step": {
+    "subtitle": "sound.backroomsmod.level_1.warehouse_concrete.step",
+    "sounds": [
+      { "name": "backroomsmod:block/warehouse_concrete/warehouse_concrete_step_1" },
+      { "name": "backroomsmod:block/warehouse_concrete/warehouse_concrete_step_2" },
+      { "name": "backroomsmod:block/warehouse_concrete/warehouse_concrete_step_3" },
+      { "name": "backroomsmod:block/warehouse_concrete/warehouse_concrete_step_4" },
+      { "name": "backroomsmod:block/warehouse_concrete/warehouse_concrete_step_5" },
+      { "name": "backroomsmod:block/warehouse_concrete/warehouse_concrete_step_6" },
+      { "name": "backroomsmod:block/warehouse_concrete/warehouse_concrete_step_7" }
+    ]
+  },
+  "level_1.warehouse_concrete.waterlogged.step": {
+  "subtitle": "sound.backroomsmod.level_1.warehouse_concrete.waterlogged.step",
+  "sounds": [
+    { "name": "backroomsmod:block/warehouse_concrete/warehouse_concrete_waterlogged_step_1" },
+    { "name": "backroomsmod:block/warehouse_concrete/warehouse_concrete_waterlogged_step_2" },
+    { "name": "backroomsmod:block/warehouse_concrete/warehouse_concrete_waterlogged_step_3" },
+    { "name": "backroomsmod:block/warehouse_concrete/warehouse_concrete_waterlogged_step_4" },
+    { "name": "backroomsmod:block/warehouse_concrete/warehouse_concrete_waterlogged_step_5" },
+    { "name": "backroomsmod:block/warehouse_concrete/warehouse_concrete_waterlogged_step_6" },
+    { "name": "backroomsmod:block/warehouse_concrete/warehouse_concrete_waterlogged_step_7" }
+  ]
+}
 }

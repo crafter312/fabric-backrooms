@@ -8,6 +8,7 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
+import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
@@ -16,6 +17,7 @@ import net.thesquire.backroomsmod.BackroomsMod;
 import net.thesquire.backroomsmod.block.custom.CeilingTileBlock;
 import net.thesquire.backroomsmod.block.custom.FluorescentLightBlock;
 import net.thesquire.backroomsmod.block.custom.TFMCMagnetBlock;
+import net.thesquire.backroomsmod.block.custom.WarehouseConcreteBlock;
 import net.thesquire.backroomsmod.block.entity.IndustrialAlloySmelterBlockEntity;
 import net.thesquire.backroomsmod.block.entity.MagneticDistortionSystemControlComputerBlockEntity;
 import net.thesquire.backroomsmod.item.ModItemGroup;
@@ -31,13 +33,17 @@ public class ModBlocks {
             new Block(FabricBlockSettings.of(Material.STONE).strength(4.5f).requiresTool()));
 
     public static final Block CEILING_TILE = registerBlock("ceiling_tile",
-            new CeilingTileBlock(FabricBlockSettings.of(Material.STONE).strength(4f).requiresTool()));
+            new CeilingTileBlock(FabricBlockSettings.of(Material.STONE).strength(1.6f).requiresTool()));
 
     public static final Block YELLOW_WALLPAPER = registerBlock("yellow_wallpaper",
-            new Block(FabricBlockSettings.of(Material.STONE).strength(4f).requiresTool()));
+            new Block(FabricBlockSettings.of(Material.STONE).strength(1.6f).requiresTool()));
 
-    public static final Block TFMC_MAGNET = registerBlock("tfmc_magnet", new TFMCMagnetBlock(),
+    public static final Block TFMC_MAGNET = registerBlock("tfmc_magnet",
+            new TFMCMagnetBlock(FabricBlockSettings.of(Material.METAL).strength(4f).requiresTool()),
             "block.backroomsmod.tfmc_magnet.tooltip_1", "block.backroomsmod.tfmc_magnet.tooltip_2");
+
+    public static final Block WAREHOUSE_CONCRETE = registerBlock("warehouse_concrete",
+            new WarehouseConcreteBlock(FabricBlockSettings.of(Material.STONE).strength(1.8f).requiresTool()));
 
     // Blocks with a GUI or BlockEntity have to be registered in the method below to ensure proper register order!
     public static Block INDUSTRIAL_ALLOY_SMELTER;

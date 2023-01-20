@@ -25,8 +25,8 @@ import java.util.List;
 
 public class TFMCMagnetBlock extends PillarBlock {
 
-    public TFMCMagnetBlock() {
-        super(FabricBlockSettings.of(Material.METAL).strength(2f).sounds(BlockSoundGroup.METAL));
+    public TFMCMagnetBlock(Settings settings) {
+        super(settings);
     }
 
     @SuppressWarnings("deprecation")
