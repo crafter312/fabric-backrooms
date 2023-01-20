@@ -1,2 +1,4 @@
-- re-added Immersive Portals dependency in fabric.mod.json for published build
 - incremented version number
+- added warehouse concrete block
+  - waterloggable
+  - custom texture and step sounds for waterlogged state
