@@ -3,6 +3,7 @@ package net.thesquire.backroomsmod.block;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.Material;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.item.TooltipContext;
@@ -11,13 +12,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.Registry;
+import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import net.thesquire.backroomsmod.BackroomsMod;
-import net.thesquire.backroomsmod.block.custom.CeilingTileBlock;
-import net.thesquire.backroomsmod.block.custom.FluorescentLightBlock;
-import net.thesquire.backroomsmod.block.custom.TFMCMagnetBlock;
-import net.thesquire.backroomsmod.block.custom.WarehouseConcreteBlock;
+import net.thesquire.backroomsmod.block.custom.*;
 import net.thesquire.backroomsmod.block.entity.IndustrialAlloySmelterBlockEntity;
 import net.thesquire.backroomsmod.block.entity.MagneticDistortionSystemControlComputerBlockEntity;
 import net.thesquire.backroomsmod.item.ModItemGroup;
@@ -45,12 +45,17 @@ public class ModBlocks {
     public static final Block WAREHOUSE_CONCRETE = registerBlock("warehouse_concrete",
             new WarehouseConcreteBlock(FabricBlockSettings.of(Material.STONE).strength(1.8f).requiresTool()));
 
+    public static final Block MOUNTABLE_FLUORESCENT_LIGHT = registerBlock("mountable_fluorescent_light",
+            new MountableFluorescentLightBlock(FabricBlockSettings.of(Material.GLASS).strength(0.3f).requiresTool()
+                    .nonOpaque().sounds(BlockSoundGroup.GLASS).solidBlock(ModBlocks::never).suffocates(ModBlocks::never)
+                    .blockVision(ModBlocks::never).luminance(15)), 16);
+
     // Blocks with a GUI or BlockEntity have to be registered in the method below to ensure proper register order!
     public static Block INDUSTRIAL_ALLOY_SMELTER;
     public static Block MAGNETIC_DISTORTION_SYSTEM_CONTROL_COMPUTER;
     public static Block FLUORESCENT_LIGHT;
 
-    /**************************************************************************************************/
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////
 
     private static Block registerBlock(String name, Block block) {
         registerBlockItem(name, block);
@@ -62,9 +67,19 @@ public class ModBlocks {
         return Registry.register(Registry.BLOCK, new Identifier(BackroomsMod.MOD_ID, name), block);
     }
 
+    private static Block registerBlock(String name, Block block, int stackSize) {
+        registerBlockItem(name, block, stackSize);
+        return Registry.register(Registry.BLOCK, new Identifier(BackroomsMod.MOD_ID, name), block);
+    }
+
     private static void registerBlockItem(String name, Block block) {
         Registry.register(Registry.ITEM, new Identifier(BackroomsMod.MOD_ID, name),
                 new BlockItem(block, new FabricItemSettings().group(ModItemGroup.BACKROOMS)));
+    }
+
+    private static void registerBlockItem(String name, Block block, int stackSize) {
+        Registry.register(Registry.ITEM, new Identifier(BackroomsMod.MOD_ID, name),
+                new BlockItem(block, new FabricItemSettings().maxCount(stackSize).group(ModItemGroup.BACKROOMS)));
     }
 
     private static void registerBlockItem(String name, Block block, String... tooltipKeys) {
@@ -98,8 +113,24 @@ public class ModBlocks {
 
         FLUORESCENT_LIGHT = registerBlock("fluorescent_light",
                 new FluorescentLightBlock(FabricBlockSettings.of(Material.GLASS)
-                        .strength(0.3f)
+                        .strength(0.3f).requiresTool().sounds(BlockSoundGroup.GLASS)
                         .luminance(FluorescentLightBlock::getLuminance)));
+    }
+
+    /**
+     * A shortcut to always return {@code true} a context predicate, used as
+     * {@code settings.solidBlock(Blocks::always)}.
+     */
+    private static boolean always(BlockState state, BlockView world, BlockPos pos) {
+        return true;
+    }
+
+    /**
+     * A shortcut to always return {@code false} a context predicate, used as
+     * {@code settings.solidBlock(Blocks::never)}.
+     */
+    private static boolean never(BlockState state, BlockView world, BlockPos pos) {
+        return false;
     }
 
 }

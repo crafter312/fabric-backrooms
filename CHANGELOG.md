@@ -2,3 +2,7 @@
 - added warehouse concrete block
   - waterloggable
   - custom texture and step sounds for waterlogged state
+- added mountable fluorescent light
+  - custom block model and voxel shape
+  - can be placed on floor, wall, ceiling, and oriented in different directions
+  - emits light

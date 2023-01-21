@@ -3,6 +3,9 @@
   "values": [
     "backroomsmod:bismuthinite_ore",
     "backroomsmod:ceiling_tile",
-    "backroomsmod:yellow_wallpaper"
+    "backroomsmod:yellow_wallpaper",
+    "backroomsmod:warehouse_concrete",
+    "backroomsmod:fluorescent_light",
+    "backroomsmod:mountable_fluorescent_light"
   ]
 }

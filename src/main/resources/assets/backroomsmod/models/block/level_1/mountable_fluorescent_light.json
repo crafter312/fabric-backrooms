@@ -1,0 +1,83 @@
+{
+	"credit": "Made with Blockbench",
+	"texture_size": [32, 32],
+	"textures": {
+		"0": "backroomsmod:block/level_1/mountable_fluorescent_light",
+		"particle": "backroomsmod:block/level_1/mountable_fluorescent_light"
+	},
+	"elements": [
+		{
+			"name": "base",
+			"from": [0, 0, 6],
+			"to": [16, 1, 10],
+			"faces": {
+				"north": {"uv": [0, 6, 8, 6.5], "texture": "#0"},
+				"east": {"uv": [0, 8, 2, 8.5], "texture": "#0"},
+				"south": {"uv": [0, 6.5, 8, 7], "texture": "#0"},
+				"west": {"uv": [8, 0, 10, 0.5], "texture": "#0"},
+				"up": {"uv": [8, 2, 0, 0], "texture": "#0"},
+				"down": {"uv": [8, 2, 0, 4], "texture": "#0"}
+			}
+		},
+		{
+			"name": "bulb",
+			"from": [0, 1, 7],
+			"to": [16, 2, 9],
+			"faces": {
+				"north": {"uv": [0, 7, 8, 7.5], "texture": "#0"},
+				"east": {"uv": [8, 0.5, 9, 1], "texture": "#0"},
+				"south": {"uv": [0, 7.5, 8, 8], "texture": "#0"},
+				"west": {"uv": [8, 1, 9, 1.5], "texture": "#0"},
+				"up": {"uv": [8, 5, 0, 4], "texture": "#0"},
+				"down": {"uv": [8, 5, 0, 6], "texture": "#0"}
+			}
+		}
+	],
+	"display": {
+		"thirdperson_righthand": {
+			"rotation": [-90, 90, 0],
+			"translation": [0, -2, -4],
+			"scale": [0.5, 0.5, 0.5]
+		},
+		"thirdperson_lefthand": {
+			"rotation": [-90, 90, 0],
+			"translation": [0, -2, -4],
+			"scale": [0.5, 0.5, 0.5]
+		},
+		"firstperson_righthand": {
+			"rotation": [76, 90, 8],
+			"translation": [-4, 1.5, 12],
+			"scale": [0.75, 0.75, 0.75]
+		},
+		"firstperson_lefthand": {
+			"rotation": [76, 90, 8],
+			"translation": [-4, 1.5, 12],
+			"scale": [0.75, 0.75, 0.75]
+		},
+		"ground": {
+			"translation": [0, 4, 0],
+			"scale": [0.75, 0.75, 0.75]
+		},
+		"gui": {
+			"rotation": [-136.77, 41.82, -162.32],
+			"translation": [1.5, 3.5, -7],
+			"scale": [0.9, 0.9, 0.9]
+		},
+		"head": {
+			"translation": [0, 12.8, 0],
+			"scale": [0.8, 0.8, 0.8]
+		},
+		"fixed": {
+			"rotation": [-90, 90, 0],
+			"translation": [0, 0, -7]
+		}
+	},
+	"groups": [
+		{
+			"name": "light",
+			"origin": [0, 0, 0],
+			"color": 0,
+			"children": [0, 1]
+		}
+	]
+}

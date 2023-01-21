@@ -23,6 +23,9 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Objects;
 
+//TODO add item drops and correct mining behavior for all blocks below
+//TODO add crafting recipes for all blocks without that need them
+
 public class BackroomsMod implements ModInitializer {
 	public static final String MOD_ID = "backroomsmod";
 

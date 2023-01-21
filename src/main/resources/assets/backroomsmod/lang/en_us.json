@@ -6,8 +6,9 @@
   "block.backroomsmod.magnetic_distortion_system_control_computer": "KV31 Control Computer",
   "block.backroomsmod.ceiling_tile": "Ceiling Tile",
   "block.backroomsmod.yellow_wallpaper": "Yellow Wallpaper",
-  "block.backroomsmod.fluorescent_light": "Fluorescent Light",
+  "block.backroomsmod.fluorescent_light": "Fluorescent Light Block",
   "block.backroomsmod.warehouse_concrete": "Warehouse Concrete",
+  "block.backroomsmod.mountable_fluorescent_light": "Mountable Fluorescent Light",
 
   "_comment2": "Mod Items",
   "item.backroomsmod.raw_bismuthinite": "Raw Bismuthinite",
