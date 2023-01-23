@@ -4,10 +4,11 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
+import net.thesquire.backroomsmod.block.ModBlockProperties;
 
 public class CeilingTileBlock extends Block {
 
-    public static final BooleanProperty HAS_LIGHT = BooleanProperty.of("has_light");
+    public static final BooleanProperty HAS_LIGHT = ModBlockProperties.HAS_LIGHT;
 
     public CeilingTileBlock(Settings settings) {
         super(settings);

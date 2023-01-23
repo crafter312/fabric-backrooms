@@ -3,6 +3,7 @@
   "values": [
     "backroomsmod:ceiling_tile",
     "backroomsmod:yellow_wallpaper",
-    "backroomsmod:warehouse_concrete"
+    "backroomsmod:warehouse_concrete",
+    "backroomsmod:painted_warehouse_concrete"
   ]
 }

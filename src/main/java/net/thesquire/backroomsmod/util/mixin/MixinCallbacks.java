@@ -2,14 +2,18 @@ package net.thesquire.backroomsmod.util.mixin;
 
 import net.fabricmc.fabric.api.dimension.v1.FabricDimensions;
 import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.TeleportTarget;
 import net.minecraft.world.World;
 import net.thesquire.backroomsmod.dimension.ModDimensionKeys;
+import net.thesquire.backroomsmod.sound.ModSounds;
 import net.thesquire.backroomsmod.util.ModUtils;
+import net.thesquire.backroomsmod.util.mixin.callback.IAddParticleCallback;
 import net.thesquire.backroomsmod.util.mixin.callback.IPlayerDamageCallback;
 
 /**
@@ -39,6 +43,12 @@ public class MixinCallbacks {
                     FabricDimensions.teleport(player, destServerWorld, targ);
                 }
             }
+        });
+
+        // plays water drip sound for water splash particles in level 1 dimension
+        IAddParticleCallback.EVENT.register((world, particle, x, y, z) -> {
+            if(!world.getRegistryKey().equals(ModDimensionKeys.LEVEL_1) || !particle.equals(ParticleTypes.SPLASH)) return;
+            world.playSound(x, y, z, ModSounds.LEVEL_1_DRIP, SoundCategory.AMBIENT, 1f, 1f, true);
         });
 
     }

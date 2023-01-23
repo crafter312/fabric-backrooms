@@ -45,6 +45,9 @@ public class ModBlocks {
     public static final Block WAREHOUSE_CONCRETE = registerBlock("warehouse_concrete",
             new WarehouseConcreteBlock(FabricBlockSettings.of(Material.STONE).strength(1.8f).requiresTool()));
 
+    public static final Block PAINTED_WAREHOUSE_CONCRETE = registerBlock("painted_warehouse_concrete",
+            new PaintedWarehouseConcreteBlock(FabricBlockSettings.copy(WAREHOUSE_CONCRETE)));
+
     public static final Block MOUNTABLE_FLUORESCENT_LIGHT = registerBlock("mountable_fluorescent_light",
             new MountableFluorescentLightBlock(FabricBlockSettings.of(Material.GLASS).strength(0.3f).requiresTool()
                     .nonOpaque().sounds(BlockSoundGroup.GLASS).solidBlock(ModBlocks::never).suffocates(ModBlocks::never)

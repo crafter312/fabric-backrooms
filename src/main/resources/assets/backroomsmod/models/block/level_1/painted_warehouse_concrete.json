@@ -1,0 +1,6 @@
+{
+  "parent": "block/cube_all",
+  "textures": {
+    "all": "backroomsmod:block/level_1/painted_warehouse_concrete"
+  }
+}

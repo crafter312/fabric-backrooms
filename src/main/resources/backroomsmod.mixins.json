@@ -7,7 +7,7 @@
     "PlayerEntityMixin"
   ],
   "client": [
-    "ExampleMixin"
+    "WaterDripMixin"
   ],
   "injectors": {
     "defaultRequire": 1

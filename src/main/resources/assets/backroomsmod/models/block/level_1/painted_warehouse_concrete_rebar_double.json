@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "down": "backroomsmod:block/level_1/painted_warehouse_concrete",
+    "east": "backroomsmod:block/level_1/painted_warehouse_concrete",
+    "north": "backroomsmod:block/level_1/painted_warehouse_concrete",
+    "particle": "backroomsmod:block/level_1/painted_warehouse_concrete",
+    "south": "backroomsmod:block/level_1/painted_warehouse_concrete_rebar",
+    "up": "backroomsmod:block/level_1/painted_warehouse_concrete",
+    "west": "backroomsmod:block/level_1/painted_warehouse_concrete_rebar"
+  }
+}

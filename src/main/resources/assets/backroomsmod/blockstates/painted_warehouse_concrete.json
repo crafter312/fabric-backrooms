@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "alt_sides=0": { "model": "backroomsmod:block/level_1/painted_warehouse_concrete" },
+    "alt_sides=1,facing=east": { "model": "backroomsmod:block/level_1/painted_warehouse_concrete_rebar_single", "y": 90 },
+    "alt_sides=1,facing=north": { "model": "backroomsmod:block/level_1/painted_warehouse_concrete_rebar_single" },
+    "alt_sides=1,facing=south": { "model": "backroomsmod:block/level_1/painted_warehouse_concrete_rebar_single", "y": 180 },
+    "alt_sides=1,facing=west": { "model": "backroomsmod:block/level_1/painted_warehouse_concrete_rebar_single", "y": 270 },
+    "alt_sides=2,facing=east": { "model": "backroomsmod:block/level_1/painted_warehouse_concrete_rebar_double", "y": 270 },
+    "alt_sides=2,facing=north": { "model": "backroomsmod:block/level_1/painted_warehouse_concrete_rebar_double", "y": 180 },
+    "alt_sides=2,facing=south": { "model": "backroomsmod:block/level_1/painted_warehouse_concrete_rebar_double" },
+    "alt_sides=2,facing=west": { "model": "backroomsmod:block/level_1/painted_warehouse_concrete_rebar_double", "y": 90 }
+  }
+}

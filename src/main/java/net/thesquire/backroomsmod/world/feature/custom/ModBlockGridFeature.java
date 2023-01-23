@@ -9,8 +9,8 @@ import net.minecraft.world.StructureWorldAccess;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.OreFeatureConfig;
 import net.minecraft.world.gen.feature.util.FeatureContext;
+import net.thesquire.backroomsmod.block.ModBlockProperties;
 import net.thesquire.backroomsmod.block.ModBlocks;
-import net.thesquire.backroomsmod.block.custom.CeilingTileBlock;
 import net.thesquire.backroomsmod.block.custom.FluorescentLightBlock;
 
 public class ModBlockGridFeature extends Feature<ModBlockGridFeatureConfig> {
@@ -39,8 +39,8 @@ public class ModBlockGridFeature extends Feature<ModBlockGridFeatureConfig> {
             int j = t / w;
             BlockPos blockPos = startPos.add(i, 0, j);
             if ((i % spacing) != 0 || (j % spacing) != 0) {
-                if (world.getBlockState(blockPos).contains(CeilingTileBlock.HAS_LIGHT)) {
-                    world.setBlockState(blockPos, ModBlocks.CEILING_TILE.getDefaultState().with(CeilingTileBlock.HAS_LIGHT, true),
+                if (world.getBlockState(blockPos).contains(ModBlockProperties.HAS_LIGHT)) {
+                    world.setBlockState(blockPos, ModBlocks.CEILING_TILE.getDefaultState().with(ModBlockProperties.HAS_LIGHT, true),
                             Block.NOTIFY_ALL);
                 }
                 continue;
@@ -63,8 +63,8 @@ public class ModBlockGridFeature extends Feature<ModBlockGridFeatureConfig> {
     private boolean shouldPlace(BlockState state, OreFeatureConfig.Target target, Random random) {
         boolean isCorrectBlock = target.target.test(state, random);
         boolean notHasLight = true;
-        if (state.contains(CeilingTileBlock.HAS_LIGHT)) {
-            notHasLight = !state.get(CeilingTileBlock.HAS_LIGHT);
+        if (state.contains(ModBlockProperties.HAS_LIGHT)) {
+            notHasLight = !state.get(ModBlockProperties.HAS_LIGHT);
         }
         return isCorrectBlock && notHasLight;
     }
