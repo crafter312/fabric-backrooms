@@ -4,7 +4,7 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.minecraft.world.PersistentStateManager;
 import net.thesquire.backroomsmod.block.ModBlocks;
-import net.thesquire.backroomsmod.block.entity.ModBlockEntities;
+import net.thesquire.backroomsmod.block.ModBlockEntities;
 import net.thesquire.backroomsmod.dimension.ModDimensionKeys;
 import net.thesquire.backroomsmod.item.ModItems;
 import net.thesquire.backroomsmod.portal.util.PortalStorage;
@@ -18,13 +18,11 @@ import net.thesquire.backroomsmod.world.ModBiomes;
 import net.thesquire.backroomsmod.world.ModWorldGen;
 import net.thesquire.backroomsmod.world.feature.ModConfiguredFeatures;
 import net.thesquire.backroomsmod.world.feature.ModPlacedFeatures;
+import net.thesquire.backroomsmod.world.gen.ModDensityFunctions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Objects;
-
-//TODO add item drops and correct mining behavior for all blocks below
-//TODO add crafting recipes for all blocks without that need them
 
 public class BackroomsMod implements ModInitializer {
 	public static final String MOD_ID = "backroomsmod";
@@ -49,6 +47,7 @@ public class BackroomsMod implements ModInitializer {
 		});
 
 		ModServerboundPackets.registerServerboundPackets();
+		ModDensityFunctions.registerModDensityFunctions();
 		ModGuis.registerGuis();
 		ModClientGuis.registerModClientGuis();
 		ModBlocks.registerModBlocks();
@@ -58,7 +57,7 @@ public class BackroomsMod implements ModInitializer {
 		ModItems.registerModItems();
 		MixinCallbacks.registerCallbacks();
 		ModRegistries.registerModContents();
-		ModWorldGen.generateModWorldGen();
+		ModWorldGen.addModWorldGen();
 		ModBlockEntities.registerBlockEntities();
 		ModRecipes.registerRecipes();
 	}

@@ -1,6 +1,9 @@
 package net.thesquire.backroomsmod.block.custom;
 
-import net.minecraft.block.*;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockRenderType;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.BlockWithEntity;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
@@ -9,18 +12,21 @@ import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.IntProperty;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.thesquire.backroomsmod.block.entity.FluorescentLightBlockEntity;
-import net.thesquire.backroomsmod.block.entity.ModBlockEntities;
+import net.thesquire.backroomsmod.block.ModBlockEntities;
+import net.thesquire.backroomsmod.block.ModBlockProperties;
+import net.thesquire.backroomsmod.block.entity.flickering.FluorescentLightBlockEntity;
 import org.jetbrains.annotations.Nullable;
 
 public class FluorescentLightBlock extends BlockWithEntity {
 
-    public static final BooleanProperty FLICKERING = BooleanProperty.of("flickering");
-    public static final IntProperty LUMINANCE = IntProperty.of("luminance", 0, 15);
+    public static final BooleanProperty FLICKERING = ModBlockProperties.FLICKERING;
+    public static final IntProperty LUMINANCE = ModBlockProperties.LUMINANCE;
+
+    //////////////////////////////////////////////////////////
 
     public FluorescentLightBlock(Settings settings) {
         super(settings);
-        this.setDefaultState(this.getDefaultState().with(FLICKERING, false).with(LUMINANCE, 15));
+        this.setDefaultState(this.getDefaultState().with(FLICKERING, false).with(LUMINANCE, FluorescentLightBlockEntity.defaultLuminance));
     }
 
     @Override

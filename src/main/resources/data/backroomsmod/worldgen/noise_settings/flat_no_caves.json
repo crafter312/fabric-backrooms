@@ -1,11 +1,11 @@
 {
   "sea_level": 100,
-  "disable_mob_generation": true,
+  "disable_mob_generation": false,
   "aquifers_enabled": false,
   "ore_veins_enabled": false,
   "legacy_random_source": false,
   "default_block": {
-    "Name": "backroomsmod:ceiling_tile"
+    "Name": "minecraft:stone"
   },
   "default_fluid": {
     "Name": "minecraft:water",

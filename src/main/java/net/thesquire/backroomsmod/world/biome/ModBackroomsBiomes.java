@@ -1,9 +1,7 @@
 package net.thesquire.backroomsmod.world.biome;
 
-import net.minecraft.sound.BiomeAdditionsSound;
 import net.minecraft.sound.BiomeMoodSound;
 import net.minecraft.sound.MusicSound;
-import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeEffects;
@@ -29,36 +27,6 @@ public class ModBackroomsBiomes {
         return MathHelper.hsvToRgb(0.62222224F - $$1 * 0.05F, 0.5F + $$1 * 0.1F, 1.0F);
     }
 
-    private static Biome biome(Biome.Precipitation precipitation, float temperature,
-                               float downfall, SpawnSettings.Builder spawnBuilder, GenerationSettings.Builder biomeBuilder,
-                               @Nullable MusicSound music)
-    {
-        return biome(precipitation, temperature, downfall, 4159204, 329011,
-                spawnBuilder, biomeBuilder, music);
-    }
-
-    private static Biome biome(Biome.Precipitation precipitation, float temperature, float downfall,
-                               int waterColor, int waterFogColor, SpawnSettings.Builder spawnBuilder,
-                               GenerationSettings.Builder biomeBuilder, @Nullable MusicSound music)
-    {
-        return (new Biome.Builder()).precipitation(precipitation).temperature(temperature)
-                .downfall(downfall).effects((new BiomeEffects.Builder()).waterColor(waterColor)
-                        .waterFogColor(waterFogColor).fogColor(12638463).skyColor(calculateSkyColor(temperature))
-                        .moodSound(BiomeMoodSound.CAVE).music(music).build())
-                .spawnSettings(spawnBuilder.build()).generationSettings(biomeBuilder.build()).build();
-    }
-
-    private static Biome biome(Biome.Precipitation precipitation, float temperature, float downfall,
-                               int waterColor, int waterFogColor, SpawnSettings.Builder spawnBuilder,
-                               GenerationSettings.Builder biomeBuilder, @Nullable MusicSound music, SoundEvent loop)
-    {
-        return (new Biome.Builder()).precipitation(precipitation).temperature(temperature)
-                .downfall(downfall).effects((new BiomeEffects.Builder()).waterColor(waterColor)
-                        .waterFogColor(waterFogColor).fogColor(12638463).skyColor(calculateSkyColor(temperature))
-                        .moodSound(BiomeMoodSound.CAVE).loopSound(loop).music(music).build())
-                .spawnSettings(spawnBuilder.build()).generationSettings(biomeBuilder.build()).build();
-    }
-
     /**
      * Below is where all custom biomes are created,
      * including custom features for those biomes as well.
@@ -66,6 +34,29 @@ public class ModBackroomsBiomes {
      * and not afterwords in the {@link net.thesquire.backroomsmod.world.ModWorldGen}
      * class!
      */
+
+    private static final int defaultFogColor = 12638463;
+    private static final int darkFogColor = 0x919191;
+    private static final int defaultWaterFogColor = 329011;
+    private static final int defaultWaterColor = 4159204;
+    private static final float defaultTemperature = 0.8f;
+
+    private static Biome.Builder defaultBiomeSettings() {
+        return (new Biome.Builder())
+                .precipitation(Biome.Precipitation.NONE)
+                .temperature(defaultTemperature)
+                .downfall(0f);
+    }
+
+    private static BiomeEffects.Builder defaultBiomeEffects() {
+        return (new BiomeEffects.Builder())
+                .waterColor(defaultWaterColor)
+                .waterFogColor(defaultWaterFogColor)
+                .fogColor(defaultFogColor)
+                .skyColor(calculateSkyColor(defaultTemperature))
+                .moodSound(BiomeMoodSound.CAVE)
+                .music(NO_MUSIC);
+    }
 
     public static Biome level0() {
         SpawnSettings.Builder spawnBuilder = new SpawnSettings.Builder();
@@ -77,8 +68,14 @@ public class ModBackroomsBiomes {
         biomeBuilder.feature(GenerationStep.Feature.LOCAL_MODIFICATIONS, ModPlacedFeatures.FLUORESCENT_LIGHT_FLICKERING_PLACED);
         biomeBuilder.feature(GenerationStep.Feature.LOCAL_MODIFICATIONS, ModPlacedFeatures.FLUORESCENT_LIGHT_PLACED);
 
-        return biome(Biome.Precipitation.NONE, 0.8f, 0f, 4159204,
-                0x919191, spawnBuilder, biomeBuilder, NO_MUSIC, ModSounds.LEVEL_0_LOOP);
+        return defaultBiomeSettings()
+                .effects(defaultBiomeEffects()
+                        .fogColor(darkFogColor)
+                        .loopSound(ModSounds.LEVEL_0_LOOP)
+                        .build())
+                .spawnSettings(spawnBuilder.build())
+                .generationSettings(biomeBuilder.build())
+                .build();
     }
 
     public static Biome level0dark() {
@@ -91,8 +88,29 @@ public class ModBackroomsBiomes {
         biomeBuilder.feature(GenerationStep.Feature.LOCAL_MODIFICATIONS, ModPlacedFeatures.LEVEL_0_WALL_PLACED);
         biomeBuilder.feature(GenerationStep.Feature.LOCAL_MODIFICATIONS, ModPlacedFeatures.FLUORESCENT_LIGHT_FLICKERING_PLACED);
 
-        return biome(Biome.Precipitation.NONE, 0.8f, 0f, 4159204,
-                0x919191, spawnBuilder, biomeBuilder, LEVEL_0_DARK_MUSIC);
+        return defaultBiomeSettings()
+                .effects(defaultBiomeEffects()
+                        .fogColor(darkFogColor)
+                        .music(LEVEL_0_DARK_MUSIC)
+                        .build())
+                .spawnSettings(spawnBuilder.build())
+                .generationSettings(biomeBuilder.build())
+                .build();
+    }
+
+    public static Biome level1() {
+        SpawnSettings.Builder spawnBuilder = new SpawnSettings.Builder();
+        DefaultBiomeFeatures.addBatsAndMonsters(spawnBuilder);
+
+        GenerationSettings.Builder biomeBuilder = new GenerationSettings.Builder();
+
+        return defaultBiomeSettings()
+                .effects(defaultBiomeEffects()
+                        .fogColor(darkFogColor)
+                        .build())
+                .spawnSettings(spawnBuilder.build())
+                .generationSettings(biomeBuilder.build())
+                .build();
     }
 
 }

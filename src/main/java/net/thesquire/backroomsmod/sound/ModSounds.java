@@ -21,7 +21,7 @@ public class ModSounds {
     ///////////////////////////////////////////////////////////////////////////////
 
     public static final BlockSoundGroup WAREHOUSE_CONCRETE = new BlockSoundGroup(
-            1.2f,
+            1.4f,
             1.0f,
             SoundEvents.BLOCK_STONE_BREAK,
             WAREHOUSE_CONCRETE_STEP,
@@ -30,7 +30,7 @@ public class ModSounds {
             SoundEvents.BLOCK_STONE_FALL);
 
     public static final BlockSoundGroup WAREHOUSE_CONCRETE_WATERLOGGED = new BlockSoundGroup(
-            1.0f,
+            0.9f,
             1.0f,
             SoundEvents.BLOCK_STONE_BREAK,
             WAREHOUSE_CONCRETE_WATERLOGGED_STEP,

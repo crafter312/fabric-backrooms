@@ -48,7 +48,7 @@ public class ModBlocks {
     public static final Block MOUNTABLE_FLUORESCENT_LIGHT = registerBlock("mountable_fluorescent_light",
             new MountableFluorescentLightBlock(FabricBlockSettings.of(Material.GLASS).strength(0.3f).requiresTool()
                     .nonOpaque().sounds(BlockSoundGroup.GLASS).solidBlock(ModBlocks::never).suffocates(ModBlocks::never)
-                    .blockVision(ModBlocks::never).luminance(15)), 16);
+                    .blockVision(ModBlocks::never).luminance(MountableFluorescentLightBlock::getLuminance)), 16);
 
     // Blocks with a GUI or BlockEntity have to be registered in the method below to ensure proper register order!
     public static Block INDUSTRIAL_ALLOY_SMELTER;

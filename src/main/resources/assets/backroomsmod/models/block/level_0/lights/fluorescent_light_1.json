@@ -1,6 +1,0 @@
-{
-	"parent": "block/cube_all",
-	"textures": {
-		"all": "backroomsmod:block/level_0/lights/fluorescent_light_1"
-	}
-}

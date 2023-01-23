@@ -1,4 +1,5 @@
 - incremented version number
+- added missing loot tables for existing blocks
 - added warehouse concrete block
   - waterloggable
   - custom texture and step sounds for waterlogged state
@@ -6,3 +7,11 @@
   - custom block model and voxel shape
   - can be placed on floor, wall, ceiling, and oriented in different directions
   - emits light
+- added FlickeringBlockEntity super class
+  - used for both fluorescent light blocks
+  - simplifies shared light flickering functionality
+- simplified creation of biomes with shared default attributes
+- fixed biome dark fog color (used for all added biomes so far)
+- added Level 1 dimension
+  - custom density function type generates warehouse columns during world generation (not as a feature)
+  - warehouse concrete block used for floor

@@ -13,6 +13,7 @@ import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.BlockLocating;
 import net.minecraft.world.World;
 import net.thesquire.backroomsmod.BackroomsMod;
+import net.thesquire.backroomsmod.block.ModBlockEntities;
 import net.thesquire.backroomsmod.block.ModBlocks;
 import net.thesquire.backroomsmod.config.ModConfig;
 import net.thesquire.backroomsmod.dimension.ModDimensionKeys;

@@ -11,6 +11,8 @@ public class ModBiomeKeys {
     public static final RegistryKey<Biome> LEVEL_0 = register("level_0");
     public static final RegistryKey<Biome> LEVEL_0_DARK = register("level_0_dark");
 
+    public static final RegistryKey<Biome> LEVEL_1 = register("level_1");
+
     private static RegistryKey<Biome> register(String name) {
         return RegistryKey.of(Registry.BIOME_KEY, new Identifier(BackroomsMod.MOD_ID, name));
     }

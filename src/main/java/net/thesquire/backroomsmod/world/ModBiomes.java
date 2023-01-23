@@ -14,6 +14,7 @@ public class ModBiomes {
 
         register(ModBiomeKeys.LEVEL_0, ModBackroomsBiomes.level0());
         register(ModBiomeKeys.LEVEL_0_DARK, ModBackroomsBiomes.level0dark());
+        register(ModBiomeKeys.LEVEL_1, ModBackroomsBiomes.level1());
     }
 
     private static void register(RegistryKey<Biome> key, Biome biome) {

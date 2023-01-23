@@ -23,12 +23,13 @@ public class GuiIndustrialAlloySmelter extends GuiBase<BuiltScreenHandler> {
 
         //Battery slot
         drawSlot(matrixStack, 8, 72, layer);
+
         //Input slots
-        //drawOutputSlotBar(matrixStack, 50, 71, 4, layer);
         drawSlot(matrixStack, 51, 72, layer);
         drawSlot(matrixStack, 71, 72, layer);
         drawSlot(matrixStack, 91, 72, layer);
         drawSlot(matrixStack, 111, 72, layer);
+
         //Output slots
         drawOutputSlot(matrixStack, 81, 24, layer);
         builder.drawJEIButton(matrixStack, this, 158, 5, layer);
@@ -39,7 +40,7 @@ public class GuiIndustrialAlloySmelter extends GuiBase<BuiltScreenHandler> {
         super.drawForeground(matrixStack, mouseX, mouseY);
         final GuiBase.Layer layer = GuiBase.Layer.FOREGROUND;
 
-        builder.drawProgressBar(matrixStack, this, blockEntity.getProgressScaled(100), 100, 84, 52, mouseX, mouseY, GuiBuilder.ProgressDirection.UP, layer);
+        builder.drawProgressBar(matrixStack, this, blockEntity.getProgressScaled(100), 100, 84, 50, mouseX, mouseY, GuiBuilder.ProgressDirection.UP, layer);
         builder.drawMultiEnergyBar(matrixStack, this, 9, 19, (int) blockEntity.getEnergy(), (int) blockEntity.getMaxStoredPower(), mouseX, mouseY, 0, layer);
     }
 

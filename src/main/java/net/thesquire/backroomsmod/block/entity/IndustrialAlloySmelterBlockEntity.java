@@ -3,6 +3,7 @@ package net.thesquire.backroomsmod.block.entity;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
+import net.thesquire.backroomsmod.block.ModBlockEntities;
 import net.thesquire.backroomsmod.block.ModBlocks;
 import net.thesquire.backroomsmod.config.ModConfig;
 import net.thesquire.backroomsmod.recipe.ModRecipes;

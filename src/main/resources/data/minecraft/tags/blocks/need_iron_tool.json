@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
-    "backroomsmod:bismuthinite_ore"
+    "backroomsmod:bismuthinite_ore",
+    "backroomsmod:tfmc_magnet"
   ]
 }
