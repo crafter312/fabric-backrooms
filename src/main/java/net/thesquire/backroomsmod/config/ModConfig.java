@@ -24,4 +24,10 @@ public class ModConfig {
     @Config(config = "machines", category = "magnetic_distortion_system_control_computer", key = "MagneticDistortionSystemControlComputerEnergyUsage", comment = "Magnetic Distortion System Energy Usage")
     public static int magneticDistortionSystemControlComputerEnergyUsage = 4096;
 
+    @Config(config = "events", category = "blackout", key = "MinBlackoutRange", comment = "Minimum range for a blackout GameEvent")
+    public static int minBlackoutRange = 16;
+
+    @Config(config = "events", category = "blackout", key = "MaxBlackoutRange", comment = "Maximum range for a blackout GameEvent")
+    public static int maxBlackoutRange = 64;
+
 }

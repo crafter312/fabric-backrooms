@@ -14,6 +14,7 @@ import net.thesquire.backroomsmod.block.ModBlocks;
 import net.thesquire.backroomsmod.world.feature.custom.ModBlockGridFeatureConfig;
 import net.thesquire.backroomsmod.world.feature.custom.ModSimpleWallFeatureConfig;
 import net.thesquire.backroomsmod.world.feature.custom.ModThinWallFeatureConfig;
+import net.thesquire.backroomsmod.world.feature.custom.ModWallMountableFeatureConfig;
 
 import java.util.List;
 
@@ -30,9 +31,14 @@ public class ModConfiguredFeatures {
     public static RegistryEntry<ConfiguredFeature<OreFeatureConfig, ?>> BISMUTHINITE_ORE;
     public static RegistryEntry<ConfiguredFeature<ModBlockGridFeatureConfig, ?>> FLUORESCENT_LIGHT;
     public static RegistryEntry<ConfiguredFeature<ModBlockGridFeatureConfig, ?>> FLUORESCENT_LIGHT_FLICKERING;
+
+    // level 0 features
     public static RegistryEntry<ConfiguredFeature<ModSimpleWallFeatureConfig, ?>> LEVEL_0_WALL;
     public static RegistryEntry<ConfiguredFeature<ModThinWallFeatureConfig, ?>> LEVEL_0_THIN_STRAIGHT_WALL;
     public static RegistryEntry<ConfiguredFeature<ModThinWallFeatureConfig, ?>> LEVEL_0_THIN_CROOKED_WALL;
+
+    // level 1 features
+    public static RegistryEntry<ConfiguredFeature<ModWallMountableFeatureConfig, ?>> LEVEL_1_WALL_LIGHTS;
 
     /**********************************************************************************************/
 
@@ -50,6 +56,8 @@ public class ModConfiguredFeatures {
                 UniformIntProvider.create(1, 3), UniformIntProvider.create(8, 12), ConstantIntProvider.create(4), true));
         LEVEL_0_THIN_CROOKED_WALL = ConfiguredFeatures.register("level_0_thin_crooked_wall", ModFeatures.THIN_WALL, new ModThinWallFeatureConfig(LEVEL_0_WALL_TARGET,
                 UniformIntProvider.create(3, 6), UniformIntProvider.create(8, 14), ConstantIntProvider.create(4), false));
+        LEVEL_1_WALL_LIGHTS = ConfiguredFeatures.register("level_1_wall_lights", ModFeatures.WALL_MOUNTABLE, new ModWallMountableFeatureConfig(
+                ModBlocks.MOUNTABLE_FLUORESCENT_LIGHT.getDefaultState(), ConstantIntProvider.create(18), 0.02f, 0.01f));
     }
 
 }

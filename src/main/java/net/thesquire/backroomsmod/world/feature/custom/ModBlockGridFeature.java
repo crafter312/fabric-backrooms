@@ -22,17 +22,20 @@ public class ModBlockGridFeature extends Feature<ModBlockGridFeatureConfig> {
         BlockPos pos = context.getOrigin();
         ModBlockGridFeatureConfig config = context.getConfig();
         StructureWorldAccess world = context.getWorld();
-        int width = config.width().get(context.getRandom());
-        int depth = config.depth().get(context.getRandom());
+        Random random = context.getRandom();
+
+        int width = config.width().get(random);
+        int depth = config.depth().get(random);
         float chance = config.chance();
-        int spacing = config.spacing().get(context.getRandom()) + 1;
+        int spacing = config.spacing().get(random) + 1;
         BlockPos startPos = new BlockPos(
                 pos.getX() - width,
                 pos.getY(),
                 pos.getZ() - depth);
 
-        int w = (width * 2) - 1;
-        int d = (depth * 2) - 1;
+        // limit width and depth to chunk size
+        int w = Math.min(((width - 1) * (spacing + 1)) + 1, 16);
+        int d = Math.min(((depth - 1) * (spacing + 1)) + 1, 16);
         int total = w * d;
         for(int t = 0; t < total; t++) {
             int i = t % w;
@@ -47,9 +50,9 @@ public class ModBlockGridFeature extends Feature<ModBlockGridFeatureConfig> {
             }
             for(OreFeatureConfig.Target target : config.targets()) {
                 BlockState currentState = world.getBlockState(blockPos);
-                if (!shouldPlace(currentState, target, context.getRandom())) continue;
+                if (!shouldPlace(currentState, target, random)) continue;
                 if (target.state.contains(FluorescentLightBlock.FLICKERING)) {
-                    world.setBlockState(blockPos, target.state.with(FluorescentLightBlock.FLICKERING, (Random.create()).nextFloat() < chance),
+                    world.setBlockState(blockPos, target.state.with(FluorescentLightBlock.FLICKERING, random.nextFloat() < chance),
                             Block.NOTIFY_LISTENERS);
                 } else {
                     world.setBlockState(blockPos, target.state, Block.NOTIFY_LISTENERS);

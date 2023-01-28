@@ -24,6 +24,14 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Objects;
 
+//TODO make light flickering behavior more rare
+//TODO redo painted warehouse concrete rebar texture handling
+//TODO add level 1 water puddle feature with dripping water
+//TODO modify GridWalls density function to add passageways
+//TODO add portal feature connecting level 0 to level 1
+//TODO test different smooth noise type for GridWalls density function
+//TODO figure out how to implement regional level 1 dimension blackout events
+
 public class BackroomsMod implements ModInitializer {
 	public static final String MOD_ID = "backroomsmod";
 

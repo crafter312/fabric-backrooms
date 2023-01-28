@@ -21,6 +21,7 @@ import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import net.thesquire.backroomsmod.block.ModBlockEntities;
 import net.thesquire.backroomsmod.block.ModBlockProperties;
+import net.thesquire.backroomsmod.block.entity.flickering.FluorescentLightBlockEntity;
 import net.thesquire.backroomsmod.block.entity.flickering.MountableFluorescentLightBlockEntity;
 import org.jetbrains.annotations.Nullable;
 
@@ -88,7 +89,7 @@ public class MountableFluorescentLightBlock extends HorizontalFacingBlock implem
         super(settings);
         setDefaultState(getDefaultState().with(WALL_MOUNT_LOCATION, WallMountLocation.WALL)
                 .with(FACING, Direction.NORTH).with(FLICKERING, false)
-                .with(LUMINANCE, MountableFluorescentLightBlockEntity.defaultLuminance));
+                .with(LUMINANCE, FluorescentLightBlockEntity.defaultLuminance));
     }
 
     @Nullable
@@ -161,4 +162,11 @@ public class MountableFluorescentLightBlock extends HorizontalFacingBlock implem
         return blockEntity instanceof NamedScreenHandlerFactory ? (NamedScreenHandlerFactory) blockEntity : null;
     }
 
+    /*@Nullable
+    @Override
+    public <T extends BlockEntity> GameEventListener getGameEventListener(ServerWorld world, T blockEntity) {
+        if(blockEntity instanceof MountableFluorescentLightBlockEntity)
+            return ((MountableFluorescentLightBlockEntity)blockEntity).getEventListener();
+        return null;
+    }*/
 }

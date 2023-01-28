@@ -15,9 +15,11 @@ public class ModFeatures {
             new ModThinWallFeature(ModThinWallFeatureConfig.CODEC));
     public static final Feature<ModBlockGridFeatureConfig> BLOCK_GRID = register("lighting_feature",
             new ModBlockGridFeature(ModBlockGridFeatureConfig.CODEC));
+    public static final Feature<ModWallMountableFeatureConfig> WALL_MOUNTABLE = register("wall_mountable",
+            new ModWallMountableFeature(ModWallMountableFeatureConfig.CODEC));
 
     private static <C extends FeatureConfig, F extends Feature<C>> F register(String name, F feature) {
-        return (F)Registry.register(Registry.FEATURE, new Identifier(BackroomsMod.MOD_ID, name), feature);
+        return Registry.register(Registry.FEATURE, new Identifier(BackroomsMod.MOD_ID, name), feature);
     }
 
 }

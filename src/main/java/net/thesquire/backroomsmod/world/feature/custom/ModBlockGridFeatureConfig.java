@@ -10,11 +10,11 @@ import java.util.List;
 
 /**
  * This feature's parameters:
- * @param targets - A list of replaceable blocks and what blocks they should be replaced with
- * @param width - The number of blocks wide the grid is along the x-axis (blocks in the grid, not total blocks)
- * @param depth - The number of blocks deep the grid is along the z-axis (blocks in the grid, not total blocks)
- * @param spacing - The number of blocks in-between each grid block, not counting the grid block itself
- * @param chance - An extra chance modifier used to introduce random variance to the block grid
+ * @param targets A list of replaceable blocks and what blocks they should be replaced with
+ * @param width The number of blocks wide the grid is along the x-axis (blocks in the grid, not total blocks)
+ * @param depth The number of blocks deep the grid is along the z-axis (blocks in the grid, not total blocks)
+ * @param spacing The number of blocks in-between each grid block, not counting the grid block itself
+ * @param chance An extra chance modifier used to introduce random variance to the block grid
  */
 
 public record ModBlockGridFeatureConfig(List<OreFeatureConfig.Target> targets, IntProvider width, IntProvider depth,

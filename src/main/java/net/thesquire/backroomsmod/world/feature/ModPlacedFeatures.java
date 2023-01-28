@@ -9,7 +9,13 @@ import net.minecraft.world.gen.YOffset;
 import net.minecraft.world.gen.blockpredicate.BlockPredicate;
 import net.minecraft.world.gen.feature.PlacedFeature;
 import net.minecraft.world.gen.feature.PlacedFeatures;
-import net.minecraft.world.gen.placementmodifier.*;
+import net.minecraft.world.gen.placementmodifier.BiomePlacementModifier;
+import net.minecraft.world.gen.placementmodifier.BlockFilterPlacementModifier;
+import net.minecraft.world.gen.placementmodifier.CountPlacementModifier;
+import net.minecraft.world.gen.placementmodifier.HeightRangePlacementModifier;
+import net.minecraft.world.gen.placementmodifier.PlacementModifier;
+import net.minecraft.world.gen.placementmodifier.RarityFilterPlacementModifier;
+import net.minecraft.world.gen.placementmodifier.SquarePlacementModifier;
 import net.thesquire.backroomsmod.BackroomsMod;
 
 import java.util.List;
@@ -22,6 +28,7 @@ public class ModPlacedFeatures {
     public static RegistryEntry<PlacedFeature> LEVEL_0_WALL_PLACED;
     public static RegistryEntry<PlacedFeature> LEVEL_0_THIN_STRAIGHT_WALL_PLACED;
     public static RegistryEntry<PlacedFeature> LEVEL_0_THIN_CROOKED_WALL_PLACED;
+    public static RegistryEntry<PlacedFeature> LEVEL_1_WALL_LIGHTS_PLACED;
 
     private static final PlacementModifier LIGHT_BLOCK_MODIFIER = BlockFilterPlacementModifier.of(
             BlockPredicate.matchingBlocks(Direction.DOWN.getVector(), List.of(Blocks.AIR)));
@@ -29,6 +36,8 @@ public class ModPlacedFeatures {
 
     private static final PlacementModifier LEVEL_0_FLOOR = HeightRangePlacementModifier.uniform(YOffset.fixed(18), YOffset.fixed(22));
     private static final PlacementModifier LEVEL_0_CEILING = HeightRangePlacementModifier.uniform(YOffset.fixed(23), YOffset.fixed(25));
+
+    private static final PlacementModifier LEVEL_1_LIGHT_PLACEMENT = HeightRangePlacementModifier.uniform(YOffset.fixed(23), YOffset.fixed(23));
 
     /**********************************************************************************************************************/
 
@@ -58,6 +67,10 @@ public class ModPlacedFeatures {
         LEVEL_0_THIN_CROOKED_WALL_PLACED = PlacedFeatures.register("level_0_thin_crooked_wall_placed",
                 ModConfiguredFeatures.LEVEL_0_THIN_CROOKED_WALL,
                 modifiersWithCount(7, LEVEL_0_FLOOR, LEVEL_0_WALL_BLOCK_MODIFIER));
+
+        LEVEL_1_WALL_LIGHTS_PLACED = PlacedFeatures.register("level_1_wall_lights_placed",
+                ModConfiguredFeatures.LEVEL_1_WALL_LIGHTS,
+                modifiersWithCount(16, LEVEL_1_LIGHT_PLACEMENT));
     }
 
     private static PlacementModifier makeFloorPlacedFeatureBlockModifier(Block block) {

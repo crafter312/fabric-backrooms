@@ -1,5 +1,7 @@
 package net.thesquire.backroomsmod.world.biome;
 
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.SpawnGroup;
 import net.minecraft.sound.BiomeMoodSound;
 import net.minecraft.sound.MusicSound;
 import net.minecraft.util.math.MathHelper;
@@ -58,6 +60,24 @@ public class ModBackroomsBiomes {
                 .music(NO_MUSIC);
     }
 
+    // modification of the same method from DefaultBiomeFeatures with slimes removed
+    private static void addMonsters(SpawnSettings.Builder builder) {
+        builder.spawn(SpawnGroup.MONSTER, new SpawnSettings.SpawnEntry(EntityType.SPIDER, 100, 4, 4));
+        builder.spawn(SpawnGroup.MONSTER, new SpawnSettings.SpawnEntry(EntityType.ZOMBIE, 95, 4, 4));
+        builder.spawn(SpawnGroup.MONSTER, new SpawnSettings.SpawnEntry(EntityType.ZOMBIE_VILLAGER, 5, 1, 1));
+        builder.spawn(SpawnGroup.MONSTER, new SpawnSettings.SpawnEntry(EntityType.SKELETON, 100, 4, 4));
+        builder.spawn(SpawnGroup.MONSTER, new SpawnSettings.SpawnEntry(EntityType.CREEPER, 100, 4, 4));
+        builder.spawn(SpawnGroup.MONSTER, new SpawnSettings.SpawnEntry(EntityType.ENDERMAN, 10, 1, 4));
+        builder.spawn(SpawnGroup.MONSTER, new SpawnSettings.SpawnEntry(EntityType.WITCH, 5, 1, 1));
+    }
+
+    private static void addBatsAndMonsters(SpawnSettings.Builder builder) {
+        DefaultBiomeFeatures.addCaveMobs(builder);
+        addMonsters(builder);
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
     public static Biome level0() {
         SpawnSettings.Builder spawnBuilder = new SpawnSettings.Builder();
 
@@ -80,7 +100,7 @@ public class ModBackroomsBiomes {
 
     public static Biome level0dark() {
         SpawnSettings.Builder spawnBuilder = new SpawnSettings.Builder();
-        DefaultBiomeFeatures.addBatsAndMonsters(spawnBuilder);
+        addBatsAndMonsters(spawnBuilder);
 
         GenerationSettings.Builder biomeBuilder = new GenerationSettings.Builder();
         biomeBuilder.feature(GenerationStep.Feature.LOCAL_MODIFICATIONS, ModPlacedFeatures.LEVEL_0_THIN_CROOKED_WALL_PLACED);
@@ -100,9 +120,10 @@ public class ModBackroomsBiomes {
 
     public static Biome level1() {
         SpawnSettings.Builder spawnBuilder = new SpawnSettings.Builder();
-        DefaultBiomeFeatures.addBatsAndMonsters(spawnBuilder);
+        addBatsAndMonsters(spawnBuilder);
 
         GenerationSettings.Builder biomeBuilder = new GenerationSettings.Builder();
+        biomeBuilder.feature(GenerationStep.Feature.LOCAL_MODIFICATIONS, ModPlacedFeatures.LEVEL_1_WALL_LIGHTS_PLACED);
 
         return defaultBiomeSettings()
                 .effects(defaultBiomeEffects()

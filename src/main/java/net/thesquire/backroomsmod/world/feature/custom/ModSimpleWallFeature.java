@@ -26,9 +26,12 @@ public class ModSimpleWallFeature extends Feature<ModSimpleWallFeatureConfig> {
         BlockPos pos = context.getOrigin();
         ModSimpleWallFeatureConfig config = context.getConfig();
         StructureWorldAccess world = context.getWorld();
-        int width = config.width().get(Random.create());
-        int depth = config.depth().get(Random.create());
-        int height = config.height().get(Random.create());
+        Random random = context.getRandom();
+
+        // limit width and depth to chunk size
+        int width = Math.min(config.width().get(random), 16);
+        int depth = Math.min(config.depth().get(random), 16);
+        int height = config.height().get(random);
         BlockPos startPos = new BlockPos(
                 pos.getX() - (width / 2),
                 pos.getY(),

@@ -62,7 +62,7 @@ public class SquareColumns implements DensityFunction.Base {
 
     @Override
     public CodecHolder<? extends DensityFunction> getCodecHolder() {
-        return null;
+        return CODEC_HOLDER;
     }
 
     public int getX_spacing() { return this.x_spacing; }

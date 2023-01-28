@@ -16,7 +16,7 @@ public class FlickeringBlockEntity extends BlockEntity {
     public static void tick(World world, BlockPos pos, BlockState state, FlickeringBlockEntity blockEntity) {
         if(world.isClient() || !state.get(ModBlockProperties.FLICKERING)) return;
 
-        double d = blockEntity.getRandom();
+        double d = blockEntity.randomDouble();
         int lum = blockEntity.getDefaultLuminance();
 
         if(d < 0.1)
@@ -29,8 +29,8 @@ public class FlickeringBlockEntity extends BlockEntity {
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-    private final Random rand = Random.create();
-    private final int defaultLuminance;
+    protected final Random rand = Random.create();
+    protected final int defaultLuminance;
     private final BiasedToBottomIntProvider dimAmount;
 
     public FlickeringBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state, int lum) {
@@ -39,7 +39,7 @@ public class FlickeringBlockEntity extends BlockEntity {
         dimAmount = BiasedToBottomIntProvider.create(2, Math.max(lum - 2, 2));
     }
 
-    public double getRandom() { return rand.nextDouble(); }
+    public double randomDouble() { return rand.nextDouble(); }
     public int getDefaultLuminance() { return defaultLuminance; }
     public int getDimmedLuminance() { return defaultLuminance - dimAmount.get(rand); }
 

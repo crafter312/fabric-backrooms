@@ -25,9 +25,6 @@
     "client": [
       "net.thesquire.backroomsmod.BackroomsModClient"
     ],
-    "terrablender": [
-      "net.thesquire.backroomsmod.BackroomsModTerraBlender"
-    ],
     "rei_client": [
       "net.thesquire.backroomsmod.client.compat.rei.ReiPlugin"
     ]
