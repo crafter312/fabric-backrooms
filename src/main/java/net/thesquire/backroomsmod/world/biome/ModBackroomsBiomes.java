@@ -124,6 +124,7 @@ public class ModBackroomsBiomes {
 
         GenerationSettings.Builder biomeBuilder = new GenerationSettings.Builder();
         biomeBuilder.feature(GenerationStep.Feature.LOCAL_MODIFICATIONS, ModPlacedFeatures.LEVEL_1_WALL_LIGHTS_PLACED);
+        biomeBuilder.feature(GenerationStep.Feature.LOCAL_MODIFICATIONS, ModPlacedFeatures.LEVEL_1_PUDDLE_PLACED);
 
         return defaultBiomeSettings()
                 .effects(defaultBiomeEffects()

@@ -25,10 +25,13 @@ public class ModPlacedFeatures {
     public static RegistryEntry<PlacedFeature> BISMUTHINITE_ORE_PLACED;
     public static RegistryEntry<PlacedFeature> FLUORESCENT_LIGHT_PLACED;
     public static RegistryEntry<PlacedFeature> FLUORESCENT_LIGHT_FLICKERING_PLACED;
+
     public static RegistryEntry<PlacedFeature> LEVEL_0_WALL_PLACED;
     public static RegistryEntry<PlacedFeature> LEVEL_0_THIN_STRAIGHT_WALL_PLACED;
     public static RegistryEntry<PlacedFeature> LEVEL_0_THIN_CROOKED_WALL_PLACED;
+
     public static RegistryEntry<PlacedFeature> LEVEL_1_WALL_LIGHTS_PLACED;
+    public static RegistryEntry<PlacedFeature> LEVEL_1_PUDDLE_PLACED;
 
     private static final PlacementModifier LIGHT_BLOCK_MODIFIER = BlockFilterPlacementModifier.of(
             BlockPredicate.matchingBlocks(Direction.DOWN.getVector(), List.of(Blocks.AIR)));
@@ -38,8 +41,9 @@ public class ModPlacedFeatures {
     private static final PlacementModifier LEVEL_0_CEILING = HeightRangePlacementModifier.uniform(YOffset.fixed(23), YOffset.fixed(25));
 
     private static final PlacementModifier LEVEL_1_LIGHT_PLACEMENT = HeightRangePlacementModifier.uniform(YOffset.fixed(23), YOffset.fixed(23));
+    private static final PlacementModifier LEVEL_1_FLOOR = HeightRangePlacementModifier.uniform(YOffset.fixed(20), YOffset.fixed(20));
 
-    /**********************************************************************************************************************/
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////
 
     public static void registerPlacedFeatures() {
         System.out.println("Registering placed features for " + BackroomsMod.MOD_ID);
@@ -71,6 +75,11 @@ public class ModPlacedFeatures {
         LEVEL_1_WALL_LIGHTS_PLACED = PlacedFeatures.register("level_1_wall_lights_placed",
                 ModConfiguredFeatures.LEVEL_1_WALL_LIGHTS,
                 modifiersWithCount(16, LEVEL_1_LIGHT_PLACEMENT));
+
+        LEVEL_1_PUDDLE_PLACED = PlacedFeatures.register("level_1_puddle_placed",
+                ModConfiguredFeatures.LEVEL_1_PUDDLE,
+                modifiersWithCount(12, LEVEL_1_FLOOR));
+
     }
 
     private static PlacementModifier makeFloorPlacedFeatureBlockModifier(Block block) {
