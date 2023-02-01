@@ -13,5 +13,8 @@
 - simplified creation of biomes with shared default attributes
 - fixed biome dark fog color (used for all added biomes so far)
 - added Level 1 dimension
-  - custom density function type generates warehouse columns during world generation (not as a feature)
+  - custom density function type generates warehouse columns and walls during world generation (not as a feature)
   - warehouse concrete block used for floor
+  - painted warehouse concrete block used as walls and ceiling
+  - mountable fluorescent light block feature spawns lights on walls
+  - puddle feature spawns patches of waterlogged warehouse concrete on floor
