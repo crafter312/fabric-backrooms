@@ -1,0 +1,49 @@
+{
+  "schemaVersion": 1,
+  "id": "backroomsmod",
+  "version": "${version}",
+
+  "name": "Immersive Backrooms",
+  "description": "This mod aims to add the Backrooms to Minecraft!",
+  "authors": [
+    "TheSquire"
+  ],
+  "contact": {
+    "sources": "https://github.com/crafter312/fabric-backrooms-1.19.2"
+  },
+
+  "license": "GPL-3",
+  "icon": "assets/backroomsmod/icon.png",
+
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "net.thesquire.backroomsmod.BackroomsMod",
+      "net.thesquire.backroomsmod.resource.ModBuiltinResourcePack",
+      "net.thesquire.backroomsmod.resource.ModResourceReloadListener"
+    ],
+    "client": [
+      "net.thesquire.backroomsmod.BackroomsModClient"
+    ],
+    "fabric-datagen": [
+      "net.thesquire.backroomsmod.datagen.ModDataGeneration"
+    ],
+    "rei_client": [
+      "net.thesquire.backroomsmod.client.compat.rei.ReiPlugin"
+    ]
+  },
+  "mixins": [
+    "backroomsmod.mixins.json"
+  ],
+
+  "depends": {
+    "fabricloader": ">=0.14.13",
+    "fabric": ">=0.73.2",
+    "minecraft": "~1.19.3",
+    "techreborn": ">=5.5.0",
+    "java": ">=17"
+  },
+  "suggests": {
+    "another-mod": "*"
+  }
+}

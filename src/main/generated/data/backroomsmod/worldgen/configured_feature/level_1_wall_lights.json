@@ -1,0 +1,17 @@
+{
+  "type": "backroomsmod:wall_mountable",
+  "config": {
+    "blockState": {
+      "Name": "backroomsmod:mountable_fluorescent_light",
+      "Properties": {
+        "face": "wall",
+        "facing": "north",
+        "flickering": "false",
+        "luminance": "15"
+      }
+    },
+    "flickeringChance": 0.01,
+    "placeChance": 0.02,
+    "range": 18
+  }
+}

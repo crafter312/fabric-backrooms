@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "face=floor,facing=north": { "model": "backroomsmod:block/level_1/mountable_fluorescent_light" },
+    "face=floor,facing=east": { "model": "backroomsmod:block/level_1/mountable_fluorescent_light", "y": 90 },
+    "face=floor,facing=south": { "model": "backroomsmod:block/level_1/mountable_fluorescent_light" },
+    "face=floor,facing=west": { "model": "backroomsmod:block/level_1/mountable_fluorescent_light", "y": 90 },
+    "face=wall,facing=north": { "model": "backroomsmod:block/level_1/mountable_fluorescent_light_wall" },
+    "face=wall,facing=east": { "model": "backroomsmod:block/level_1/mountable_fluorescent_light_wall", "y": 90 },
+    "face=wall,facing=south": { "model": "backroomsmod:block/level_1/mountable_fluorescent_light_wall", "y": 180 },
+    "face=wall,facing=west": { "model": "backroomsmod:block/level_1/mountable_fluorescent_light_wall", "y": 270 },
+    "face=ceiling,facing=north": { "model": "backroomsmod:block/level_1/mountable_fluorescent_light", "x": 180 },
+    "face=ceiling,facing=east": { "model": "backroomsmod:block/level_1/mountable_fluorescent_light", "x": 180, "y": 90 },
+    "face=ceiling,facing=south": { "model": "backroomsmod:block/level_1/mountable_fluorescent_light", "x": 180 },
+    "face=ceiling,facing=west": { "model": "backroomsmod:block/level_1/mountable_fluorescent_light", "x": 180, "y": 90 }
+  }
+}

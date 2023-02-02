@@ -1,0 +1,12 @@
+{
+    "variants": {
+        "facing=north,active=false": { "model": "backroomsmod:block/machines/tier2_machines/industrial_alloy_smelter" },
+        "facing=south,active=false": { "model": "backroomsmod:block/machines/tier2_machines/industrial_alloy_smelter", "y": 180 },
+        "facing=west,active=false":  { "model": "backroomsmod:block/machines/tier2_machines/industrial_alloy_smelter", "y": 270 },
+        "facing=east,active=false":  { "model": "backroomsmod:block/machines/tier2_machines/industrial_alloy_smelter", "y": 90 },
+        "facing=north,active=true": { "model": "backroomsmod:block/machines/tier2_machines/industrial_alloy_smelter_on" },
+        "facing=south,active=true": { "model": "backroomsmod:block/machines/tier2_machines/industrial_alloy_smelter_on", "y": 180 },
+        "facing=west,active=true":  { "model": "backroomsmod:block/machines/tier2_machines/industrial_alloy_smelter_on", "y": 270 },
+        "facing=east,active=true":  { "model": "backroomsmod:block/machines/tier2_machines/industrial_alloy_smelter_on", "y": 90 }
+    }
+}

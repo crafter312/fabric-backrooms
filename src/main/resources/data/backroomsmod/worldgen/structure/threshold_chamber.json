@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:jigsaw",
+  "start_pool": "backroomsmod:threshold_chamber/start_pool",
+  "size": 1,
+  "max_distance_from_center": 60,
+  "biomes": "#backroomsmod:has_structure/threshold_chamber",
+  "step": "strongholds",
+  "start_height": {
+    "absolute": 20
+  },
+  "use_expansion_hack": false,
+  "spawn_overrides": {}
+}

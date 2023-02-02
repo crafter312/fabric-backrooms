@@ -1,0 +1,16 @@
+{
+  "type": "techreborn:blast_furnace",
+  "power": 128,
+  "time": 200,
+  "heat": 1000,
+  "ingredients": [
+    {
+      "item": "backroomsmod:bismuthinite_dust"
+    }
+  ],
+  "results": [
+    {
+      "item": "backroomsmod:bismuth_ingot"
+    }
+  ]
+}

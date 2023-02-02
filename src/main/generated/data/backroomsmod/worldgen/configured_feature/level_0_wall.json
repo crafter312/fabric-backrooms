@@ -1,0 +1,40 @@
+{
+  "type": "backroomsmod:wall",
+  "config": {
+    "depth": {
+      "type": "minecraft:uniform",
+      "value": {
+        "max_inclusive": 8,
+        "min_inclusive": 4
+      }
+    },
+    "height": 4,
+    "targets": [
+      {
+        "state": {
+          "Name": "backroomsmod:yellow_wallpaper"
+        },
+        "target": {
+          "block": "minecraft:light_gray_carpet",
+          "predicate_type": "minecraft:block_match"
+        }
+      },
+      {
+        "state": {
+          "Name": "backroomsmod:yellow_wallpaper"
+        },
+        "target": {
+          "block": "minecraft:air",
+          "predicate_type": "minecraft:block_match"
+        }
+      }
+    ],
+    "width": {
+      "type": "minecraft:uniform",
+      "value": {
+        "max_inclusive": 8,
+        "min_inclusive": 4
+      }
+    }
+  }
+}

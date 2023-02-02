@@ -1,0 +1,37 @@
+{
+  "type": "backroomsmod:backrooms_midnight",
+  "generator": {
+    "type": "minecraft:noise",
+    "seed": 1177471420,
+    "settings": "backroomsmod:flat_no_caves",
+    "biome_source": {
+      "type": "minecraft:multi_noise",
+      "biomes": [
+        {
+          "biome": "backroomsmod:level_0",
+          "parameters": {
+            "temperature": 0.2,
+            "humidity": 0,
+            "continentalness": 2,
+            "erosion": 2,
+            "weirdness": -2,
+            "depth": 1,
+            "offset": 0
+          }
+        },
+        {
+          "biome": "backroomsmod:level_0_dark",
+          "parameters": {
+            "temperature": -1,
+            "humidity": -0.2,
+            "continentalness": 2,
+            "erosion": 2,
+            "weirdness": -2,
+            "depth": 1,
+            "offset": 0
+          }
+        }
+      ]
+    }
+  }
+}

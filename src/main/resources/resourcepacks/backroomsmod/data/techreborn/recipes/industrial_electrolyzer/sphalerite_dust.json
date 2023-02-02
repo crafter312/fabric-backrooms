@@ -1,0 +1,25 @@
+{
+  "type": "techreborn:industrial_electrolyzer",
+  "power": 50,
+  "time": 1200,
+  "ingredients": [
+    {
+      "item": "techreborn:sphalerite_dust",
+      "count": 3
+    }
+  ],
+  "results": [
+    {
+      "item": "techreborn:zinc_dust"
+    },
+    {
+      "item": "backroomsmod:iron_dust"
+    },
+    {
+      "item": "techreborn:sulfur_dust"
+    },
+    {
+      "item": "backroomsmod:indium_small_dust"
+    }
+  ]
+}

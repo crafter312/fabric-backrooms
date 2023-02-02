@@ -1,0 +1,15 @@
+{
+    "type": "techreborn:grinder",
+    "power": 2,
+    "time": 270,
+    "ingredients": [
+        {
+            "item": "backroomsmod:raw_bismuthinite"
+        }
+    ],
+    "results": [
+        {
+            "item": "backroomsmod:bismuthinite_dust"
+        }
+    ]
+}

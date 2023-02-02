@@ -1,0 +1,47 @@
+{
+  "carvers": {},
+  "downfall": 0.0,
+  "effects": {
+    "ambient_sound": "backroomsmod:level_0.ambient.loop",
+    "fog_color": 9539985,
+    "mood_sound": {
+      "block_search_extent": 8,
+      "offset": 2.0,
+      "sound": "minecraft:ambient.cave",
+      "tick_delay": 6000
+    },
+    "music": {
+      "max_delay": 2147483647,
+      "min_delay": 2147483647,
+      "replace_current_music": false,
+      "sound": "backroomsmod:music.none"
+    },
+    "sky_color": 7907327,
+    "water_color": 4159204,
+    "water_fog_color": 329011
+  },
+  "features": [
+    [],
+    [],
+    [
+      "backroomsmod:level_0_thin_crooked_wall_placed",
+      "backroomsmod:level_0_thin_straight_wall_placed",
+      "backroomsmod:level_0_wall_placed",
+      "backroomsmod:fluorescent_light_flickering_placed",
+      "backroomsmod:fluorescent_light_placed"
+    ]
+  ],
+  "precipitation": "none",
+  "spawn_costs": {},
+  "spawners": {
+    "ambient": [],
+    "axolotls": [],
+    "creature": [],
+    "misc": [],
+    "monster": [],
+    "underground_water_creature": [],
+    "water_ambient": [],
+    "water_creature": []
+  },
+  "temperature": 0.8
+}

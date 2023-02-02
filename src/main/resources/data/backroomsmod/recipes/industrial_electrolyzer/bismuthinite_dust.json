@@ -1,0 +1,20 @@
+{
+  "type": "techreborn:industrial_electrolyzer",
+  "power": 50,
+  "time": 1100,
+  "ingredients": [
+    {
+      "item": "backroomsmod:bismuthinite_dust"
+    }
+  ],
+  "results": [
+    {
+      "item": "backroomsmod:bismuth_dust",
+      "count": 2
+    },
+    {
+      "item": "techreborn:sulfur_dust",
+      "count": 3
+    }
+  ]
+}

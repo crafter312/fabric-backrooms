@@ -1,0 +1,53 @@
+{
+  "_comment1": "Mod Blocks",
+  "block.backroomsmod.bismuthinite_ore": "Bismuthinite Ore",
+  "block.backroomsmod.industrial_alloy_smelter": "Industrial Alloy Smelter",
+  "block.backroomsmod.tfmc_magnet": "TFMC Magnet",
+  "block.backroomsmod.magnetic_distortion_system_control_computer": "KV31 Control Computer",
+  "block.backroomsmod.ceiling_tile": "Ceiling Tile",
+  "block.backroomsmod.yellow_wallpaper": "Yellow Wallpaper",
+  "block.backroomsmod.fluorescent_light": "Fluorescent Light Block",
+  "block.backroomsmod.warehouse_concrete": "Warehouse Concrete",
+  "block.backroomsmod.mountable_fluorescent_light": "Mountable Fluorescent Light",
+  "block.backroomsmod.painted_warehouse_concrete": "Painted Warehouse Concrete",
+
+  "_comment2": "Mod Items",
+  "item.backroomsmod.raw_bismuthinite": "Raw Bismuthinite",
+  "item.backroomsmod.bismuthinite_dust": "Bismuthinite Dust",
+  "item.backroomsmod.bismuth_dust": "Bismuth Dust",
+  "item.backroomsmod.bismuth_ingot": "Bismuth Ingot",
+  "item.backroomsmod.lead_ingot": "Lead Ingot",
+  "item.backroomsmod.crushed_lead": "Crushed Lead",
+  "item.backroomsmod.bismuth_small_dust": "Small Pile of Bismuth Dust",
+  "item.backroomsmod.iron_dust": "Iron Dust",
+  "item.backroomsmod.indium_dust": "Indium Dust",
+  "item.backroomsmod.indium_small_dust": "Small Pile of Indium Dust",
+  "item.backroomsmod.indium_ingot": "Indium Ingot",
+  "item.backroomsmod.low_temp_solder_ingot": "Low Temperature Solder Alloy Ingot",
+  "item.backroomsmod.superconductor_magnet_coil": "Superconducting Magnet Coil",
+  "item.backroomsmod.ln2_coolant_cell": "LN2 Coolant Cell",
+  "item.backroomsmod.superconductor_magnet": "Superconducting Magnet",
+
+  "_comment3": "Sound Subtitles",
+  "sound.backroomsmod.music.none": "",
+  "sound.backroomsmod.level_0_dark": "Level 0 dark biome music",
+  "sound.backroomsmod.level_0.ambient.loop": "Fluorescent lights humming",
+  "sound.backroomsmod.level_1.ambient.drip": "Water dripping",
+  "sound.backroomsmod.level_1.warehouse_concrete.step": "Walking on warehouse concrete",
+  "sound.backroomsmod.level_1.warehouse_concrete.waterlogged.step": "Walking on wet warehouse concrete",
+
+  "_comment4": "Tooltips",
+  "tooltip.backroomsmod.generic": "Press §eSHIFT§r for more Information",
+  "item.backroomsmod.low_temp_solder_ingot.tooltip_1": "§8§oBased on the Cerrolow 136 low",
+  "item.backroomsmod.low_temp_solder_ingot.tooltip_2": "§8§otemperature solder alloy.",
+  "item.backroomsmod.ln2_coolant_cell.tooltip": "§8§oEveryone loves liquid nitrogen!",
+  "block.backroomsmod.tfmc_magnet.tooltip_1": "§8§oToroidal Field Model Coil Magnet,",
+  "block.backroomsmod.tfmc_magnet.tooltip_2": "§8§onow with cryostat!",
+
+  "_comment6": "Item Group Names",
+  "itemGroup.backroomsmod.backrooms": "Immersive Backrooms",
+
+  "_comment7": "REI Integration",
+  "backroomsmod:industrial_alloy_smelter": "Industrial Alloy Smelter"
+
+}

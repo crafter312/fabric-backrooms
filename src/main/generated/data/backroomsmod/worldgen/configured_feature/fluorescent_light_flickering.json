@@ -1,0 +1,36 @@
+{
+  "type": "backroomsmod:lighting_feature",
+  "config": {
+    "chance": 0.5,
+    "depth": {
+      "type": "minecraft:uniform",
+      "value": {
+        "max_inclusive": 4,
+        "min_inclusive": 2
+      }
+    },
+    "spacing": 1,
+    "targets": [
+      {
+        "state": {
+          "Name": "backroomsmod:fluorescent_light",
+          "Properties": {
+            "flickering": "false",
+            "luminance": "15"
+          }
+        },
+        "target": {
+          "block": "backroomsmod:ceiling_tile",
+          "predicate_type": "minecraft:block_match"
+        }
+      }
+    ],
+    "width": {
+      "type": "minecraft:uniform",
+      "value": {
+        "max_inclusive": 4,
+        "min_inclusive": 2
+      }
+    }
+  }
+}

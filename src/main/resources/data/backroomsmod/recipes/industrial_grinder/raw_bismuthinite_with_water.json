@@ -1,0 +1,22 @@
+{
+    "type": "techreborn:industrial_grinder",
+    "power": 64,
+    "time": 100,
+    "tank": {
+        "fluid": "minecraft:water",
+        "amount": 1000
+    },
+    "ingredients": [
+        {
+            "item": "backroomsmod:raw_bismuthinite"
+        }
+    ],
+    "results": [
+        {
+            "item": "backroomsmod:bismuthinite_dust"
+        },
+        {
+            "item": "techreborn:sulfur_dust"
+        }
+    ]
+}

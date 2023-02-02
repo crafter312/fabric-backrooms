@@ -1,0 +1,58 @@
+name: Publish on Github, Curseforge & Modrinth    #The name of your Github Action on Github.com
+
+on: [ pull_request, workflow_dispatch ]           #When your Github Action will be executed ('pull_request' -> on every Merge(/Pull) Request; 'workflow_dispatch' -> allows manual execution through Github.com
+
+env:                                              #Environment variables that can later be referenced using ${{ env.MINECRAFT_VERSION }}. These are useful for repeating information and allow for quick changes for new mod updates
+  MINECRAFT_VERSION: 1.19.3
+  JAVA_VERSION: 17
+  MOD_VERSION: 0.4.1-1.19.3
+  MOD_RELEASE_NAME: Immersive Portals 0.4.1 for Minecraft 1.19.3
+
+permissions:
+  contents: write
+
+jobs:                                             #The place where you actually tell the Github server what to do.
+  build:                                          #To publish your mod you only need one 'job', here it is called 'build'.
+    runs-on: ubuntu-latest                        #'runs-on' specifies the operation system (linux).
+    steps:
+      - name: Check Environment Variables
+        run: env
+
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+        with:
+          submodules: true
+
+      - name: Setup Java
+        uses: actions/setup-java@v2
+        with:
+          distribution: "temurin"
+          java-version: ${{env.JAVA_VERSION}}
+
+      - name: Make Gradle Wrapper Executable
+        if: ${{ runner.os != 'Windows' }}
+        run: chmod +x ./gradlew
+
+      - name: Build
+        run: ./gradlew clean build
+
+      - name: Publish (CurseForge/Modrinth/Github)
+        uses: Kir-Antipov/mc-publish@v3.2                                   #The specified MC-Publish Github Action in the version 3.2
+        with:
+          curseforge-id: 776288                                             #The id of your curseforge project
+          curseforge-token: ${{ secrets.PUBLISH_CURSEFORGE_TOKEN }}
+
+          modrinth-id: cdKVhc8A                                             #The id of your modrinth project
+          modrinth-token: ${{ secrets.PUBLISH_MODRINTH_TOKEN }}
+
+          github-tag: "v${{env.VERSION}}"
+          github-token: ${{ secrets.PUBLISH_GITHUB_TOKEN }}
+
+          name: "${{env.RELEASE_NAME}}"
+          version: "${{env.VERSION}}"
+          version-type: alpha
+          changelog-file: CHANGELOG.md                                      #The file in which the changes of your new update are specified (the path starts at your project root)
+
+          loaders: fabric
+          game-versions: "${{env.MINECRAFT_VERSION}}"
+          java: "${{env.JAVA_VERSION}}"

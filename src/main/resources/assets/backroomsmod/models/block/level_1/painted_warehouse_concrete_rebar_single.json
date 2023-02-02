@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/orientable",
+  "textures": {
+    "front": "backroomsmod:block/level_1/painted_warehouse_concrete_rebar",
+    "side": "backroomsmod:block/level_1/painted_warehouse_concrete",
+    "top": "backroomsmod:block/level_1/painted_warehouse_concrete"
+  }
+}

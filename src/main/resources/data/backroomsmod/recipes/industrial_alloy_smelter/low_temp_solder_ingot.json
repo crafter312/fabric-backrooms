@@ -1,0 +1,29 @@
+{
+  "type": "backroomsmod:industrial_alloy_smelter",
+  "power": 8,
+  "time": 200,
+  "ingredients" : [
+    {
+      "item": "backroomsmod:bismuth_ingot",
+      "count": 16
+    },
+    {
+      "tag": "c:lead_ingots",
+      "count": 6
+    },
+    {
+      "item": "backroomsmod:indium_ingot",
+      "count": 7
+    },
+    {
+      "tag": "c:tin_ingots",
+      "count": 4
+    }
+  ],
+  "results" : [
+    {
+      "item": "backroomsmod:low_temp_solder_ingot",
+      "count": 33
+    }
+  ]
+}
