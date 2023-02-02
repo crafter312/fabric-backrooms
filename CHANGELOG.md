@@ -15,3 +15,4 @@
 - added Level 1 dimension
   - custom density function type generates warehouse columns during world generation (not as a feature)
   - warehouse concrete block used for floor
+- updated mod to Minecraft 1.19.3
