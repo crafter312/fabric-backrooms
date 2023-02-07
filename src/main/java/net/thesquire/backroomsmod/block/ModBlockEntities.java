@@ -12,6 +12,7 @@ import net.minecraft.util.math.BlockPos;
 import net.thesquire.backroomsmod.BackroomsMod;
 import net.thesquire.backroomsmod.block.entity.IndustrialAlloySmelterBlockEntity;
 import net.thesquire.backroomsmod.block.entity.MagneticDistortionSystemControlComputerBlockEntity;
+import net.thesquire.backroomsmod.block.entity.PortalPlacerBlockEntity;
 import net.thesquire.backroomsmod.block.entity.flickering.FluorescentLightBlockEntity;
 import net.thesquire.backroomsmod.block.entity.flickering.MountableFluorescentLightBlockEntity;
 
@@ -23,16 +24,21 @@ public class ModBlockEntities {
     public static BlockEntityType<MagneticDistortionSystemControlComputerBlockEntity> MAGNETIC_DISTORTION_SYSTEM_CONTROL_COMPUTER;
     public static BlockEntityType<FluorescentLightBlockEntity> FLUORESCENT_LIGHT;
     public static BlockEntityType<MountableFluorescentLightBlockEntity> MOUNTABLE_FLUORESCENT_LIGHT;
+    public static BlockEntityType<PortalPlacerBlockEntity> PORTAL_PLACER;
 
     public static void registerBlockEntities() {
         BackroomsMod.LOGGER.info("Registering block entities for " + BackroomsMod.MOD_ID);
 
-        INDUSTRIAL_ALLOY_SMELTER = register("industrial_alloy_smelter", IndustrialAlloySmelterBlockEntity::new, ModBlocks.INDUSTRIAL_ALLOY_SMELTER);
-        FLUORESCENT_LIGHT = register("fluorescent_light", FluorescentLightBlockEntity::new, ModBlocks.FLUORESCENT_LIGHT);
-        MOUNTABLE_FLUORESCENT_LIGHT = register("mountable_fluorescent_light", MountableFluorescentLightBlockEntity::new, ModBlocks.MOUNTABLE_FLUORESCENT_LIGHT);
-
+        INDUSTRIAL_ALLOY_SMELTER = register("industrial_alloy_smelter",
+                IndustrialAlloySmelterBlockEntity::new, ModBlocks.INDUSTRIAL_ALLOY_SMELTER);
         MAGNETIC_DISTORTION_SYSTEM_CONTROL_COMPUTER = register("magnetic_distortion_system_control_computer",
                 MagneticDistortionSystemControlComputerBlockEntity::new, ModBlocks.MAGNETIC_DISTORTION_SYSTEM_CONTROL_COMPUTER);
+        FLUORESCENT_LIGHT = register("fluorescent_light",
+                FluorescentLightBlockEntity::new, ModBlocks.FLUORESCENT_LIGHT);
+        MOUNTABLE_FLUORESCENT_LIGHT = register("mountable_fluorescent_light",
+                MountableFluorescentLightBlockEntity::new, ModBlocks.MOUNTABLE_FLUORESCENT_LIGHT);
+        PORTAL_PLACER = register("portal_placer",
+                PortalPlacerBlockEntity::new, ModBlocks.PORTAL_PLACER);
     }
 
     public static <T extends BlockEntity> BlockEntityType<T> register(String name, BiFunction<BlockPos, BlockState, T> supplier, Block... blocks) {

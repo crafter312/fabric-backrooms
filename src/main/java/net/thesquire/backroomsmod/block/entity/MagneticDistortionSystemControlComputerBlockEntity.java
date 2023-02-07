@@ -9,10 +9,7 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Pair;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.math.Vec3i;
+import net.minecraft.util.math.*;
 import net.minecraft.world.BlockLocating;
 import net.minecraft.world.World;
 import net.thesquire.backroomsmod.BackroomsMod;
@@ -74,7 +71,7 @@ public class MagneticDistortionSystemControlComputerBlockEntity extends GenericM
 
     private void initPortal(ServerWorld serverWorld, Direction dir) {
         portal = Portal.entityType.create(serverWorld);
-        Objects.requireNonNull(portal);
+        if(portal == null) return;
 
         portal.setOriginPos(getPortalOrigin(dir));
         portal.setDestinationDimension(destDim);
@@ -87,12 +84,9 @@ public class MagneticDistortionSystemControlComputerBlockEntity extends GenericM
                 portalHeight
         );
 
-        Direction fromDir = getFacing().getOpposite();
-        Direction toDir = destPortalInfo.getRight();
-        portal.setRotationTransformationD(DQuaternion.getRotationBetween(
-                new Vec3d(fromDir.getOffsetX(), fromDir.getOffsetY(),fromDir.getOffsetZ()),
-                new Vec3d(toDir.getOffsetX(), toDir.getOffsetY(), toDir.getOffsetZ()))
-        );
+        float destAngle = PortalUtils.getAngle(getFacing().getOpposite(), destPortalInfo.getRight());
+        DQuaternion rotation = DQuaternion.fromMcQuaternion(RotationAxis.NEGATIVE_Y.rotation(destAngle));
+        portal.setRotationTransformationD(rotation);
     }
 
     @Override

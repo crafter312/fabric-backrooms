@@ -11,6 +11,7 @@ import net.thesquire.backroomsmod.portal.util.PortalStorage;
 import net.thesquire.backroomsmod.recipe.ModRecipes;
 import net.thesquire.backroomsmod.screen.ModClientGuis;
 import net.thesquire.backroomsmod.screen.ModGuis;
+import net.thesquire.backroomsmod.sound.ModSounds;
 import net.thesquire.backroomsmod.util.ModServerboundPackets;
 import net.thesquire.backroomsmod.util.mixin.MixinCallbacks;
 import net.thesquire.backroomsmod.world.ModBiomes;
@@ -24,6 +25,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Objects;
 
+//TODO fix level 0 portal rotation
 //TODO make light flickering behavior more rare
 //TODO redo painted warehouse concrete rebar texture handling
 //TODO add level 1 water puddle feature with dripping water
@@ -58,6 +60,7 @@ public class BackroomsMod implements ModInitializer {
 		ModDensityFunctions.registerModDensityFunctions();
 		ModFeatures.registerModFeatures();
 		ModGuis.registerGuis();
+		ModSounds.registerModSounds();
 		ModBlocks.registerModBlocks();
 		ModItems.registerModItems();
 		MixinCallbacks.registerCallbacks();

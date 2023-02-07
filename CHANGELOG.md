@@ -16,3 +16,10 @@
   - custom density function type generates warehouse columns during world generation (not as a feature)
   - warehouse concrete block used for floor
 - updated mod to Minecraft 1.19.3
+- fixed "Normalizing zero-length quaternion" error present after updating to 1.19.3
+- added portal placer block
+  - for use in structures and features
+  - places configured portal on first tick
+  - then destroys itself
+- fixed ModSounds class related crash
+- re-did flat_no_caves.json noise settings to fix missing ceiling tiles

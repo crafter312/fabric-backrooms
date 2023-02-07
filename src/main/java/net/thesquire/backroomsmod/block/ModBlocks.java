@@ -51,15 +51,35 @@ public class ModBlocks {
     public static final Block PAINTED_WAREHOUSE_CONCRETE = registerBlock("painted_warehouse_concrete",
             new PaintedWarehouseConcreteBlock(FabricBlockSettings.copy(WAREHOUSE_CONCRETE)));
 
-    public static final Block MOUNTABLE_FLUORESCENT_LIGHT = registerBlock("mountable_fluorescent_light",
-            new MountableFluorescentLightBlock(FabricBlockSettings.of(Material.GLASS).strength(0.3f).requiresTool()
-                    .nonOpaque().sounds(BlockSoundGroup.GLASS).solidBlock(ModBlocks::never).suffocates(ModBlocks::never)
-                    .blockVision(ModBlocks::never).luminance(MountableFluorescentLightBlock::getLuminance)), 16);
-
     // Blocks with a GUI or BlockEntity have to be registered in the method below to ensure proper register order!
     public static Block INDUSTRIAL_ALLOY_SMELTER;
     public static Block MAGNETIC_DISTORTION_SYSTEM_CONTROL_COMPUTER;
     public static Block FLUORESCENT_LIGHT;
+    public static Block MOUNTABLE_FLUORESCENT_LIGHT;
+    public static Block PORTAL_PLACER;
+
+    public static void registerModBlocks() {
+        BackroomsMod.LOGGER.info("Registering mod blocks for " + BackroomsMod.MOD_ID);
+
+        INDUSTRIAL_ALLOY_SMELTER = registerBlock("industrial_alloy_smelter",
+                new GenericMachineBlock(ModGuis.INDUSTRIAL_ALLOY_SMELTER, IndustrialAlloySmelterBlockEntity::new));
+
+        MAGNETIC_DISTORTION_SYSTEM_CONTROL_COMPUTER = registerBlock("magnetic_distortion_system_control_computer",
+                new GenericMachineBlock(ModGuis.MAGNETIC_DISTORTION_SYSTEM_CONTROL_COMPUTER, MagneticDistortionSystemControlComputerBlockEntity::new));
+
+        FLUORESCENT_LIGHT = registerBlock("fluorescent_light",
+                new FluorescentLightBlock(FabricBlockSettings.of(Material.GLASS)
+                        .strength(0.3f).requiresTool().sounds(BlockSoundGroup.GLASS)
+                        .luminance(FluorescentLightBlock::getLuminance)));
+
+        MOUNTABLE_FLUORESCENT_LIGHT = registerBlock("mountable_fluorescent_light",
+                new MountableFluorescentLightBlock(FabricBlockSettings.of(Material.GLASS).strength(0.3f).requiresTool()
+                        .nonOpaque().sounds(BlockSoundGroup.GLASS).solidBlock(ModBlocks::never).suffocates(ModBlocks::never)
+                        .blockVision(ModBlocks::never).luminance(MountableFluorescentLightBlock::getLuminance)), 16);
+
+        PORTAL_PLACER = registerBlockWithoutBlockItem("portal_placer",
+                new PortalPlacerBlock(FabricBlockSettings.of(Material.AIR).noCollision().dropsNothing().noBlockBreakParticles()));
+    }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -109,21 +129,6 @@ public class ModBlocks {
 
     private static Block registerBlockWithoutBlockItem(String name, Block block) {
         return Registry.register(Registries.BLOCK, new Identifier(BackroomsMod.MOD_ID, name), block);
-    }
-
-    public static void registerModBlocks() {
-        BackroomsMod.LOGGER.info("Registering mod blocks for " + BackroomsMod.MOD_ID);
-
-        INDUSTRIAL_ALLOY_SMELTER = registerBlock("industrial_alloy_smelter",
-                new GenericMachineBlock(ModGuis.INDUSTRIAL_ALLOY_SMELTER, IndustrialAlloySmelterBlockEntity::new));
-
-        MAGNETIC_DISTORTION_SYSTEM_CONTROL_COMPUTER = registerBlock("magnetic_distortion_system_control_computer",
-                new GenericMachineBlock(ModGuis.MAGNETIC_DISTORTION_SYSTEM_CONTROL_COMPUTER, MagneticDistortionSystemControlComputerBlockEntity::new));
-
-        FLUORESCENT_LIGHT = registerBlock("fluorescent_light",
-                new FluorescentLightBlock(FabricBlockSettings.of(Material.GLASS)
-                        .strength(0.3f).requiresTool().sounds(BlockSoundGroup.GLASS)
-                        .luminance(FluorescentLightBlock::getLuminance)));
     }
 
     /**

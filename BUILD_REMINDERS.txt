@@ -8,3 +8,33 @@ Before building this mod, REMEMBER TO DO THE FOLLOWING:
 3. Remove unnecessary library imports from modified class files
 4. Review to-do items to make sure nothing is being missed
 5. CHANGELOG.md must be updated for publishing purposes!
+
+////////////////////////////////////////////////////////////////////////////////////
+
+To use the latest version of a GitHub repository as a dependency instead of a release version:
+
+1. In Intellij, create a new project: New -> Project from Version Control...
+2. Paste the HTTPS link from the relevant GitHub repository in the URL box, which looks like this:
+
+https://github.com/TechReborn/TechReborn.git
+
+3. Click the 'Clone' button and wait for the project setup to finish
+4. Once the project setup is finished, run the two following commands in the Terminal window:
+
+./gradlew runDatagen
+./gradlew build publishToMavenLocal
+
+5. The latter of the two above commands generates a local Maven repository in the following folder:
+
+C:\Users\[USER NAME HERE]\.m2\repository\
+
+6. In your build.gradle file, add mavelLocal() at the TOP of your repositories list
+7. Add the dependency to your dependencies list, like the following example:
+
+modImplementation "TechReborn:TechReborn-unknown:5.5.0+local"
+
+The above example is essentially a file path, starting from inside the .m2/repository/ directory and
+ending with whatever subdirectory contains the relevant .jar, .module, and .pom files.
+
+8. Use the above dependency only for development and testing! When publishing a version of your mod,
+   don't forget to replace it with a release version of the relevant dependency.
