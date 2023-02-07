@@ -59,13 +59,13 @@ public class ModPlacedFeatures {
 
         register(context, LEVEL_0_WALL_PLACED_KEY,
                 configuredFeatureRegistryEntryLookup.getOrThrow(ModConfiguredFeatures.LEVEL_0_WALL_KEY),
-                modifiersWithCount(6, level0Floor, level0WallBlockModifier));
+                modifiersWithCount(8, level0Floor, level0WallBlockModifier));
         register(context, LEVEL_0_THIN_STRAIGHT_WALL_PLACED_KEY,
                 configuredFeatureRegistryEntryLookup.getOrThrow(ModConfiguredFeatures.LEVEL_0_THIN_STRAIGHT_WALL_KEY),
-                modifiersWithCount(4, level0Floor, level0WallBlockModifier));
+                modifiersWithCount(14, level0Floor, level0WallBlockModifier));
         register(context, LEVEL_0_THIN_CROOKED_WALL_PLACED_KEY,
                 configuredFeatureRegistryEntryLookup.getOrThrow(ModConfiguredFeatures.LEVEL_0_THIN_CROOKED_WALL_KEY),
-                modifiersWithCount(7, level0Floor, level0WallBlockModifier));
+                modifiersWithCount(12, level0Floor, level0WallBlockModifier));
 
         register(context, LEVEL_1_WALL_LIGHTS_PLACED_KEY,
                 configuredFeatureRegistryEntryLookup.getOrThrow(ModConfiguredFeatures.LEVEL_1_WALL_LIGHTS_KEY),

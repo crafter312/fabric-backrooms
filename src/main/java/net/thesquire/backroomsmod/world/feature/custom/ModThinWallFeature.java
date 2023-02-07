@@ -3,9 +3,7 @@ package net.thesquire.backroomsmod.world.feature.custom;
 import com.mojang.serialization.Codec;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.Vec3i;
+import net.minecraft.util.math.*;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.StructureWorldAccess;
 import net.minecraft.world.gen.feature.Feature;
@@ -35,6 +33,7 @@ public class ModThinWallFeature extends Feature<ModThinWallFeatureConfig> {
 
     private boolean generateStraightWall(BlockPos origin, StructureWorldAccess world, ModThinWallFeatureConfig config, Random random,
                                          int length, int height, Vec3i dir) {
+        ChunkPos chunkPos = world.getChunk(origin).getPos();
         boolean setBlocks = false;
 
         // limit wall length to chunk size
@@ -46,6 +45,10 @@ public class ModThinWallFeature extends Feature<ModThinWallFeatureConfig> {
             int l = t / height;
 
             BlockPos pos = origin.add(dir.multiply(l)).add(0,h,0);
+            int x = ChunkSectionPos.getSectionCoord(pos.getX());
+            int z = ChunkSectionPos.getSectionCoord(pos.getZ());
+            if(x != chunkPos.x || z != chunkPos.z)
+                return false;
 
             boolean notTarget = true;
             for (OreFeatureConfig.Target target : config.targets()) {
@@ -82,11 +85,14 @@ public class ModThinWallFeature extends Feature<ModThinWallFeatureConfig> {
             if(dirLengths[index] > 16) return setBlocks;
 
             setBlocks = generateStraightWall(pos, world, config, random, length, height, dir);
+            if(!setBlocks)
+                return false;
+
             pos = pos.add(dir.multiply(length));
             oldDir = dir;
         }
 
-        return setBlocks;
+        return true;
     }
 
     private Vec3i getRandomDirection(Random random) {

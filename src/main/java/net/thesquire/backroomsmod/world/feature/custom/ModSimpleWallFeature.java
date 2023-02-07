@@ -4,6 +4,8 @@ import com.mojang.serialization.Codec;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
+import net.minecraft.util.math.ChunkSectionPos;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.StructureWorldAccess;
 import net.minecraft.world.gen.feature.Feature;
@@ -26,6 +28,7 @@ public class ModSimpleWallFeature extends Feature<ModSimpleWallFeatureConfig> {
         BlockPos pos = context.getOrigin();
         ModSimpleWallFeatureConfig config = context.getConfig();
         StructureWorldAccess world = context.getWorld();
+        ChunkPos chunkPos = world.getChunk(pos).getPos();
         Random random = context.getRandom();
 
         // limit width and depth to chunk size
@@ -43,7 +46,13 @@ public class ModSimpleWallFeature extends Feature<ModSimpleWallFeatureConfig> {
             int i = t % width;
             int j = t / (width * depth);
             int k = (t / width) % depth;
+
             BlockPos blockPos = startPos.add(i, j, k);
+            int x = ChunkSectionPos.getSectionCoord(blockPos.getX());
+            int z = ChunkSectionPos.getSectionCoord(blockPos.getZ());
+            if(x != chunkPos.x || z != chunkPos.z)
+                continue;
+
             for(OreFeatureConfig.Target target : config.targets()) {
                 if (!shouldPlace(world.getBlockState(blockPos), target, context.getRandom())) continue;
                 world.setBlockState(blockPos, target.state, Block.NOTIFY_ALL);

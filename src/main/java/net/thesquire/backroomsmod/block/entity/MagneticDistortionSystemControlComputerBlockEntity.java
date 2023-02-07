@@ -84,8 +84,8 @@ public class MagneticDistortionSystemControlComputerBlockEntity extends GenericM
                 portalHeight
         );
 
-        float destAngle = PortalUtils.getAngle(getFacing().getOpposite(), destPortalInfo.getRight());
-        DQuaternion rotation = DQuaternion.fromMcQuaternion(RotationAxis.NEGATIVE_Y.rotation(destAngle));
+        float destAngleRad = (float) Math.toRadians(PortalUtils.getAngle(getFacing().getOpposite(), destPortalInfo.getRight()));
+        DQuaternion rotation = DQuaternion.fromMcQuaternion(RotationAxis.NEGATIVE_Y.rotation(destAngleRad));
         portal.setRotationTransformationD(rotation);
     }
 
