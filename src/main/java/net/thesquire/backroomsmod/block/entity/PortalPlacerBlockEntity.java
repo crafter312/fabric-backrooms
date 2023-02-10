@@ -5,6 +5,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtHelper;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.property.Properties;
@@ -18,7 +19,6 @@ import net.thesquire.backroomsmod.block.ModBlockEntities;
 import net.thesquire.backroomsmod.util.ModUtils;
 import qouteall.imm_ptl.core.portal.Portal;
 import qouteall.imm_ptl.core.portal.PortalManipulation;
-import qouteall.q_misc_util.Helper;
 import qouteall.q_misc_util.dimension.DimId;
 
 // for the time being, this block entity assumes that there is no scale transformation between the two dimensions
@@ -27,8 +27,11 @@ public class PortalPlacerBlockEntity extends BlockEntity {
     private RegistryKey<World> dimensionTo = null;
     private int width = 10;
     private int height = 4;
-    private Vec3d origin;
-    private Vec3d destination;
+    private final Vec3d origin;
+    private Double destinationX = null;
+    private Double destinationY = null;
+    private Double destinationZ = null;
+    private BlockState replacementState = Blocks.AIR.getDefaultState();
 
     /**
      * This parameter can be written to via the {@code PortalPlacerBlockEntity::readNbt} method,
@@ -44,14 +47,14 @@ public class PortalPlacerBlockEntity extends BlockEntity {
     public PortalPlacerBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlockEntities.PORTAL_PLACER, pos, state);
         this.origin = getPortalOrigin(state);
-        this.destination = this.origin;
     }
 
     public void tick(World world, BlockState state) {
         if(world.isClient() || !this.active || this.dimensionTo == null || !state.contains(Properties.FACING)) return;
 
-        initPortal((ServerWorld) world, state);
-        world.setBlockState(getPos(), Blocks.AIR.getDefaultState(), Block.NOTIFY_ALL);
+        boolean success = initPortal((ServerWorld) world, state);
+        if(success)
+            world.setBlockState(getPos(), this.replacementState, Block.NOTIFY_ALL);
     }
 
     @Override
@@ -60,8 +63,13 @@ public class PortalPlacerBlockEntity extends BlockEntity {
             DimId.putWorldId(nbt, "dimensionTo", this.dimensionTo);
         nbt.putInt("width", this.width);
         nbt.putInt("height", this.height);
-        Helper.putVec3d(nbt, "origin", this.origin);
-        Helper.putVec3d(nbt, "destination", this.destination);
+        if(destinationX != null)
+            nbt.putDouble("destinationX", this.destinationX);
+        if(destinationY != null)
+            nbt.putDouble("destinationY", this.destinationY);
+        if(destinationZ != null)
+            nbt.putDouble("destinationZ", this.destinationZ);
+        nbt.put("replacementState", NbtHelper.fromBlockState(this.replacementState));
     }
 
     // each nbt key is treated as optional so the nbt can be partially set using the setblock command
@@ -73,20 +81,32 @@ public class PortalPlacerBlockEntity extends BlockEntity {
             this.width = nbt.getInt("width");
         if(nbt.contains("height"))
             this.height = nbt.getInt("height");
-        this.origin = ModUtils.getVec3dComponents(nbt, "origin", this.origin);
-        this.destination = ModUtils.getVec3dComponents(nbt, "destination", this.destination);
+        if(nbt.contains("destinationX"))
+            this.destinationX = nbt.getDouble("destinationX");
+        if(nbt.contains("destinationY"))
+            this.destinationY = nbt.getDouble("destinationY");
+        if(nbt.contains("destinationZ"))
+            this.destinationZ = nbt.getDouble("destinationZ");
+        if(nbt.contains("replacementState"))
+            this.replacementState = ModUtils.blockStateFromNbt(nbt.getCompound("replacementState"));
 
+        // read only nbt value to disable portal creation upon placement by setblock command or similar method
         if(nbt.contains("active"))
             this.active = nbt.getBoolean("active");
     }
 
-    public void initPortal(ServerWorld serverWorld, BlockState state) {
+    public boolean initPortal(ServerWorld serverWorld, BlockState state) {
         Portal portal = Portal.entityType.create(serverWorld);
-        if(portal == null) return;
+        if(portal == null)
+            return false;
 
         portal.setOriginPos(this.origin);
         portal.setDestinationDimension(this.dimensionTo != null ? this.dimensionTo : serverWorld.getRegistryKey());
-        portal.setDestination(this.destination);
+        portal.setDestination(new Vec3d(
+                this.destinationX != null ? this.destinationX : this.origin.getX(),
+                this.destinationY != null ? this.destinationY : this.origin.getY(),
+                this.destinationZ != null ? this.destinationZ : this.origin.getZ()
+        ));
 
         portal.setOrientationAndSize(
                 getPortalHorizontalVec(state),
@@ -95,13 +115,18 @@ public class PortalPlacerBlockEntity extends BlockEntity {
                 this.height
         );
 
-        portal.world.spawnEntity(portal);
+        boolean spawned = portal.world.spawnEntity(portal);
+        if(!spawned) {
+            BackroomsMod.LOGGER.warn("Failed to spawn portal at " + this.origin);
+            return false;
+        }
         PortalManipulation.completeBiWayBiFacedPortal(
                 portal,
                 (p) -> BackroomsMod.LOGGER.info("Removed " + p),
-                (p) -> BackroomsMod.LOGGER.info("Added " + p),
+                (p) -> {},
                 Portal.entityType
         );
+        return true;
     }
 
     private Vec3d getPortalOrigin(BlockState state) {

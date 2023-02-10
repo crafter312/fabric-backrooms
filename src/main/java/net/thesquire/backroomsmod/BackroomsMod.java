@@ -25,7 +25,6 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Objects;
 
-//TODO fix level 0 portal rotation
 //TODO make light flickering behavior more rare
 //TODO redo painted warehouse concrete rebar texture handling
 //TODO add level 1 water puddle feature with dripping water

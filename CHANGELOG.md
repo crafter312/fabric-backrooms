@@ -20,6 +20,15 @@
 - added portal placer block
   - for use in structures and features
   - places configured portal on first tick
-  - then destroys itself
+  - then destroys itself and replaces with specified block state (air by default)
+  - width, height, destination dimension, replace block, etc. can all be configured via nbt data
+    - "active" nbt tag can be set false to disable portal creation while configuring the block
+    - this tag does not save when closing the world, can only be written to
+  - replace block uses same format as BlockStateTag described in Minecraft wiki
+    - https://minecraft.fandom.com/wiki/Tutorials/Command_NBT_tags#Blocks
 - fixed ModSounds class related crash
 - re-did flat_no_caves.json noise settings to fix missing ceiling tiles
+- added level 1 portal structure
+  - generates in level 0
+  - contains portal placer block to place the portals
+  - 8 block wide portal
