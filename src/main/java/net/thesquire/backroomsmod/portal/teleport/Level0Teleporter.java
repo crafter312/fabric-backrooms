@@ -8,7 +8,8 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.world.BlockLocating;
 import net.minecraft.world.border.WorldBorder;
 import net.thesquire.backroomsmod.portal.util.PortalUtils;
-import net.thesquire.backroomsmod.world.structure.ModStructureUtils;
+import net.thesquire.backroomsmod.util.ModUtils;
+import net.thesquire.backroomsmod.world.structure.ModStructureKeys;
 
 import java.util.Optional;
 
@@ -17,7 +18,7 @@ public class Level0Teleporter {
     public static Pair<Optional<BlockLocating.Rectangle>, Direction> findDestinationPortal(ServerWorld world, BlockPos blockPos, Block frameBlock) {
         WorldBorder worldBorder = world.getWorldBorder();
 
-        BlockPos structurePos = ModStructureUtils.findStructure(world, blockPos).orElseThrow();
+        BlockPos structurePos = ModUtils.findStructure(world, blockPos, ModStructureKeys.THRESHOLD_CHAMBER).orElseThrow();
         Pair<BlockPos, Direction> portalInfo = findPortalInfo(world, structurePos, frameBlock).orElseThrow();
         if (!worldBorder.contains(portalInfo.getLeft())) return new Pair<>(Optional.empty(), portalInfo.getRight());
 

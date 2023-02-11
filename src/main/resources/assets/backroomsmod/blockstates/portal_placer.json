@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "backroomsmod:block/portal_placer"
+    }
+  }
+}

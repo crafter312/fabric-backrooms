@@ -16,12 +16,21 @@ import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 import net.thesquire.backroomsmod.BackroomsMod;
 import net.thesquire.backroomsmod.block.ModBlockEntities;
+import net.thesquire.backroomsmod.portal.util.PortalUtils;
 import net.thesquire.backroomsmod.util.ModUtils;
+import net.thesquire.backroomsmod.world.structure.ModStructureKeys;
 import qouteall.imm_ptl.core.portal.Portal;
 import qouteall.imm_ptl.core.portal.PortalManipulation;
 import qouteall.q_misc_util.dimension.DimId;
 
-// for the time being, this block entity assumes that there is no scale transformation between the two dimensions
+import java.util.Optional;
+
+/**
+ * For the time being, this block entity assumes that there is no scale transformation between the two dimensions.
+ * Additionally, if creating a vertical portal, please don't change the facing direction of the block when placing
+ * it! The BlockEntity uses the block's default facing direction as reference when determining how much to rotate
+ * the destination structure when placing it.
+ */
 public class PortalPlacerBlockEntity extends BlockEntity {
 
     private RegistryKey<World> dimensionTo = null;
@@ -32,6 +41,8 @@ public class PortalPlacerBlockEntity extends BlockEntity {
     private Double destinationY = null;
     private Double destinationZ = null;
     private BlockState replacementState = Blocks.AIR.getDefaultState();
+
+    private Portal portal = null;
 
     /**
      * This parameter can be written to via the {@code PortalPlacerBlockEntity::readNbt} method,
@@ -52,9 +63,28 @@ public class PortalPlacerBlockEntity extends BlockEntity {
     public void tick(World world, BlockState state) {
         if(world.isClient() || !this.active || this.dimensionTo == null || !state.contains(Properties.FACING)) return;
 
-        boolean success = initPortal((ServerWorld) world, state);
-        if(success)
+        ServerWorld serverWorld = (ServerWorld) world;
+        boolean success = initPortal(serverWorld, state);
+        if(success) {
+            Optional<BlockPos> optional = ModUtils.findStructure(serverWorld, this.getPos(), ModStructureKeys.LEVEL_1_PORTAL_8W);
+            if(optional.isPresent()) {
+                float angle;
+                try {
+                    angle = PortalUtils.getAngle(state.getBlock().getDefaultState().get(Properties.FACING), state.get(Properties.FACING));
+                }
+                catch (IllegalStateException illegalStateException) {
+                    angle = 0;
+                }
+
+                ModUtils.placeStructure(
+                        (ServerWorld) this.portal.getDestinationWorld(),
+                        "backroomsmod:level_1/level_1_portal_destination_8w",
+                        optional.get().offset(Direction.UP, this.pos.getY() + 1),
+                        (int) angle);
+            }
+
             world.setBlockState(getPos(), this.replacementState, Block.NOTIFY_ALL);
+        }
     }
 
     @Override
@@ -96,32 +126,32 @@ public class PortalPlacerBlockEntity extends BlockEntity {
     }
 
     public boolean initPortal(ServerWorld serverWorld, BlockState state) {
-        Portal portal = Portal.entityType.create(serverWorld);
-        if(portal == null)
+        this.portal = Portal.entityType.create(serverWorld);
+        if(this.portal == null)
             return false;
 
-        portal.setOriginPos(this.origin);
-        portal.setDestinationDimension(this.dimensionTo != null ? this.dimensionTo : serverWorld.getRegistryKey());
-        portal.setDestination(new Vec3d(
+        this.portal.setOriginPos(this.origin);
+        this.portal.setDestinationDimension(this.dimensionTo != null ? this.dimensionTo : serverWorld.getRegistryKey());
+        this.portal.setDestination(new Vec3d(
                 this.destinationX != null ? this.destinationX : this.origin.getX(),
                 this.destinationY != null ? this.destinationY : this.origin.getY(),
                 this.destinationZ != null ? this.destinationZ : this.origin.getZ()
         ));
 
-        portal.setOrientationAndSize(
+        this.portal.setOrientationAndSize(
                 getPortalHorizontalVec(state),
                 getPortalUpVec(state),
                 this.width,
                 this.height
         );
 
-        boolean spawned = portal.world.spawnEntity(portal);
+        boolean spawned = this.portal.world.spawnEntity(this.portal);
         if(!spawned) {
             BackroomsMod.LOGGER.warn("Failed to spawn portal at " + this.origin);
             return false;
         }
         PortalManipulation.completeBiWayBiFacedPortal(
-                portal,
+                this.portal,
                 (p) -> BackroomsMod.LOGGER.info("Removed " + p),
                 (p) -> {},
                 Portal.entityType
