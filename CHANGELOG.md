@@ -27,6 +27,7 @@
   - replace block uses same format as BlockStateTag described in Minecraft wiki
     - https://minecraft.fandom.com/wiki/Tutorials/Command_NBT_tags#Blocks
   - can be configured to place an additional structure in the destination dimension
+  - additional isMiddlePortal tag specifies whether portal generates in middle of block like vanilla portals or not
 - fixed ModSounds class related crash
 - re-did flat_no_caves.json noise settings to fix missing ceiling tiles
 - added level 1 portal structure

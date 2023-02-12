@@ -14,6 +14,7 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
+import net.minecraft.world.gen.structure.Structure;
 import net.thesquire.backroomsmod.BackroomsMod;
 import net.thesquire.backroomsmod.block.ModBlockEntities;
 import net.thesquire.backroomsmod.portal.util.PortalUtils;
@@ -21,6 +22,7 @@ import net.thesquire.backroomsmod.util.ModUtils;
 import net.thesquire.backroomsmod.world.structure.ModStructureKeys;
 import qouteall.imm_ptl.core.portal.Portal;
 import qouteall.imm_ptl.core.portal.PortalManipulation;
+import qouteall.q_misc_util.Helper;
 import qouteall.q_misc_util.dimension.DimId;
 
 import java.util.Optional;
@@ -36,12 +38,22 @@ public class PortalPlacerBlockEntity extends BlockEntity {
     private RegistryKey<World> dimensionTo = null;
     private int width = 10;
     private int height = 4;
-    private final Vec3d origin;
+    private Vec3d origin;
+    private boolean isMiddlePortal = false;
     private Double destinationX = null;
     private Double destinationY = null;
     private Double destinationZ = null;
     private BlockState replacementState = Blocks.AIR.getDefaultState();
+    private Vec3i destStructureOffset = new Vec3i(0, 0, 0);
 
+    // registry key of a structure naturally generating in the destination dimension
+    private RegistryKey<Structure> structureKey = null;
+
+    // string describing the file path of the destination structure nbt file
+    // e.g. "backroomsmod:level_1/level_1_portal_destination_8w"
+    private String destStructureNbtPath = null;
+
+    // the portal is not stored as nbt, it's just used to get the destination world for extra structure placement
     private Portal portal = null;
 
     /**
@@ -64,26 +76,15 @@ public class PortalPlacerBlockEntity extends BlockEntity {
         if(world.isClient() || !this.active || this.dimensionTo == null || !state.contains(Properties.FACING)) return;
 
         ServerWorld serverWorld = (ServerWorld) world;
+
+        // update portal origin to account for changed variables like isMiddlePortal
+        this.origin = getPortalOrigin(state);
+
         boolean success = initPortal(serverWorld, state);
         if(success) {
-            Optional<BlockPos> optional = ModUtils.findStructure(serverWorld, this.getPos(), ModStructureKeys.LEVEL_1_PORTAL_8W);
-            if(optional.isPresent()) {
-                float angle;
-                try {
-                    angle = PortalUtils.getAngle(state.getBlock().getDefaultState().get(Properties.FACING), state.get(Properties.FACING));
-                }
-                catch (IllegalStateException illegalStateException) {
-                    angle = 0;
-                }
-
-                ModUtils.placeStructure(
-                        (ServerWorld) this.portal.getDestinationWorld(),
-                        "backroomsmod:level_1/level_1_portal_destination_8w",
-                        optional.get().offset(Direction.UP, this.pos.getY() + 1),
-                        (int) angle);
-            }
-
+            placeDestStructure(serverWorld, state);
             world.setBlockState(getPos(), this.replacementState, Block.NOTIFY_ALL);
+            world.removeBlockEntity(this.pos);
         }
     }
 
@@ -93,13 +94,19 @@ public class PortalPlacerBlockEntity extends BlockEntity {
             DimId.putWorldId(nbt, "dimensionTo", this.dimensionTo);
         nbt.putInt("width", this.width);
         nbt.putInt("height", this.height);
-        if(destinationX != null)
+        nbt.putBoolean("isMiddlePortal", this.isMiddlePortal);
+        if(this.destinationX != null)
             nbt.putDouble("destinationX", this.destinationX);
-        if(destinationY != null)
+        if(this.destinationY != null)
             nbt.putDouble("destinationY", this.destinationY);
-        if(destinationZ != null)
+        if(this.destinationZ != null)
             nbt.putDouble("destinationZ", this.destinationZ);
         nbt.put("replacementState", NbtHelper.fromBlockState(this.replacementState));
+        Helper.putVec3i(nbt, "destStructureOffset", this.destStructureOffset);
+        if(this.structureKey != null)
+            nbt.putString("structureKey", this.structureKey.getValue().toString());
+        if(this.destStructureNbtPath != null)
+            nbt.putString("destStructureNbtPath", this.destStructureNbtPath);
     }
 
     // each nbt key is treated as optional so the nbt can be partially set using the setblock command
@@ -111,6 +118,8 @@ public class PortalPlacerBlockEntity extends BlockEntity {
             this.width = nbt.getInt("width");
         if(nbt.contains("height"))
             this.height = nbt.getInt("height");
+        if(nbt.contains("isMiddlePortal"))
+            this.isMiddlePortal = nbt.getBoolean("isMiddlePortal");
         if(nbt.contains("destinationX"))
             this.destinationX = nbt.getDouble("destinationX");
         if(nbt.contains("destinationY"))
@@ -119,6 +128,11 @@ public class PortalPlacerBlockEntity extends BlockEntity {
             this.destinationZ = nbt.getDouble("destinationZ");
         if(nbt.contains("replacementState"))
             this.replacementState = ModUtils.blockStateFromNbt(nbt.getCompound("replacementState"));
+        this.destStructureOffset = ModUtils.getVec3iComponents(nbt, "destStructureOffset", this.destStructureOffset);
+        if(nbt.contains("structureKey"))
+            this.structureKey = ModUtils.structureIdToKey(nbt.getString("structureKey"));
+        if(nbt.contains("destStructureNbtPath"))
+            this.destStructureNbtPath = nbt.getString("destStructureNbtPath");
 
         // read only nbt value to disable portal creation upon placement by setblock command or similar method
         if(nbt.contains("active"))
@@ -159,10 +173,35 @@ public class PortalPlacerBlockEntity extends BlockEntity {
         return true;
     }
 
+    public void placeDestStructure(ServerWorld serverWorld, BlockState state) {
+        if(this.structureKey == null || this.destStructureNbtPath == null) return;
+
+        Optional<BlockPos> optional = ModUtils.findStructure(serverWorld, this.getPos(), this.structureKey);
+        if(optional.isPresent()) {
+            float angle;
+            try {
+                angle = PortalUtils.getAngle(state.getBlock().getDefaultState().get(Properties.FACING), state.get(Properties.FACING));
+            }
+            catch (IllegalStateException illegalStateException) {
+                angle = 0;
+            }
+
+            ModUtils.placeStructure(
+                    (ServerWorld) this.portal.getDestinationWorld(),
+                    this.destStructureNbtPath,
+                    optional.get().add(
+                            this.destStructureOffset.getX(),
+                            this.pos.getY() + this.destStructureOffset.getY(),
+                            this.destStructureOffset.getZ()),
+                    (int) angle);
+        }
+    }
+
     private Vec3d getPortalOrigin(BlockState state) {
         return getPos().toCenterPos()
                 .add(getPortalUpVec(state).multiply((((float) this.height) / 2) - 0.5))
-                .add(getPortalHorizontalVec(state).multiply((1 - (this.width % 2)) * 0.5));
+                .add(getPortalHorizontalVec(state).multiply((1 - (this.width % 2)) * 0.5))
+                .add(ModUtils.vec3itod(getFacingOrDefault(state)).multiply(ModUtils.boolToFloat(this.isMiddlePortal, 0, 0.5f)));
     }
 
     private Vec3d getPortalUpVec(BlockState state) {
@@ -171,8 +210,12 @@ public class PortalPlacerBlockEntity extends BlockEntity {
     }
 
     private Vec3d getPortalHorizontalVec(BlockState state) {
-        Vec3i facing = state.contains(Properties.FACING) ? state.get(Properties.FACING).getVector() : Direction.SOUTH.getVector();
+        Vec3i facing = getFacingOrDefault(state);
         return getPortalUpVec(state).crossProduct(new Vec3d(facing.getX(), facing.getY(), facing.getZ()));
+    }
+
+    private Vec3i getFacingOrDefault(BlockState state) {
+        return state.contains(Properties.FACING) ? state.get(Properties.FACING).getVector() : Direction.SOUTH.getVector();
     }
 
 }

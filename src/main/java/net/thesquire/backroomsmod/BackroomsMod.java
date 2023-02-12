@@ -31,10 +31,8 @@ import java.util.Objects;
 //TODO modify GridWalls density function to add passageways
 //TODO test different smooth noise type for GridWalls density function
 //TODO figure out how to implement regional level 1 dimension blackout events
-//TODO generify portal placer block's destination structure feature
 
 //smaller items
-//TODO add nbt option for portal placer to place portals on edge of block
 //TODO make mountable fluorescent light block break when surface breaks, like torch
 
 public class BackroomsMod implements ModInitializer {
