@@ -32,9 +32,6 @@ import java.util.Objects;
 //TODO test different smooth noise type for GridWalls density function
 //TODO figure out how to implement regional level 1 dimension blackout events
 
-//smaller items
-//TODO make mountable fluorescent light block break when surface breaks, like torch
-
 public class BackroomsMod implements ModInitializer {
 	public static final String MOD_ID = "backroomsmod";
 

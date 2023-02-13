@@ -5,10 +5,7 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.block.enums.WallMountLocation;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemPlacementContext;
-import net.minecraft.item.ItemStack;
-import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.EnumProperty;
@@ -21,6 +18,8 @@ import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldAccess;
+import net.minecraft.world.WorldView;
 import net.thesquire.backroomsmod.block.ModBlockEntities;
 import net.thesquire.backroomsmod.block.ModBlockProperties;
 import net.thesquire.backroomsmod.block.entity.flickering.FluorescentLightBlockEntity;
@@ -94,6 +93,21 @@ public class MountableFluorescentLightBlock extends HorizontalFacingBlock implem
                 .with(LUMINANCE, FluorescentLightBlockEntity.defaultLuminance));
     }
 
+    @SuppressWarnings("deprecation")
+    @Override
+    public boolean canPlaceAt(BlockState state, WorldView world, BlockPos pos) {
+        Direction direction;
+        switch (state.get(WALL_MOUNT_LOCATION)) {
+            case FLOOR -> direction = Direction.UP;
+            case CEILING -> direction = Direction.DOWN;
+            default -> direction = state.get(FACING);
+        }
+
+        BlockPos blockPos = pos.offset(direction.getOpposite());
+        BlockState blockState = world.getBlockState(blockPos);
+        return blockState.isSideSolidFullSquare(world, blockPos, direction);
+    }
+
     @Nullable
     @Override
     public BlockState getPlacementState(ItemPlacementContext ctx) {
@@ -104,6 +118,20 @@ public class MountableFluorescentLightBlock extends HorizontalFacingBlock implem
             case UP -> facingState.with(WALL_MOUNT_LOCATION, WallMountLocation.FLOOR);
             default -> getDefaultState().with(FACING, blockFace).with(WALL_MOUNT_LOCATION, WallMountLocation.WALL);
         };
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public BlockState getStateForNeighborUpdate(BlockState state, Direction direction, BlockState neighborState, WorldAccess world, BlockPos pos, BlockPos neighborPos) {
+        if(state.canPlaceAt(world, pos)) return state;
+
+        Direction stateDir;
+        switch (state.get(WALL_MOUNT_LOCATION)) {
+            case FLOOR -> stateDir = Direction.UP;
+            case CEILING -> stateDir = Direction.DOWN;
+            default -> stateDir = state.get(FACING);
+        }
+        return direction.getOpposite() == stateDir ? Blocks.AIR.getDefaultState() : state;
     }
 
     @SuppressWarnings("deprecation")
@@ -154,14 +182,6 @@ public class MountableFluorescentLightBlock extends HorizontalFacingBlock implem
             return false;
         }
         return blockEntity.onSyncedBlockEvent(type, data);
-    }
-
-    @SuppressWarnings("deprecation")
-    @Override
-    @Nullable
-    public NamedScreenHandlerFactory createScreenHandlerFactory(BlockState state, World world, BlockPos pos) {
-        BlockEntity blockEntity = world.getBlockEntity(pos);
-        return blockEntity instanceof NamedScreenHandlerFactory ? (NamedScreenHandlerFactory) blockEntity : null;
     }
 
     /*@Nullable

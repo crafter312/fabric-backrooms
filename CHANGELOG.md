@@ -7,6 +7,7 @@
   - custom block model and voxel shape
   - can be placed on floor, wall, ceiling, and oriented in different directions
   - emits light
+  - breaks when mount surface breaks, like torches
 - added FlickeringBlockEntity super class
   - used for both fluorescent light blocks
   - simplifies shared light flickering functionality

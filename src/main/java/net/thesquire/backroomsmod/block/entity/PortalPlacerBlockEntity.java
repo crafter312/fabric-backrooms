@@ -19,7 +19,6 @@ import net.thesquire.backroomsmod.BackroomsMod;
 import net.thesquire.backroomsmod.block.ModBlockEntities;
 import net.thesquire.backroomsmod.portal.util.PortalUtils;
 import net.thesquire.backroomsmod.util.ModUtils;
-import net.thesquire.backroomsmod.world.structure.ModStructureKeys;
 import qouteall.imm_ptl.core.portal.Portal;
 import qouteall.imm_ptl.core.portal.PortalManipulation;
 import qouteall.q_misc_util.Helper;
