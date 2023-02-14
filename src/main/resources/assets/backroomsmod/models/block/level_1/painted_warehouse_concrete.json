@@ -1,6 +1,6 @@
 {
-  "parent": "block/cube_all",
+  "parent": "minecraft:block/template_single_face",
   "textures": {
-    "all": "backroomsmod:block/level_1/painted_warehouse_concrete"
+    "texture": "backroomsmod:block/level_1/painted_warehouse_concrete"
   }
 }

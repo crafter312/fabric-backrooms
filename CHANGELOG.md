@@ -3,6 +3,11 @@
 - added warehouse concrete block
   - waterloggable
   - custom texture and step sounds for waterlogged state
+- added painted warehouse concrete block
+  - block state to drip water from bottom of block
+  - water drip particles make drip sound in level 1
+  - multipart blockstate json file enables each block side to be either plain or have rebar
+  - block sides can be "chiseled" with pickaxe right click to expose rebar
 - added mountable fluorescent light
   - custom block model and voxel shape
   - can be placed on floor, wall, ceiling, and oriented in different directions

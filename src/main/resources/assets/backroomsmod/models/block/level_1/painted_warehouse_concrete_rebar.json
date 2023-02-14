@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/template_single_face",
+  "textures": {
+    "texture": "backroomsmod:block/level_1/painted_warehouse_concrete_rebar"
+  }
+}
