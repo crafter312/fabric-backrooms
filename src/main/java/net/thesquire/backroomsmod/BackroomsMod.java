@@ -6,6 +6,7 @@ import net.minecraft.world.PersistentStateManager;
 import net.thesquire.backroomsmod.block.ModBlocks;
 import net.thesquire.backroomsmod.block.ModBlockEntities;
 import net.thesquire.backroomsmod.dimension.ModDimensionKeys;
+import net.thesquire.backroomsmod.event.ModGameEvents;
 import net.thesquire.backroomsmod.item.ModItems;
 import net.thesquire.backroomsmod.portal.util.PortalStorage;
 import net.thesquire.backroomsmod.recipe.ModRecipes;
@@ -29,7 +30,7 @@ import java.util.Objects;
 //TODO add level 1 water puddle feature with dripping water
 //TODO modify GridWalls density function to add passageways
 //TODO test different smooth noise type for GridWalls density function
-//TODO figure out how to implement regional level 1 dimension blackout events
+//TODO test and finalize blackout event
 
 public class BackroomsMod implements ModInitializer {
 	public static final String MOD_ID = "backroomsmod";
@@ -58,6 +59,7 @@ public class BackroomsMod implements ModInitializer {
 		ModFeatures.registerModFeatures();
 		ModGuis.registerGuis();
 		ModSounds.registerModSounds();
+		ModGameEvents.registerModGameEvents();
 		ModBlocks.registerModBlocks();
 		ModItems.registerModItems();
 		MixinCallbacks.registerCallbacks();

@@ -6,6 +6,7 @@ import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.block.enums.WallMountLocation;
 import net.minecraft.item.ItemPlacementContext;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.EnumProperty;
@@ -20,6 +21,7 @@ import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
 import net.minecraft.world.WorldView;
+import net.minecraft.world.event.listener.GameEventListener;
 import net.thesquire.backroomsmod.block.ModBlockEntities;
 import net.thesquire.backroomsmod.block.ModBlockProperties;
 import net.thesquire.backroomsmod.block.entity.flickering.FluorescentLightBlockEntity;
@@ -184,11 +186,12 @@ public class MountableFluorescentLightBlock extends HorizontalFacingBlock implem
         return blockEntity.onSyncedBlockEvent(type, data);
     }
 
-    /*@Nullable
+    @Nullable
     @Override
-    public <T extends BlockEntity> GameEventListener getGameEventListener(ServerWorld world, T blockEntity) {
+    public <T extends BlockEntity> GameEventListener  getGameEventListener(ServerWorld world, T blockEntity) {
         if(blockEntity instanceof MountableFluorescentLightBlockEntity)
             return ((MountableFluorescentLightBlockEntity)blockEntity).getEventListener();
         return null;
-    }*/
+    }
+
 }
