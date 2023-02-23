@@ -30,7 +30,6 @@ import java.util.Objects;
 //TODO add level 1 water puddle feature with dripping water
 //TODO modify GridWalls density function to add passageways
 //TODO test different smooth noise type for GridWalls density function
-//TODO test and finalize blackout event
 
 public class BackroomsMod implements ModInitializer {
 	public static final String MOD_ID = "backroomsmod";

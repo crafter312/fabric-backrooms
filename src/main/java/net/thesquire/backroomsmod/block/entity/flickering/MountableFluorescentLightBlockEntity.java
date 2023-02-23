@@ -48,7 +48,7 @@ public class MountableFluorescentLightBlockEntity extends FlickeringBlockEntity 
             world.setBlockState(pos, state.with(ModBlockProperties.LUMINANCE, defaultLuminance), Block.NOTIFY_ALL);
         blockEntity.resetBlackoutParams();
 
-        if(state.get(ModBlockProperties.FLICKERING) && blockEntity.randomDouble() < 0.01) {
+        if(state.get(ModBlockProperties.FLICKERING) && blockEntity.randomDouble() < 0.00001) {
             blockEntity.generateBlackoutParams();
             Objects.requireNonNull(world.getServer()).sendMessage(Text.literal("Range: " + blockEntity.getBlackoutRange()));
             Objects.requireNonNull(world.getServer()).sendMessage(Text.literal("Time: " + blockEntity.getBlackoutTime()));
