@@ -1,11 +1,11 @@
 {
-  "feature": "backroomsmod:level_1_puddle",
+  "feature": "backroomsmod:level_1_dripping_concrete",
   "placement": [
     {
       "type": "minecraft:block_predicate_filter",
       "predicate": {
         "type": "minecraft:matching_blocks",
-        "blocks": "backroomsmod:warehouse_concrete"
+        "blocks": "backroomsmod:painted_warehouse_concrete"
       }
     }
   ]

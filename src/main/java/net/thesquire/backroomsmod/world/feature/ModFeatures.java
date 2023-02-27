@@ -13,35 +13,26 @@ public class ModFeatures {
     public static final RegistryKey<Feature<?>> THIN_WALL_KEY = registerKey("thin_wall");
     public static final RegistryKey<Feature<?>> BLOCK_GRID_KEY = registerKey("lighting_feature");
     public static final RegistryKey<Feature<?>> WALL_MOUNTABLE_KEY = registerKey("wall_mountable");
+    public static final RegistryKey<Feature<?>> DOUBLE_FEATURE_KEY = registerKey("double_feature");
 
     public static Feature<ModSimpleWallFeatureConfig> WALL;
     public static Feature<ModThinWallFeatureConfig> THIN_WALL;
     public static Feature<ModBlockGridFeatureConfig> BLOCK_GRID;
     public static Feature<ModWallMountableFeatureConfig> WALL_MOUNTABLE;
+    public static Feature<ModDoubleFeatureConfig> DOUBLE_FEATURE;
 
     public static void registerModFeatures() {
         BackroomsMod.LOGGER.info("Registering mod features for " + BackroomsMod.MOD_ID);
 
-        WALL = register("wall", new ModSimpleWallFeature(ModSimpleWallFeatureConfig.CODEC));
-        THIN_WALL = register("thin_wall", new ModThinWallFeature(ModThinWallFeatureConfig.CODEC));
-        BLOCK_GRID  = register("lighting_feature", new ModBlockGridFeature(ModBlockGridFeatureConfig.CODEC));
-        WALL_MOUNTABLE = register("wall_mountable", new ModWallMountableFeature(ModWallMountableFeatureConfig.CODEC));
-    }
-
-    public static void bootstrap(Registerable<Feature<?>> context) {
-        register(context, WALL_KEY, new ModSimpleWallFeature(ModSimpleWallFeatureConfig.CODEC));
-        register(context, THIN_WALL_KEY, new ModThinWallFeature(ModThinWallFeatureConfig.CODEC));
-        register(context, BLOCK_GRID_KEY, new ModBlockGridFeature(ModBlockGridFeatureConfig.CODEC));
-        register(context, WALL_MOUNTABLE_KEY, new ModWallMountableFeature(ModWallMountableFeatureConfig.CODEC));
+        WALL = register(WALL_KEY.getValue().getPath(), new ModSimpleWallFeature(ModSimpleWallFeatureConfig.CODEC));
+        THIN_WALL = register(THIN_WALL_KEY.getValue().getPath(), new ModThinWallFeature(ModThinWallFeatureConfig.CODEC));
+        BLOCK_GRID  = register(BLOCK_GRID_KEY.getValue().getPath(), new ModBlockGridFeature(ModBlockGridFeatureConfig.CODEC));
+        WALL_MOUNTABLE = register(WALL_MOUNTABLE_KEY.getValue().getPath(), new ModWallMountableFeature(ModWallMountableFeatureConfig.CODEC));
+        DOUBLE_FEATURE = register(DOUBLE_FEATURE_KEY.getValue().getPath(), new ModDoubleFeature(ModDoubleFeatureConfig.CODEC));
     }
 
     public static RegistryKey<Feature<?>> registerKey(String name) {
         return RegistryKey.of(RegistryKeys.FEATURE, new Identifier(BackroomsMod.MOD_ID, name));
-    }
-
-    private static <FC extends FeatureConfig, F extends Feature<FC>> void register(Registerable<Feature<?>> context,
-                                                                                 RegistryKey<Feature<?>> key, F feature) {
-        context.register(key, feature);
     }
 
     private static <FC extends FeatureConfig, F extends Feature<FC>> F register(String name, F feature) {

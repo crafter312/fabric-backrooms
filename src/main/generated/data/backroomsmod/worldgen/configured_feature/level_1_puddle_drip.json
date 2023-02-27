@@ -1,0 +1,12 @@
+{
+  "type": "backroomsmod:double_feature",
+  "config": {
+    "offset": [
+      0,
+      -5,
+      0
+    ],
+    "primaryFeature": "backroomsmod:level_1_dripping_concrete_placed",
+    "secondaryFeature": "backroomsmod:level_1_puddle_placed"
+  }
+}

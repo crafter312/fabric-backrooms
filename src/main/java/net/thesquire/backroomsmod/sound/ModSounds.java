@@ -54,7 +54,7 @@ public class ModSounds {
                 SoundEvents.BLOCK_STONE_FALL);
 
         WAREHOUSE_CONCRETE_WATERLOGGED = new BlockSoundGroup(
-                0.9f,
+                1.0f,
                 1.0f,
                 SoundEvents.BLOCK_STONE_BREAK,
                 WAREHOUSE_CONCRETE_WATERLOGGED_STEP,

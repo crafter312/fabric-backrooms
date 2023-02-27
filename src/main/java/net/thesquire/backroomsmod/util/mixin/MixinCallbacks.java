@@ -86,7 +86,7 @@ public class MixinCallbacks {
         // plays water drip sound for water splash particles in level 1 dimension
         IAddParticleCallback.EVENT.register((world, particle, x, y, z) -> {
             if (!world.getRegistryKey().equals(ModDimensionKeys.LEVEL_1) || !particle.equals(ParticleTypes.SPLASH)) return;
-            world.playSound(x, y, z, ModSounds.LEVEL_1_DRIP, SoundCategory.AMBIENT, 1f, 1f, true);
+            world.playSound(x, y, z, ModSounds.LEVEL_1_DRIP, SoundCategory.AMBIENT, 0.8f, 1f, true);
         });
 
     }

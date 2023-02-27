@@ -11,18 +11,14 @@ import net.minecraft.structure.rule.BlockStateMatchRuleTest;
 import net.minecraft.structure.rule.RuleTest;
 import net.minecraft.structure.rule.TagMatchRuleTest;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.Vec3i;
 import net.minecraft.util.math.intprovider.ConstantIntProvider;
 import net.minecraft.util.math.intprovider.UniformIntProvider;
-import net.minecraft.world.gen.feature.ConfiguredFeature;
-import net.minecraft.world.gen.feature.Feature;
-import net.minecraft.world.gen.feature.FeatureConfig;
-import net.minecraft.world.gen.feature.OreFeatureConfig;
+import net.minecraft.world.gen.feature.*;
 import net.thesquire.backroomsmod.BackroomsMod;
+import net.thesquire.backroomsmod.block.ModBlockProperties;
 import net.thesquire.backroomsmod.block.ModBlocks;
-import net.thesquire.backroomsmod.world.feature.custom.ModBlockGridFeatureConfig;
-import net.thesquire.backroomsmod.world.feature.custom.ModSimpleWallFeatureConfig;
-import net.thesquire.backroomsmod.world.feature.custom.ModThinWallFeatureConfig;
-import net.thesquire.backroomsmod.world.feature.custom.ModWallMountableFeatureConfig;
+import net.thesquire.backroomsmod.world.feature.custom.*;
 
 import java.util.List;
 
@@ -41,9 +37,11 @@ public class ModConfiguredFeatures {
     // level 1 features
     public static final RegistryKey<ConfiguredFeature<?, ?>> LEVEL_1_WALL_LIGHTS_KEY = registerKey("level_1_wall_lights");
     public static final RegistryKey<ConfiguredFeature<?, ?>> LEVEL_1_PUDDLE_KEY = registerKey("level_1_puddle");
+    public static final RegistryKey<ConfiguredFeature<?, ?>> LEVEL_1_DRIPPING_CONCRETE_KEY = registerKey("level_1_dripping_concrete");
+    public static final RegistryKey<ConfiguredFeature<?, ?>> LEVEL_1_PUDDLE_DRIP_KEY = registerKey("level_1_puddle_drip");
 
     public static void bootstrap(Registerable<ConfiguredFeature<?,?>> context) {
-        var featureRegistryEntryLookup = context.getRegistryLookup(RegistryKeys.FEATURE);
+        var placedFeatureRegistryEntryLookup = context.getRegistryLookup(RegistryKeys.PLACED_FEATURE);
 
         RuleTest stoneReplaceables = new TagMatchRuleTest(BlockTags.STONE_ORE_REPLACEABLES);
 
@@ -55,8 +53,13 @@ public class ModConfiguredFeatures {
                 OreFeatureConfig.createTarget(new BlockMatchRuleTest(Blocks.LIGHT_GRAY_CARPET), ModBlocks.YELLOW_WALLPAPER.getDefaultState()),
                 OreFeatureConfig.createTarget(new BlockMatchRuleTest(Blocks.AIR), ModBlocks.YELLOW_WALLPAPER.getDefaultState()));
         List<OreFeatureConfig.Target> Level1PuddleTarget = List.of(
-                OreFeatureConfig.createTarget(new BlockStateMatchRuleTest(ModBlocks.WAREHOUSE_CONCRETE.getDefaultState().with(Properties.WATERLOGGED, false)),
+                OreFeatureConfig.createTarget(new BlockStateMatchRuleTest(ModBlocks.WAREHOUSE_CONCRETE.getDefaultState()
+                                .with(Properties.WATERLOGGED, false)),
                         ModBlocks.WAREHOUSE_CONCRETE.getDefaultState().with(Properties.WATERLOGGED, true)));
+        List<OreFeatureConfig.Target> Level1DrippingConcreteTarget = List.of(
+                OreFeatureConfig.createTarget(new BlockStateMatchRuleTest(ModBlocks.PAINTED_WAREHOUSE_CONCRETE.getDefaultState()
+                                .with(ModBlockProperties.DRIPPING, false)),
+                        ModBlocks.PAINTED_WAREHOUSE_CONCRETE.getDefaultState().with(ModBlockProperties.DRIPPING, true)));
 
         register(context, BISMUTHINITE_ORE_KEY, Feature.ORE, new OreFeatureConfig(overworldBismuthiniteOres, 8, 0.2f));
         register(context, FLUORESCENT_LIGHT_KEY, ModFeatures.BLOCK_GRID, new ModBlockGridFeatureConfig(fluorescentLightTarget,
@@ -72,8 +75,13 @@ public class ModConfiguredFeatures {
                 UniformIntProvider.create(3, 6), UniformIntProvider.create(8, 14), ConstantIntProvider.create(4), false));
 
         register(context, LEVEL_1_WALL_LIGHTS_KEY, ModFeatures.WALL_MOUNTABLE, new ModWallMountableFeatureConfig(
-                ModBlocks.MOUNTABLE_FLUORESCENT_LIGHT.getDefaultState(), ConstantIntProvider.create(18), 0.02f, 0.01f));
+                ModBlocks.MOUNTABLE_FLUORESCENT_LIGHT.getDefaultState(), ConstantIntProvider.create(18), 0.02f, 0.1f));
         register(context, LEVEL_1_PUDDLE_KEY, Feature.ORE, new OreFeatureConfig(Level1PuddleTarget, 30, 0f));
+        register(context, LEVEL_1_DRIPPING_CONCRETE_KEY, Feature.REPLACE_SINGLE_BLOCK, new EmeraldOreFeatureConfig(Level1DrippingConcreteTarget));
+        register(context, LEVEL_1_PUDDLE_DRIP_KEY, ModFeatures.DOUBLE_FEATURE, new ModDoubleFeatureConfig(
+                placedFeatureRegistryEntryLookup.getOrThrow(ModPlacedFeatures.LEVEL_1_DRIPPING_CONCRETE_PLACED_KEY),
+                placedFeatureRegistryEntryLookup.getOrThrow(ModPlacedFeatures.LEVEL_1_PUDDLE_PLACED_KEY),
+                new Vec3i(0, -5, 0)));
     }
 
     public static RegistryKey<ConfiguredFeature<?, ?>> registerKey(String name) {

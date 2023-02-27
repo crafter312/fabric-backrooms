@@ -26,8 +26,6 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Objects;
 
-//TODO make light flickering behavior more rare
-//TODO add level 1 water puddle feature with dripping water
 //TODO modify GridWalls density function to add passageways
 //TODO test different smooth noise type for GridWalls density function
 

@@ -15,6 +15,7 @@ import net.minecraft.world.gen.feature.ConfiguredFeature;
 import net.minecraft.world.gen.feature.PlacedFeature;
 import net.minecraft.world.gen.placementmodifier.*;
 import net.thesquire.backroomsmod.BackroomsMod;
+import net.thesquire.backroomsmod.block.ModBlocks;
 
 import java.util.List;
 
@@ -33,6 +34,9 @@ public class ModPlacedFeatures {
     // level 1 features
     public static RegistryKey<PlacedFeature> LEVEL_1_WALL_LIGHTS_PLACED_KEY = registerKey("level_1_wall_lights_placed");
     public static RegistryKey<PlacedFeature> LEVEL_1_PUDDLE_PLACED_KEY = registerKey("level_1_puddle_placed");
+    public static RegistryKey<PlacedFeature> LEVEL_1_DRIPPING_CONCRETE_PLACED_KEY = registerKey("level_1_dripping_concrete_placed");
+    public static RegistryKey<PlacedFeature> LEVEL_1_PUDDLE_DRIP_PLACED_KEY = registerKey("level_1_puddle_drip_placed");
+    public static RegistryKey<PlacedFeature> LEVEL_1_PUDDLE_INDIVIDUAL_PLACED_KEY = registerKey("level_1_puddle_individual_placed_key");
 
     public static void bootstrap(Registerable<PlacedFeature> context) {
         var configuredFeatureRegistryEntryLookup = context.getRegistryLookup(RegistryKeys.CONFIGURED_FEATURE);
@@ -46,6 +50,7 @@ public class ModPlacedFeatures {
 
         PlacementModifier level1LightPlacement = HeightRangePlacementModifier.uniform(YOffset.fixed(23), YOffset.fixed(23));
         PlacementModifier level1Floor = HeightRangePlacementModifier.uniform(YOffset.fixed(20), YOffset.fixed(20));
+        PlacementModifier level1Ceiling = HeightRangePlacementModifier.uniform(YOffset.fixed(25), YOffset.fixed(25));
 
         register(context, BISMUTHINITE_ORE_PLACED_KEY,
                 configuredFeatureRegistryEntryLookup.getOrThrow(ModConfiguredFeatures.BISMUTHINITE_ORE_KEY),
@@ -69,10 +74,19 @@ public class ModPlacedFeatures {
 
         register(context, LEVEL_1_WALL_LIGHTS_PLACED_KEY,
                 configuredFeatureRegistryEntryLookup.getOrThrow(ModConfiguredFeatures.LEVEL_1_WALL_LIGHTS_KEY),
-                modifiersWithCount(16, level1LightPlacement));
+                modifiersWithCount(14, level1LightPlacement));
         register(context, LEVEL_1_PUDDLE_PLACED_KEY,
                 configuredFeatureRegistryEntryLookup.getOrThrow(ModConfiguredFeatures.LEVEL_1_PUDDLE_KEY),
-                modifiersWithCount(12, level1Floor));
+                BlockFilterPlacementModifier.of(BlockPredicate.matchingBlocks(ModBlocks.WAREHOUSE_CONCRETE)));
+        register(context, LEVEL_1_DRIPPING_CONCRETE_PLACED_KEY,
+                configuredFeatureRegistryEntryLookup.getOrThrow(ModConfiguredFeatures.LEVEL_1_DRIPPING_CONCRETE_KEY),
+                BlockFilterPlacementModifier.of(BlockPredicate.matchingBlocks(ModBlocks.PAINTED_WAREHOUSE_CONCRETE)));
+        register(context, LEVEL_1_PUDDLE_DRIP_PLACED_KEY,
+                configuredFeatureRegistryEntryLookup.getOrThrow(ModConfiguredFeatures.LEVEL_1_PUDDLE_DRIP_KEY),
+                modifiersWithCount(4, level1Ceiling));
+        register(context, LEVEL_1_PUDDLE_INDIVIDUAL_PLACED_KEY,
+                configuredFeatureRegistryEntryLookup.getOrThrow(ModConfiguredFeatures.LEVEL_1_PUDDLE_KEY),
+                modifiersWithCount(8, level1Floor));
     }
 
     public static RegistryKey<PlacedFeature> registerKey(String name) {

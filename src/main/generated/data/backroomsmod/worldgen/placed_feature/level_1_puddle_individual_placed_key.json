@@ -1,9 +1,9 @@
 {
-  "feature": "backroomsmod:level_1_wall_lights",
+  "feature": "backroomsmod:level_1_puddle",
   "placement": [
     {
       "type": "minecraft:count",
-      "count": 14
+      "count": 8
     },
     {
       "type": "minecraft:in_square"
@@ -13,10 +13,10 @@
       "height": {
         "type": "minecraft:uniform",
         "max_inclusive": {
-          "absolute": 23
+          "absolute": 20
         },
         "min_inclusive": {
-          "absolute": 23
+          "absolute": 20
         }
       }
     },

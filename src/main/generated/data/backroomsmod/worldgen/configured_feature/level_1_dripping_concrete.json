@@ -1,0 +1,36 @@
+{
+  "type": "minecraft:replace_single_block",
+  "config": {
+    "targets": [
+      {
+        "state": {
+          "Name": "backroomsmod:painted_warehouse_concrete",
+          "Properties": {
+            "down": "false",
+            "dripping": "true",
+            "east": "false",
+            "north": "false",
+            "south": "false",
+            "up": "false",
+            "west": "false"
+          }
+        },
+        "target": {
+          "block_state": {
+            "Name": "backroomsmod:painted_warehouse_concrete",
+            "Properties": {
+              "down": "false",
+              "dripping": "false",
+              "east": "false",
+              "north": "false",
+              "south": "false",
+              "up": "false",
+              "west": "false"
+            }
+          },
+          "predicate_type": "minecraft:blockstate_match"
+        }
+      }
+    ]
+  }
+}

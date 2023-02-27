@@ -78,7 +78,9 @@ public class ModBiomes {
         level1BiomeBuilder.feature(GenerationStep.Feature.LOCAL_MODIFICATIONS,
                 placedFeatureRegistryEntryLookup.getOrThrow(ModPlacedFeatures.LEVEL_1_WALL_LIGHTS_PLACED_KEY));
         level1BiomeBuilder.feature(GenerationStep.Feature.LOCAL_MODIFICATIONS,
-                placedFeatureRegistryEntryLookup.getOrThrow(ModPlacedFeatures.LEVEL_1_PUDDLE_PLACED_KEY));
+                placedFeatureRegistryEntryLookup.getOrThrow(ModPlacedFeatures.LEVEL_1_PUDDLE_DRIP_PLACED_KEY));
+        level1BiomeBuilder.feature(GenerationStep.Feature.LOCAL_MODIFICATIONS,
+                placedFeatureRegistryEntryLookup.getOrThrow(ModPlacedFeatures.LEVEL_1_PUDDLE_INDIVIDUAL_PLACED_KEY));
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

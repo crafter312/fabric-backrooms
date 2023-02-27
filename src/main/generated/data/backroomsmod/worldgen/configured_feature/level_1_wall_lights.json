@@ -10,7 +10,7 @@
         "luminance": "15"
       }
     },
-    "flickeringChance": 0.01,
+    "flickeringChance": 0.1,
     "placeChance": 0.02,
     "range": 18
   }
