@@ -46,12 +46,28 @@
           "z_column_size": 2
         },
         "argument2": {
-          "type": "backroomsmod:grid_walls",
-          "xz_scale": 69,
-          "x_spacing": 26,
-          "z_spacing": 26,
-          "x_wall_thickness": 2,
-          "z_wall_thickness": 2
+          "type": "minecraft:range_choice",
+          "input": "minecraft:y",
+          "min_inclusive": 21,
+          "max_exclusive": 24,
+          "when_in_range": {
+            "type": "backroomsmod:grid_walls",
+            "xz_scale": 69,
+            "x_spacing": 26,
+            "z_spacing": 26,
+            "x_wall_thickness": 2,
+            "z_wall_thickness": 2,
+            "has_doors": true,
+            "door_width": 3
+          },
+          "when_out_of_range": {
+            "type": "backroomsmod:grid_walls",
+            "xz_scale": 69,
+            "x_spacing": 26,
+            "z_spacing": 26,
+            "x_wall_thickness": 2,
+            "z_wall_thickness": 2
+          }
         }
       },
       "when_out_of_range": 1
