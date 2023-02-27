@@ -52,7 +52,8 @@
           "max_exclusive": 24,
           "when_in_range": {
             "type": "backroomsmod:grid_walls",
-            "xz_scale": 69,
+            "input": "minecraft:overworld/base_3d_noise",
+            "xz_scale": 120,
             "x_spacing": 26,
             "z_spacing": 26,
             "x_wall_thickness": 2,
@@ -62,7 +63,8 @@
           },
           "when_out_of_range": {
             "type": "backroomsmod:grid_walls",
-            "xz_scale": 69,
+            "input": "minecraft:overworld/base_3d_noise",
+            "xz_scale": 120,
             "x_spacing": 26,
             "z_spacing": 26,
             "x_wall_thickness": 2,

@@ -4,9 +4,6 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.util.dynamic.CodecHolder;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.noise.SimplexNoiseSampler;
-import net.minecraft.util.math.random.Random;
 import net.minecraft.world.gen.densityfunction.DensityFunction;
 import net.thesquire.backroomsmod.util.ModUtils;
 
@@ -17,10 +14,11 @@ public class GridWalls implements DensityFunction.Base {
     private static final int MIN_DOOR_WIDTH = 1;
     private static final Codec<Integer> SPACING_RANGE = Codec.intRange(1, MAX_SPACING);
     private static final Codec<Integer> WALL_THICKNESS_RANGE = Codec.intRange(1, MAX_WALL_THICKNESS);
-    private static final Codec<Float> SCALE_RANGE = Codec.floatRange(0, 100);
+    private static final Codec<Integer> SCALE_RANGE = Codec.intRange(0, 10000);
     private static final Codec<Integer> DOOR_WIDTH_RANGE = Codec.intRange(MIN_DOOR_WIDTH, (MAX_SPACING - MAX_WALL_THICKNESS) / 2);
 
     private static final MapCodec<GridWalls> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+            DensityFunction.FUNCTION_CODEC.fieldOf("input").forGetter(GridWalls::getInput),
             SCALE_RANGE.fieldOf("xz_scale").forGetter(GridWalls::getXz_scale),
             SPACING_RANGE.fieldOf("x_spacing").forGetter(GridWalls::getX_spacing),
             SPACING_RANGE.fieldOf("z_spacing").forGetter(GridWalls::getZ_spacing),
@@ -34,7 +32,8 @@ public class GridWalls implements DensityFunction.Base {
 
     ////////////////////////////////////////////////////////////////////////////////////
 
-    private final float xz_scale;
+    private final DensityFunction input;
+    private final int xz_scale;
     private final int x_spacing;
     private final int z_spacing;
     private final int x_wall_thickness;
@@ -47,10 +46,8 @@ public class GridWalls implements DensityFunction.Base {
     private final int x_total;
     private final int z_total;
 
-    private final Random random = Random.create();
-    private final SimplexNoiseSampler noiseSampler = new SimplexNoiseSampler(random);
-
-    public GridWalls(float xz_scale, int x_spacing, int z_spacing, int x_wall_thickness, int z_wall_thickness, boolean has_doors, int door_width) {
+    public GridWalls(DensityFunction input, int xz_scale, int x_spacing, int z_spacing, int x_wall_thickness, int z_wall_thickness, boolean has_doors, int door_width) {
+        this.input = input;
         this.xz_scale = xz_scale;
         this.x_spacing = x_spacing;
         this.z_spacing = z_spacing;
@@ -79,7 +76,7 @@ public class GridWalls implements DensityFunction.Base {
         int x_wall_coord = (x / this.x_total) + ((-1 + Integer.signum(x)) / 2);
         int z_wall_coord = (z / this.z_total) + ((-1 + Integer.signum(z)) / 2);
 
-        double sample = this.noiseSampler.sample(x_wall_coord * this.xz_scale, z_wall_coord * this.xz_scale);
+        double sample = this.input.sample(new UnblendedNoisePos(x_wall_coord * this.xz_scale, 0, z_wall_coord * this.xz_scale));
         double is_wall = Math.signum(sample);
         if(!this.has_doors || (x_result && z_result) || is_wall < 0) return is_wall;
 
@@ -109,7 +106,8 @@ public class GridWalls implements DensityFunction.Base {
         return CODEC_HOLDER;
     }
 
-    public float getXz_scale() { return this.xz_scale; }
+    public DensityFunction getInput() { return this.input; }
+    public int getXz_scale() { return this.xz_scale; }
     public int getX_spacing() { return this.x_spacing; }
     public int getZ_spacing() { return this.z_spacing; }
     public int getX_wall_thickness() { return this.x_wall_thickness; }
