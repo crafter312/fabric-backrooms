@@ -38,6 +38,8 @@ public class ModConfiguredFeatures {
     public static final RegistryKey<ConfiguredFeature<?, ?>> LEVEL_1_WALL_LIGHTS_KEY = registerKey("level_1_wall_lights");
     public static final RegistryKey<ConfiguredFeature<?, ?>> LEVEL_1_PUDDLE_KEY = registerKey("level_1_puddle");
     public static final RegistryKey<ConfiguredFeature<?, ?>> LEVEL_1_DRIPPING_CONCRETE_KEY = registerKey("level_1_dripping_concrete");
+    public static final RegistryKey<ConfiguredFeature<?, ?>> LEVEL_1_REBAR_CONCRETE_KEY = registerKey("level_1_rebar_concrete");
+    public static final RegistryKey<ConfiguredFeature<?, ?>> LEVEL_1_DRIPPING_REBAR_KEY = registerKey("level_1_dripping_rebar");
     public static final RegistryKey<ConfiguredFeature<?, ?>> LEVEL_1_PUDDLE_DRIP_KEY = registerKey("level_1_puddle_drip");
 
     public static void bootstrap(Registerable<ConfiguredFeature<?,?>> context) {
@@ -58,8 +60,17 @@ public class ModConfiguredFeatures {
                         ModBlocks.WAREHOUSE_CONCRETE.getDefaultState().with(Properties.WATERLOGGED, true)));
         List<OreFeatureConfig.Target> Level1DrippingConcreteTarget = List.of(
                 OreFeatureConfig.createTarget(new BlockStateMatchRuleTest(ModBlocks.PAINTED_WAREHOUSE_CONCRETE.getDefaultState()
+                                .with(Properties.DOWN, true)),
+                        ModBlocks.PAINTED_WAREHOUSE_CONCRETE.getDefaultState().with(Properties.DOWN, true)
+                                .with(ModBlockProperties.DRIPPING, true)));
+        List<OreFeatureConfig.Target> Level1RebarConcreteTarget = List.of(
+                OreFeatureConfig.createTarget(new BlockStateMatchRuleTest(ModBlocks.PAINTED_WAREHOUSE_CONCRETE.getDefaultState()
                                 .with(ModBlockProperties.DRIPPING, false)),
-                        ModBlocks.PAINTED_WAREHOUSE_CONCRETE.getDefaultState().with(ModBlockProperties.DRIPPING, true)));
+                        ModBlocks.PAINTED_WAREHOUSE_CONCRETE.getDefaultState().with(Properties.DOWN, true)),
+                OreFeatureConfig.createTarget(new BlockStateMatchRuleTest(ModBlocks.PAINTED_WAREHOUSE_CONCRETE.getDefaultState()
+                                .with(ModBlockProperties.DRIPPING, true)),
+                        ModBlocks.PAINTED_WAREHOUSE_CONCRETE.getDefaultState().with(ModBlockProperties.DRIPPING, true)
+                                .with(Properties.DOWN, true)));
 
         register(context, BISMUTHINITE_ORE_KEY, Feature.ORE, new OreFeatureConfig(overworldBismuthiniteOres, 8, 0.2f));
         register(context, FLUORESCENT_LIGHT_KEY, ModFeatures.BLOCK_GRID, new ModBlockGridFeatureConfig(fluorescentLightTarget,
@@ -78,8 +89,14 @@ public class ModConfiguredFeatures {
                 ModBlocks.MOUNTABLE_FLUORESCENT_LIGHT.getDefaultState(), ConstantIntProvider.create(18), 0.02f, 0.1f));
         register(context, LEVEL_1_PUDDLE_KEY, Feature.ORE, new OreFeatureConfig(Level1PuddleTarget, 30, 0f));
         register(context, LEVEL_1_DRIPPING_CONCRETE_KEY, Feature.REPLACE_SINGLE_BLOCK, new EmeraldOreFeatureConfig(Level1DrippingConcreteTarget));
-        register(context, LEVEL_1_PUDDLE_DRIP_KEY, ModFeatures.DOUBLE_FEATURE, new ModDoubleFeatureConfig(
+        register(context, LEVEL_1_REBAR_CONCRETE_KEY, ModFeatures.FLAT_ORE_FEATURE,
+                new OreFeatureConfig(Level1RebarConcreteTarget, 10, 0f));
+        register(context, LEVEL_1_DRIPPING_REBAR_KEY, ModFeatures.DOUBLE_FEATURE, new ModDoubleFeatureConfig(
+                placedFeatureRegistryEntryLookup.getOrThrow(ModPlacedFeatures.LEVEL_1_REBAR_CONCRETE_SINGLE_PLACED_KEY),
                 placedFeatureRegistryEntryLookup.getOrThrow(ModPlacedFeatures.LEVEL_1_DRIPPING_CONCRETE_PLACED_KEY),
+                new Vec3i(0,0,0)));
+        register(context, LEVEL_1_PUDDLE_DRIP_KEY, ModFeatures.DOUBLE_FEATURE, new ModDoubleFeatureConfig(
+                placedFeatureRegistryEntryLookup.getOrThrow(ModPlacedFeatures.LEVEL_1_DRIPPING_REBAR_PLACED_KEY),
                 placedFeatureRegistryEntryLookup.getOrThrow(ModPlacedFeatures.LEVEL_1_PUDDLE_PLACED_KEY),
                 new Vec3i(0, -5, 0)));
     }

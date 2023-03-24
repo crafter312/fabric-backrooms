@@ -6,7 +6,7 @@
         "state": {
           "Name": "backroomsmod:painted_warehouse_concrete",
           "Properties": {
-            "down": "false",
+            "down": "true",
             "dripping": "true",
             "east": "false",
             "north": "false",
@@ -19,7 +19,7 @@
           "block_state": {
             "Name": "backroomsmod:painted_warehouse_concrete",
             "Properties": {
-              "down": "false",
+              "down": "true",
               "dripping": "false",
               "east": "false",
               "north": "false",

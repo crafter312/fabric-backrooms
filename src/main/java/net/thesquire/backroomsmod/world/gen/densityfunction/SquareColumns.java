@@ -9,7 +9,7 @@ import net.minecraft.world.gen.densityfunction.DensityFunction;
 public class SquareColumns implements DensityFunction.Base {
 
     private static final Codec<Integer> SPACING_RANGE = Codec.intRange(1, 100);
-    private static final Codec<Integer> COLUMN_SIZE = Codec.intRange(1, 4);
+    private static final Codec<Integer> COLUMN_SIZE = Codec.intRange(1, 100);
     private static final MapCodec<SquareColumns> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
             SPACING_RANGE.fieldOf("x_spacing").forGetter(SquareColumns::getX_spacing),
             SPACING_RANGE.fieldOf("z_spacing").forGetter(SquareColumns::getZ_spacing),

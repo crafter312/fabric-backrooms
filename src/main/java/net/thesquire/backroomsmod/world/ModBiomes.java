@@ -81,6 +81,8 @@ public class ModBiomes {
                 placedFeatureRegistryEntryLookup.getOrThrow(ModPlacedFeatures.LEVEL_1_PUDDLE_DRIP_PLACED_KEY));
         level1BiomeBuilder.feature(GenerationStep.Feature.LOCAL_MODIFICATIONS,
                 placedFeatureRegistryEntryLookup.getOrThrow(ModPlacedFeatures.LEVEL_1_PUDDLE_INDIVIDUAL_PLACED_KEY));
+        level1BiomeBuilder.feature(GenerationStep.Feature.LOCAL_MODIFICATIONS,
+                placedFeatureRegistryEntryLookup.getOrThrow(ModPlacedFeatures.LEVEL_1_REBAR_CONCRETE_PLACED_KEY));
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

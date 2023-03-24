@@ -1,9 +1,9 @@
 {
-  "feature": "backroomsmod:level_1_puddle_drip",
+  "feature": "backroomsmod:level_1_rebar_concrete",
   "placement": [
     {
       "type": "minecraft:count",
-      "count": 3
+      "count": 2
     },
     {
       "type": "minecraft:in_square"

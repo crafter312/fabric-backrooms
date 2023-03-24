@@ -1,0 +1,67 @@
+{
+  "type": "backroomsmod:flat_ore_feature",
+  "config": {
+    "discard_chance_on_air_exposure": 0.0,
+    "size": 10,
+    "targets": [
+      {
+        "state": {
+          "Name": "backroomsmod:painted_warehouse_concrete",
+          "Properties": {
+            "down": "true",
+            "dripping": "false",
+            "east": "false",
+            "north": "false",
+            "south": "false",
+            "up": "false",
+            "west": "false"
+          }
+        },
+        "target": {
+          "block_state": {
+            "Name": "backroomsmod:painted_warehouse_concrete",
+            "Properties": {
+              "down": "false",
+              "dripping": "false",
+              "east": "false",
+              "north": "false",
+              "south": "false",
+              "up": "false",
+              "west": "false"
+            }
+          },
+          "predicate_type": "minecraft:blockstate_match"
+        }
+      },
+      {
+        "state": {
+          "Name": "backroomsmod:painted_warehouse_concrete",
+          "Properties": {
+            "down": "true",
+            "dripping": "true",
+            "east": "false",
+            "north": "false",
+            "south": "false",
+            "up": "false",
+            "west": "false"
+          }
+        },
+        "target": {
+          "block_state": {
+            "Name": "backroomsmod:painted_warehouse_concrete",
+            "Properties": {
+              "down": "false",
+              "dripping": "true",
+              "east": "false",
+              "north": "false",
+              "south": "false",
+              "up": "false",
+              "west": "false"
+            }
+          },
+          "predicate_type": "minecraft:blockstate_match"
+        }
+      }
+    ]
+  }
+}

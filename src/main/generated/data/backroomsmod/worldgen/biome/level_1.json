@@ -25,7 +25,8 @@
     [
       "backroomsmod:level_1_wall_lights_placed",
       "backroomsmod:level_1_puddle_drip_placed",
-      "backroomsmod:level_1_puddle_individual_placed_key"
+      "backroomsmod:level_1_puddle_individual_placed",
+      "backroomsmod:level_1_rebar_concrete_placed"
     ]
   ],
   "precipitation": "none",

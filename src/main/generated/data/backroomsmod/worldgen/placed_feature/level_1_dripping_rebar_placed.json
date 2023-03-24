@@ -1,0 +1,12 @@
+{
+  "feature": "backroomsmod:level_1_dripping_rebar",
+  "placement": [
+    {
+      "type": "minecraft:block_predicate_filter",
+      "predicate": {
+        "type": "minecraft:matching_blocks",
+        "blocks": "backroomsmod:painted_warehouse_concrete"
+      }
+    }
+  ]
+}

@@ -16,6 +16,7 @@ import net.minecraft.world.gen.feature.PlacedFeature;
 import net.minecraft.world.gen.placementmodifier.*;
 import net.thesquire.backroomsmod.BackroomsMod;
 import net.thesquire.backroomsmod.block.ModBlocks;
+import net.thesquire.backroomsmod.config.ModConfig;
 
 import java.util.List;
 
@@ -35,8 +36,12 @@ public class ModPlacedFeatures {
     public static RegistryKey<PlacedFeature> LEVEL_1_WALL_LIGHTS_PLACED_KEY = registerKey("level_1_wall_lights_placed");
     public static RegistryKey<PlacedFeature> LEVEL_1_PUDDLE_PLACED_KEY = registerKey("level_1_puddle_placed");
     public static RegistryKey<PlacedFeature> LEVEL_1_DRIPPING_CONCRETE_PLACED_KEY = registerKey("level_1_dripping_concrete_placed");
+    public static RegistryKey<PlacedFeature> LEVEL_1_REBAR_CONCRETE_SINGLE_PLACED_KEY = registerKey("level_1_rebar_concrete_single_placed");
+    public static RegistryKey<PlacedFeature> LEVEL_1_DRIPPING_REBAR_PLACED_KEY = registerKey("level_1_dripping_rebar_placed");
     public static RegistryKey<PlacedFeature> LEVEL_1_PUDDLE_DRIP_PLACED_KEY = registerKey("level_1_puddle_drip_placed");
-    public static RegistryKey<PlacedFeature> LEVEL_1_PUDDLE_INDIVIDUAL_PLACED_KEY = registerKey("level_1_puddle_individual_placed_key");
+    public static RegistryKey<PlacedFeature> LEVEL_1_PUDDLE_INDIVIDUAL_PLACED_KEY = registerKey("level_1_puddle_individual_placed");
+    public static RegistryKey<PlacedFeature> LEVEL_1_REBAR_CONCRETE_PLACED_KEY = registerKey("level_1_rebar_concrete_placed");
+
 
     public static void bootstrap(Registerable<PlacedFeature> context) {
         var configuredFeatureRegistryEntryLookup = context.getRegistryLookup(RegistryKeys.CONFIGURED_FEATURE);
@@ -81,12 +86,21 @@ public class ModPlacedFeatures {
         register(context, LEVEL_1_DRIPPING_CONCRETE_PLACED_KEY,
                 configuredFeatureRegistryEntryLookup.getOrThrow(ModConfiguredFeatures.LEVEL_1_DRIPPING_CONCRETE_KEY),
                 BlockFilterPlacementModifier.of(BlockPredicate.matchingBlocks(ModBlocks.PAINTED_WAREHOUSE_CONCRETE)));
+        register(context, LEVEL_1_REBAR_CONCRETE_SINGLE_PLACED_KEY,
+                configuredFeatureRegistryEntryLookup.getOrThrow(ModConfiguredFeatures.LEVEL_1_REBAR_CONCRETE_KEY),
+                BlockFilterPlacementModifier.of(BlockPredicate.matchingBlocks(ModBlocks.PAINTED_WAREHOUSE_CONCRETE)));
+        register(context, LEVEL_1_DRIPPING_REBAR_PLACED_KEY,
+                configuredFeatureRegistryEntryLookup.getOrThrow(ModConfiguredFeatures.LEVEL_1_DRIPPING_REBAR_KEY),
+                BlockFilterPlacementModifier.of(BlockPredicate.matchingBlocks(ModBlocks.PAINTED_WAREHOUSE_CONCRETE)));
         register(context, LEVEL_1_PUDDLE_DRIP_PLACED_KEY,
                 configuredFeatureRegistryEntryLookup.getOrThrow(ModConfiguredFeatures.LEVEL_1_PUDDLE_DRIP_KEY),
-                modifiersWithCount(4, level1Ceiling));
+                modifiersWithCount(3, level1Ceiling));
         register(context, LEVEL_1_PUDDLE_INDIVIDUAL_PLACED_KEY,
                 configuredFeatureRegistryEntryLookup.getOrThrow(ModConfiguredFeatures.LEVEL_1_PUDDLE_KEY),
                 modifiersWithCount(8, level1Floor));
+        register(context, LEVEL_1_REBAR_CONCRETE_PLACED_KEY,
+                configuredFeatureRegistryEntryLookup.getOrThrow(ModConfiguredFeatures.LEVEL_1_REBAR_CONCRETE_KEY),
+                modifiersWithCount(2, level1Ceiling));
     }
 
     public static RegistryKey<PlacedFeature> registerKey(String name) {
