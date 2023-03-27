@@ -1,0 +1,37 @@
+{
+  "type": "backroomsmod:backrooms_midnight",
+  "generator": {
+    "type": "minecraft:noise",
+    "seed": 1177471420,
+    "settings": "backroomsmod:tunnels",
+    "biome_source": {
+      "type": "minecraft:multi_noise",
+      "biomes": [
+        {
+          "biome": "backroomsmod:level_2",
+          "parameters": {
+            "temperature": 0,
+            "humidity": 0,
+            "continentalness": 0,
+            "erosion": 0,
+            "weirdness": 0,
+            "depth": 0,
+            "offset": 0
+          }
+        },
+        {
+          "biome": "backroomsmod:level_2_dark",
+          "parameters": {
+            "temperature": 0.5,
+            "humidity": 0,
+            "continentalness": 0,
+            "erosion": 0,
+            "weirdness": 0,
+            "depth": 0,
+            "offset": 0
+          }
+        }
+      ]
+    }
+  }
+}

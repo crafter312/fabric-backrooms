@@ -28,6 +28,10 @@ public class ModBiomes {
     // level 1 biome
     public static final RegistryKey<Biome> LEVEL_1 = registerKey("level_1");
 
+    // level 2 biomes
+    public static final RegistryKey<Biome> LEVEL_2 = registerKey("level_2");
+    public static final RegistryKey<Biome> LEVEL_2_DARK = registerKey("level_2_dark");
+
     // biome music
     public static final MusicSound NORMAL_MUSIC = null;
     public static final MusicSound NO_MUSIC = new MusicSound(ModSounds.NO_MUSIC, Integer.MAX_VALUE, Integer.MAX_VALUE, false);
@@ -80,9 +84,23 @@ public class ModBiomes {
         level1BiomeBuilder.feature(GenerationStep.Feature.LOCAL_MODIFICATIONS,
                 placedFeatureRegistryEntryLookup.getOrThrow(ModPlacedFeatures.LEVEL_1_PUDDLE_DRIP_PLACED_KEY));
         level1BiomeBuilder.feature(GenerationStep.Feature.LOCAL_MODIFICATIONS,
-                placedFeatureRegistryEntryLookup.getOrThrow(ModPlacedFeatures.LEVEL_1_PUDDLE_INDIVIDUAL_PLACED_KEY));
+                placedFeatureRegistryEntryLookup.getOrThrow(ModPlacedFeatures.CONCRETE_PUDDLE_INDIVIDUAL_PLACED_KEY));
         level1BiomeBuilder.feature(GenerationStep.Feature.LOCAL_MODIFICATIONS,
                 placedFeatureRegistryEntryLookup.getOrThrow(ModPlacedFeatures.LEVEL_1_REBAR_CONCRETE_PLACED_KEY));
+
+        // level 2 biome settings
+        SpawnSettings.Builder level2SpawnBuilder = new SpawnSettings.Builder();
+
+        GenerationSettings.Builder level2BiomeBuilder = new GenerationSettings.Builder();
+        level2BiomeBuilder.feature(GenerationStep.Feature.LOCAL_MODIFICATIONS,
+                placedFeatureRegistryEntryLookup.getOrThrow(ModPlacedFeatures.CONCRETE_PUDDLE_INDIVIDUAL_PLACED_KEY));
+
+        // level 2 dark biome settings
+        SpawnSettings.Builder level2DarkSpawnBuilder = new SpawnSettings.Builder();
+
+        GenerationSettings.Builder level2DarkBiomeBuilder = new GenerationSettings.Builder();
+        level2DarkBiomeBuilder.feature(GenerationStep.Feature.LOCAL_MODIFICATIONS,
+                placedFeatureRegistryEntryLookup.getOrThrow(ModPlacedFeatures.CONCRETE_PUDDLE_INDIVIDUAL_PLACED_KEY));
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -103,6 +121,18 @@ public class ModBiomes {
                         .effects(defaultBiomeEffects().fogColor(darkFogColor).build())
                         .spawnSettings(level1SpawnBuilder.build())
                         .generationSettings(level1BiomeBuilder.build())
+                        .build());
+        register(context, LEVEL_2,
+                defaultBiomeSettings()
+                        .effects(defaultBiomeEffects().fogColor(darkFogColor).build())
+                        .spawnSettings(level2SpawnBuilder.build())
+                        .generationSettings(level2BiomeBuilder.build())
+                        .build());
+        register(context, LEVEL_2_DARK,
+                defaultBiomeSettings()
+                        .effects(defaultBiomeEffects().fogColor(darkFogColor).build())
+                        .spawnSettings(level2DarkSpawnBuilder.build())
+                        .generationSettings(level2DarkBiomeBuilder.build())
                         .build());
     }
 

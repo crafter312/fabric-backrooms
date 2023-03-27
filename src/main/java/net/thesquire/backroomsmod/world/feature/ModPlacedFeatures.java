@@ -26,6 +26,7 @@ public class ModPlacedFeatures {
     public static RegistryKey<PlacedFeature> BISMUTHINITE_ORE_PLACED_KEY = registerKey("bismuthinite_ore_placed");
     public static RegistryKey<PlacedFeature> FLUORESCENT_LIGHT_PLACED_KEY = registerKey("fluorescent_light_placed");
     public static RegistryKey<PlacedFeature> FLUORESCENT_LIGHT_FLICKERING_PLACED_KEY = registerKey("fluorescent_light_flickering_placed");
+    public static RegistryKey<PlacedFeature> CONCRETE_PUDDLE_INDIVIDUAL_PLACED_KEY = registerKey("level_1_puddle_individual_placed");
 
     // level 0 features
     public static RegistryKey<PlacedFeature> LEVEL_0_WALL_PLACED_KEY = registerKey("level_0_wall_placed");
@@ -39,7 +40,6 @@ public class ModPlacedFeatures {
     public static RegistryKey<PlacedFeature> LEVEL_1_REBAR_CONCRETE_SINGLE_PLACED_KEY = registerKey("level_1_rebar_concrete_single_placed");
     public static RegistryKey<PlacedFeature> LEVEL_1_DRIPPING_REBAR_PLACED_KEY = registerKey("level_1_dripping_rebar_placed");
     public static RegistryKey<PlacedFeature> LEVEL_1_PUDDLE_DRIP_PLACED_KEY = registerKey("level_1_puddle_drip_placed");
-    public static RegistryKey<PlacedFeature> LEVEL_1_PUDDLE_INDIVIDUAL_PLACED_KEY = registerKey("level_1_puddle_individual_placed");
     public static RegistryKey<PlacedFeature> LEVEL_1_REBAR_CONCRETE_PLACED_KEY = registerKey("level_1_rebar_concrete_placed");
 
 
@@ -66,6 +66,9 @@ public class ModPlacedFeatures {
         register(context, FLUORESCENT_LIGHT_FLICKERING_PLACED_KEY,
                 configuredFeatureRegistryEntryLookup.getOrThrow(ModConfiguredFeatures.FLUORESCENT_LIGHT_FLICKERING_KEY),
                 modifiersWithRarity(48, level0Ceiling, lightBlockModifier));
+        register(context, CONCRETE_PUDDLE_INDIVIDUAL_PLACED_KEY,
+                configuredFeatureRegistryEntryLookup.getOrThrow(ModConfiguredFeatures.CONCRETE_PUDDLE_KEY),
+                modifiersWithCount(8, level1Floor));
 
         register(context, LEVEL_0_WALL_PLACED_KEY,
                 configuredFeatureRegistryEntryLookup.getOrThrow(ModConfiguredFeatures.LEVEL_0_WALL_KEY),
@@ -81,7 +84,7 @@ public class ModPlacedFeatures {
                 configuredFeatureRegistryEntryLookup.getOrThrow(ModConfiguredFeatures.LEVEL_1_WALL_LIGHTS_KEY),
                 modifiersWithCount(14, level1LightPlacement));
         register(context, LEVEL_1_PUDDLE_PLACED_KEY,
-                configuredFeatureRegistryEntryLookup.getOrThrow(ModConfiguredFeatures.LEVEL_1_PUDDLE_KEY),
+                configuredFeatureRegistryEntryLookup.getOrThrow(ModConfiguredFeatures.CONCRETE_PUDDLE_KEY),
                 BlockFilterPlacementModifier.of(BlockPredicate.matchingBlocks(ModBlocks.WAREHOUSE_CONCRETE)));
         register(context, LEVEL_1_DRIPPING_CONCRETE_PLACED_KEY,
                 configuredFeatureRegistryEntryLookup.getOrThrow(ModConfiguredFeatures.LEVEL_1_DRIPPING_CONCRETE_KEY),
@@ -95,9 +98,6 @@ public class ModPlacedFeatures {
         register(context, LEVEL_1_PUDDLE_DRIP_PLACED_KEY,
                 configuredFeatureRegistryEntryLookup.getOrThrow(ModConfiguredFeatures.LEVEL_1_PUDDLE_DRIP_KEY),
                 modifiersWithCount(3, level1Ceiling));
-        register(context, LEVEL_1_PUDDLE_INDIVIDUAL_PLACED_KEY,
-                configuredFeatureRegistryEntryLookup.getOrThrow(ModConfiguredFeatures.LEVEL_1_PUDDLE_KEY),
-                modifiersWithCount(8, level1Floor));
         register(context, LEVEL_1_REBAR_CONCRETE_PLACED_KEY,
                 configuredFeatureRegistryEntryLookup.getOrThrow(ModConfiguredFeatures.LEVEL_1_REBAR_CONCRETE_KEY),
                 modifiersWithCount(2, level1Ceiling));
