@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:stonecutting",
+  "group": "warehouse_concrete_stairs",
+  "ingredient": {
+    "item": "backroomsmod:warehouse_concrete"
+  },
+  "result": "backroomsmod:warehouse_concrete_stairs",
+  "count": 1
+}

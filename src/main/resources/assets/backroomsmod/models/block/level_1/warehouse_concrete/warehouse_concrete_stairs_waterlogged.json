@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/stairs",
+  "textures": {
+    "bottom": "backroomsmod:block/level_1/warehouse_concrete_waterlogged",
+    "top": "backroomsmod:block/level_1/warehouse_concrete_waterlogged",
+    "side": "backroomsmod:block/level_1/warehouse_concrete_waterlogged"
+  }
+}

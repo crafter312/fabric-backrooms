@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/outer_stairs",
+  "textures": {
+    "bottom": "backroomsmod:block/level_1/warehouse_concrete",
+    "top": "backroomsmod:block/level_1/warehouse_concrete",
+    "side": "backroomsmod:block/level_1/warehouse_concrete"
+  }
+}

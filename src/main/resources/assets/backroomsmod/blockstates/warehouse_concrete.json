@@ -1,6 +1,6 @@
 {
   "variants": {
-    "waterlogged=false": { "model": "backroomsmod:block/level_1/warehouse_concrete" },
-    "waterlogged=true": { "model": "backroomsmod:block/level_1/warehouse_concrete_waterlogged" }
+    "waterlogged=false": { "model": "backroomsmod:block/level_1/warehouse_concrete/warehouse_concrete" },
+    "waterlogged=true": { "model": "backroomsmod:block/level_1/warehouse_concrete/warehouse_concrete_waterlogged" }
   }
 }

@@ -45,7 +45,7 @@ public class ModDoorBlock extends DoorBlock {
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
         if (state.get(LOCKED)) {
             player.sendMessage(Text.translatable("door.locked"), true);
-            return ActionResult.PASS;
+            return ActionResult.success(world.isClient);
         }
         state = state.cycle(OPEN);
         world.setBlockState(pos, state, Block.NOTIFY_LISTENERS | Block.REDRAW_ON_MAIN_THREAD);

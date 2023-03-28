@@ -9,6 +9,7 @@
     "backroomsmod:painted_warehouse_concrete",
     "backroomsmod:fluorescent_light",
     "backroomsmod:mountable_fluorescent_light",
-    "backroomsmod:custom_door"
+    "backroomsmod:custom_door",
+    "backroomsmod:warehouse_concrete_stairs"
   ]
 }

@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "warehouse_concrete_stairs",
+  "pattern": [
+    "#  ",
+    "## ",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "backroomsmod:warehouse_concrete"
+    }
+  },
+  "result": {
+    "item": "backroomsmod:warehouse_concrete_stairs",
+    "count": 4
+  }
+}

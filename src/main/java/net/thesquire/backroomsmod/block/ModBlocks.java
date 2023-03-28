@@ -3,10 +3,7 @@ package net.thesquire.backroomsmod.block;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.Material;
+import net.minecraft.block.*;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.item.BlockItem;
@@ -55,6 +52,9 @@ public class ModBlocks {
 
     public static final Block IRON_DOOR = registerBlock("custom_door",
             new ModDoorBlock(FabricBlockSettings.copy(Blocks.IRON_DOOR), SoundEvents.BLOCK_IRON_DOOR_CLOSE, SoundEvents.BLOCK_IRON_DOOR_OPEN));
+
+    public static final Block WAREHOUSE_CONCRETE_STAIRS = registerBlock("warehouse_concrete_stairs",
+            new WarehouseConcreteStairsBlock(ModBlocks.WAREHOUSE_CONCRETE.getDefaultState(), FabricBlockSettings.copy(ModBlocks.WAREHOUSE_CONCRETE)));
 
     // Blocks with a GUI or BlockEntity have to be registered in the method below to ensure proper register order!
     public static Block INDUSTRIAL_ALLOY_SMELTER;
