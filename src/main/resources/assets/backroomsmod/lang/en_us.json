@@ -10,6 +10,7 @@
   "block.backroomsmod.warehouse_concrete": "Warehouse Concrete",
   "block.backroomsmod.mountable_fluorescent_light": "Mountable Fluorescent Light",
   "block.backroomsmod.painted_warehouse_concrete": "Painted Warehouse Concrete",
+  "block.backroomsmod.custom_door": "Mysterious Door",
 
   "_comment2": "Mod Items",
   "item.backroomsmod.raw_bismuthinite": "Raw Bismuthinite",
@@ -48,6 +49,9 @@
   "itemGroup.backroomsmod.backrooms": "Immersive Backrooms",
 
   "_comment7": "REI Integration",
-  "backroomsmod:industrial_alloy_smelter": "Industrial Alloy Smelter"
+  "backroomsmod:industrial_alloy_smelter": "Industrial Alloy Smelter",
+
+  "_comment8": "Player Messages",
+  "door.locked": "Hmmm... this door appears to be locked!"
 
 }
