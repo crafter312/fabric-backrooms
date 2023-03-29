@@ -152,6 +152,14 @@ public class PortalUtils {
         return axis == Direction.Axis.X ? Direction.Axis.Z : Direction.Axis.X;
     }
 
-
+    // counterclockwise rotation
+    public static Vec3i rotateHorizontal(Vec3i vec, int angle) {
+        return switch (angle) {
+            case 90 -> new Vec3i((vec.getZ() * -1), vec.getY(), vec.getX());
+            case 180 -> new Vec3i((vec.getX() * -1), vec.getY(), (vec.getZ() * -1));
+            case 270 -> new Vec3i(vec.getZ(), vec.getY(), (vec.getX() * -1));
+            default -> vec;
+        };
+    }
 
 }

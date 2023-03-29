@@ -2,7 +2,7 @@
   "type": "backroomsmod:backrooms_midnight",
   "generator": {
     "type": "minecraft:noise",
-    "seed": 1177471420,
+    "seed": 4801829836,
     "settings": "backroomsmod:tunnels",
     "biome_source": {
       "type": "minecraft:multi_noise",

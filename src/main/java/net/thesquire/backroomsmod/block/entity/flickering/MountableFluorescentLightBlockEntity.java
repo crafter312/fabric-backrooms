@@ -39,8 +39,6 @@ public class MountableFluorescentLightBlockEntity extends FlickeringBlockEntity 
         BlackoutListener listener = blockEntity.getEventListener();
         if(listener.isBlackout()) {
             listener.tick();
-            if(blockEntity.isBlackoutSource() && listener.getBlackoutTime() % 100 == 0)
-                Objects.requireNonNull(world.getServer()).sendMessage(Text.literal(Integer.toString(listener.getBlackoutTime())));
             return;
         }
 

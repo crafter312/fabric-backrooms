@@ -45,9 +45,6 @@ public class PortalPlacerBlockEntity extends BlockEntity {
     private BlockState replacementState = Blocks.AIR.getDefaultState();
     private Vec3i destStructureOffset = new Vec3i(0, 0, 0);
 
-    // registry key of a structure naturally generating in the destination dimension
-    private RegistryKey<Structure> structureKey = null;
-
     // string describing the file path of the destination structure nbt file
     // e.g. "backroomsmod:level_1/level_1_portal_destination_8w"
     private String destStructureNbtPath = null;
@@ -72,12 +69,12 @@ public class PortalPlacerBlockEntity extends BlockEntity {
     }
 
     public void tick(World world, BlockState state) {
+        // update portal origin to account for parameters changed via nbt data (e.g. during setblock command)
+        this.origin = getPortalOrigin(state);
+
         if(world.isClient() || !this.active || this.dimensionTo == null || !state.contains(Properties.FACING)) return;
 
         ServerWorld serverWorld = (ServerWorld) world;
-
-        // update portal origin to account for changed variables like isMiddlePortal
-        this.origin = getPortalOrigin(state);
 
         boolean success = initPortal(serverWorld, state);
         if(success) {
@@ -102,8 +99,6 @@ public class PortalPlacerBlockEntity extends BlockEntity {
             nbt.putDouble("destinationZ", this.destinationZ);
         nbt.put("replacementState", NbtHelper.fromBlockState(this.replacementState));
         Helper.putVec3i(nbt, "destStructureOffset", this.destStructureOffset);
-        if(this.structureKey != null)
-            nbt.putString("structureKey", this.structureKey.getValue().toString());
         if(this.destStructureNbtPath != null)
             nbt.putString("destStructureNbtPath", this.destStructureNbtPath);
     }
@@ -128,8 +123,6 @@ public class PortalPlacerBlockEntity extends BlockEntity {
         if(nbt.contains("replacementState"))
             this.replacementState = ModUtils.blockStateFromNbt(nbt.getCompound("replacementState"));
         this.destStructureOffset = ModUtils.getVec3iComponents(nbt, "destStructureOffset", this.destStructureOffset);
-        if(nbt.contains("structureKey"))
-            this.structureKey = ModUtils.structureIdToKey(nbt.getString("structureKey"));
         if(nbt.contains("destStructureNbtPath"))
             this.destStructureNbtPath = nbt.getString("destStructureNbtPath");
 
@@ -173,27 +166,22 @@ public class PortalPlacerBlockEntity extends BlockEntity {
     }
 
     public void placeDestStructure(ServerWorld serverWorld, BlockState state) {
-        if(this.structureKey == null || this.destStructureNbtPath == null) return;
+        if(this.destStructureNbtPath == null) return;
 
-        Optional<BlockPos> optional = ModUtils.findStructure(serverWorld, this.getPos(), this.structureKey);
-        if(optional.isPresent()) {
-            float angle;
-            try {
-                angle = PortalUtils.getAngle(state.getBlock().getDefaultState().get(Properties.FACING), state.get(Properties.FACING));
-            }
-            catch (IllegalStateException illegalStateException) {
-                angle = 0;
-            }
-
-            ModUtils.placeStructure(
-                    (ServerWorld) this.portal.getDestinationWorld(),
-                    this.destStructureNbtPath,
-                    optional.get().add(
-                            this.destStructureOffset.getX(),
-                            this.pos.getY() + this.destStructureOffset.getY(),
-                            this.destStructureOffset.getZ()),
-                    (int) angle);
+        int angle;
+        try {
+            angle = (int) PortalUtils.getAngle(state.getBlock().getDefaultState().get(Properties.FACING), state.get(Properties.FACING));
         }
+        catch (IllegalStateException illegalStateException) {
+            angle = 0;
+        }
+
+        Vec3i destStructureOffsetRotated = PortalUtils.rotateHorizontal(this.destStructureOffset, angle);
+        BlockPos destStructurePos = new BlockPos(
+                destStructureOffsetRotated.getX() + this.pos.getX(),
+                destStructureOffsetRotated.getY() + (int)this.portal.getDestPos().getY(),
+                destStructureOffsetRotated.getZ() + this.pos.getZ());
+        ModUtils.placeStructure((ServerWorld) this.portal.getDestinationWorld(), this.destStructureNbtPath, destStructurePos, angle);
     }
 
     private Vec3d getPortalOrigin(BlockState state) {

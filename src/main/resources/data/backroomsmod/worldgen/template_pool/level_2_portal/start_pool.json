@@ -1,0 +1,15 @@
+{
+  "name": "backroomsmod:level_2_portal/start_pool",
+  "fallback": "minecraft:empty",
+  "elements": [
+    {
+      "weight": 1,
+      "element": {
+        "location": "backroomsmod:level_1/level_2_portal",
+        "processors": "minecraft:empty",
+        "projection": "rigid",
+        "element_type": "minecraft:single_pool_element"
+      }
+    }
+  ]
+}

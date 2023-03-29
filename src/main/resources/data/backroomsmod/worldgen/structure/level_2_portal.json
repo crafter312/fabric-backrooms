@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:jigsaw",
+  "start_pool": "backroomsmod:level_2_portal/start_pool",
+  "size": 1,
+  "max_distance_from_center": 60,
+  "biomes": "backroomsmod:level_1",
+  "step": "strongholds",
+  "start_height": {
+    "absolute": 22
+  },
+  "use_expansion_hack": false,
+  "spawn_overrides": {}
+}

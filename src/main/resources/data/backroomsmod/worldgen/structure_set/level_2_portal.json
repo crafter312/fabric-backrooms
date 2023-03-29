@@ -1,0 +1,14 @@
+{
+  "structures": [
+    {
+      "structure": "backroomsmod:level_2_portal",
+      "weight": 1
+    }
+  ],
+  "placement": {
+    "salt": 583952093,
+    "type": "minecraft:random_spread",
+    "spacing": 16,
+    "separation": 10
+  }
+}
