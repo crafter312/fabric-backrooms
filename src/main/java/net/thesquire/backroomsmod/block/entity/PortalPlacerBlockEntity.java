@@ -14,7 +14,6 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.Structure;
 import net.thesquire.backroomsmod.BackroomsMod;
 import net.thesquire.backroomsmod.block.ModBlockEntities;
 import net.thesquire.backroomsmod.portal.util.PortalUtils;
@@ -23,8 +22,6 @@ import qouteall.imm_ptl.core.portal.Portal;
 import qouteall.imm_ptl.core.portal.PortalManipulation;
 import qouteall.q_misc_util.Helper;
 import qouteall.q_misc_util.dimension.DimId;
-
-import java.util.Optional;
 
 /**
  * For the time being, this block entity assumes that there is no scale transformation between the two dimensions.
