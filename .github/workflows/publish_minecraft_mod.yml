@@ -5,8 +5,8 @@ on: [ pull_request, workflow_dispatch ]           #When your Github Action will 
 env:                                              #Environment variables that can later be referenced using ${{ env.MINECRAFT_VERSION }}. These are useful for repeating information and allow for quick changes for new mod updates
   MINECRAFT_VERSION: 1.19.3
   JAVA_VERSION: 17
-  MOD_VERSION: 0.4.1-1.19.3
-  MOD_RELEASE_NAME: Immersive Portals 0.4.1 for Minecraft 1.19.3
+  MOD_VERSION: 0.5.0-1.19.3
+  MOD_RELEASE_NAME: Immersive Portals 0.5.0 for Minecraft 1.19.3
 
 permissions:
   contents: write
