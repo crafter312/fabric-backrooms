@@ -3,7 +3,10 @@ package net.thesquire.backroomsmod.block;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
-import net.minecraft.block.*;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.Material;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.item.BlockItem;
@@ -14,7 +17,6 @@ import net.minecraft.registry.Registry;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
@@ -90,33 +92,33 @@ public class ModBlocks {
 
     private static Block registerBlock(String name, Block block) {
         registerBlockItem(name, block);
-        return Registry.register(Registries.BLOCK, new Identifier(BackroomsMod.MOD_ID, name), block);
+        return Registry.register(Registries.BLOCK, BackroomsMod.makeId(name), block);
     }
 
     private static Block registerBlock(String name, Block block, String... tooltipKeys) {
         registerBlockItem(name, block, tooltipKeys);
-        return Registry.register(Registries.BLOCK, new Identifier(BackroomsMod.MOD_ID, name), block);
+        return Registry.register(Registries.BLOCK, BackroomsMod.makeId(name), block);
     }
 
     private static Block registerBlock(String name, Block block, int stackSize) {
         registerBlockItem(name, block, stackSize);
-        return Registry.register(Registries.BLOCK, new Identifier(BackroomsMod.MOD_ID, name), block);
+        return Registry.register(Registries.BLOCK, BackroomsMod.makeId(name), block);
     }
 
     private static void registerBlockItem(String name, Block block) {
-        Item item = Registry.register(Registries.ITEM, new Identifier(BackroomsMod.MOD_ID, name),
+        Item item = Registry.register(Registries.ITEM, BackroomsMod.makeId(name),
                 new BlockItem(block, new FabricItemSettings()));
         ItemGroupEvents.modifyEntriesEvent(ModItemGroup.BACKROOMS).register(entries -> entries.add(item));
     }
 
     private static void registerBlockItem(String name, Block block, int stackSize) {
-        Item item = Registry.register(Registries.ITEM, new Identifier(BackroomsMod.MOD_ID, name),
+        Item item = Registry.register(Registries.ITEM, BackroomsMod.makeId(name),
                 new BlockItem(block, new FabricItemSettings().maxCount(stackSize)));
         ItemGroupEvents.modifyEntriesEvent(ModItemGroup.BACKROOMS).register(entries -> entries.add(item));
     }
 
     private static void registerBlockItem(String name, Block block, String... tooltipKeys) {
-        Item item = Registry.register(Registries.ITEM, new Identifier(BackroomsMod.MOD_ID, name),
+        Item item = Registry.register(Registries.ITEM, BackroomsMod.makeId(name),
                 new BlockItem(block, new FabricItemSettings()) {
                     @Override
                     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
@@ -133,7 +135,7 @@ public class ModBlocks {
     }
 
     private static Block registerBlockWithoutBlockItem(String name, Block block) {
-        return Registry.register(Registries.BLOCK, new Identifier(BackroomsMod.MOD_ID, name), block);
+        return Registry.register(Registries.BLOCK, BackroomsMod.makeId(name), block);
     }
 
     /**

@@ -2,32 +2,30 @@ package net.thesquire.backroomsmod;
 
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
+import net.minecraft.util.Identifier;
 import net.minecraft.world.PersistentStateManager;
-import net.thesquire.backroomsmod.block.ModBlocks;
 import net.thesquire.backroomsmod.block.ModBlockEntities;
+import net.thesquire.backroomsmod.block.ModBlocks;
 import net.thesquire.backroomsmod.dimension.ModDimensionKeys;
 import net.thesquire.backroomsmod.event.ModGameEvents;
 import net.thesquire.backroomsmod.item.ModItems;
 import net.thesquire.backroomsmod.portal.util.PortalStorage;
 import net.thesquire.backroomsmod.recipe.ModRecipes;
-import net.thesquire.backroomsmod.screen.ModClientGuis;
 import net.thesquire.backroomsmod.screen.ModGuis;
 import net.thesquire.backroomsmod.sound.ModSounds;
 import net.thesquire.backroomsmod.util.ModServerboundPackets;
 import net.thesquire.backroomsmod.util.mixin.MixinCallbacks;
-import net.thesquire.backroomsmod.world.ModBiomes;
 import net.thesquire.backroomsmod.world.ModWorldGen;
-import net.thesquire.backroomsmod.world.feature.ModConfiguredFeatures;
 import net.thesquire.backroomsmod.world.feature.ModFeatures;
-import net.thesquire.backroomsmod.world.feature.ModPlacedFeatures;
+import net.thesquire.backroomsmod.world.feature.placement.ModPlacementModifierTypes;
 import net.thesquire.backroomsmod.world.gen.ModDensityFunctions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Objects;
 
-//TODO modify GridWalls density function to add passageways
-//TODO test different smooth noise type for GridWalls density function
+//TODO fix not correctly removing block entity for portal placer block after structure is generated
+//TODO fix level 2 portal generating close to level 1 portal destination
 
 public class BackroomsMod implements ModInitializer {
 	public static final String MOD_ID = "backroomsmod";
@@ -53,6 +51,7 @@ public class BackroomsMod implements ModInitializer {
 
 		ModServerboundPackets.registerServerboundPackets();
 		ModDensityFunctions.registerModDensityFunctions();
+		ModPlacementModifierTypes.registerPlacementModifierTypes();
 		ModFeatures.registerModFeatures();
 		ModGuis.registerGuis();
 		ModSounds.registerModSounds();
@@ -63,6 +62,12 @@ public class BackroomsMod implements ModInitializer {
 		ModWorldGen.addModWorldGen();
 		ModBlockEntities.registerBlockEntities();
 		ModRecipes.registerRecipes();
+
+		LOGGER.info("Main initialization finished for " + MOD_ID);
+	}
+
+	public static Identifier makeId(String path) {
+		return new Identifier(MOD_ID, path);
 	}
 
 }

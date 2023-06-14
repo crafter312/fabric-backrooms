@@ -10,7 +10,6 @@ import net.minecraft.structure.rule.BlockMatchRuleTest;
 import net.minecraft.structure.rule.BlockStateMatchRuleTest;
 import net.minecraft.structure.rule.RuleTest;
 import net.minecraft.structure.rule.TagMatchRuleTest;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.util.math.intprovider.ConstantIntProvider;
 import net.minecraft.util.math.intprovider.UniformIntProvider;
@@ -41,6 +40,7 @@ public class ModConfiguredFeatures {
     public static final RegistryKey<ConfiguredFeature<?, ?>> LEVEL_1_REBAR_CONCRETE_KEY = registerKey("level_1_rebar_concrete");
     public static final RegistryKey<ConfiguredFeature<?, ?>> LEVEL_1_DRIPPING_REBAR_KEY = registerKey("level_1_dripping_rebar");
     public static final RegistryKey<ConfiguredFeature<?, ?>> LEVEL_1_PUDDLE_DRIP_KEY = registerKey("level_1_puddle_drip");
+    public static final RegistryKey<ConfiguredFeature<?, ?>> LEVEL_1_LOOT_CHEST_KEY = registerKey("level_1_loot_chest");
 
     public static void bootstrap(Registerable<ConfiguredFeature<?,?>> context) {
         var placedFeatureRegistryEntryLookup = context.getRegistryLookup(RegistryKeys.PLACED_FEATURE);
@@ -99,10 +99,12 @@ public class ModConfiguredFeatures {
                 placedFeatureRegistryEntryLookup.getOrThrow(ModPlacedFeatures.LEVEL_1_DRIPPING_REBAR_PLACED_KEY),
                 placedFeatureRegistryEntryLookup.getOrThrow(ModPlacedFeatures.LEVEL_1_PUDDLE_PLACED_KEY),
                 new Vec3i(0, -5, 0)));
+        register(context, LEVEL_1_LOOT_CHEST_KEY, ModFeatures.LOOT_CHEST,
+                new ModLootChestFeatureConfig(BackroomsMod.makeId("chests/level_1_supplies")));
     }
 
     public static RegistryKey<ConfiguredFeature<?, ?>> registerKey(String name) {
-        return RegistryKey.of(RegistryKeys.CONFIGURED_FEATURE, new Identifier(BackroomsMod.MOD_ID, name));
+        return RegistryKey.of(RegistryKeys.CONFIGURED_FEATURE, BackroomsMod.makeId(name));
     }
 
     private static <FC extends FeatureConfig, F extends Feature<FC>> void register(Registerable<ConfiguredFeature<?, ?>> context,

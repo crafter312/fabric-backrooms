@@ -75,7 +75,7 @@ public class PortalPlacerBlockEntity extends BlockEntity {
 
         boolean success = initPortal(serverWorld, state);
         if(success) {
-            placeDestStructure(serverWorld, state);
+            placeDestStructure(state);
             world.setBlockState(getPos(), this.replacementState, Block.NOTIFY_ALL);
             world.removeBlockEntity(this.pos);
         }
@@ -162,7 +162,7 @@ public class PortalPlacerBlockEntity extends BlockEntity {
         return true;
     }
 
-    public void placeDestStructure(ServerWorld serverWorld, BlockState state) {
+    public void placeDestStructure(BlockState state) {
         if(this.destStructureNbtPath == null) return;
 
         int angle;

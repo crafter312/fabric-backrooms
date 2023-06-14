@@ -10,8 +10,8 @@ import reborncore.common.network.NetworkManager;
 
 public class ModServerboundPackets {
 
-    public static final Identifier MAGNETIC_DISTORTION_SYSTEM_SIDE = new Identifier(BackroomsMod.MOD_ID, "magnetic_distortion_system_side");
-    public static final Identifier MAGNETIC_DISTORTION_SYSTEM_ACTIVE = new Identifier(BackroomsMod.MOD_ID, "magnetic_distortion_system_active");
+    public static final Identifier MAGNETIC_DISTORTION_SYSTEM_SIDE = BackroomsMod.makeId("magnetic_distortion_system_side");
+    public static final Identifier MAGNETIC_DISTORTION_SYSTEM_ACTIVE = BackroomsMod.makeId("magnetic_distortion_system_active");
 
     public static void registerServerboundPackets() {
         BackroomsMod.LOGGER.info("Registering serverbound packets for " + BackroomsMod.MOD_ID);

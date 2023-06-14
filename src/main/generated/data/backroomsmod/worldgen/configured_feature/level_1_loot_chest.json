@@ -1,0 +1,6 @@
+{
+  "type": "backroomsmod:loot_chest",
+  "config": {
+    "lootTableKey": "backroomsmod:chests/level_1_supplies"
+  }
+}

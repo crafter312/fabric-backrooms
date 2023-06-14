@@ -1,6 +1,8 @@
 package net.thesquire.backroomsmod.util;
 
 import com.mojang.datafixers.util.Pair;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.DataResult;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -32,6 +34,12 @@ import net.thesquire.backroomsmod.config.ModConfig;
 import java.util.Optional;
 
 public class ModUtils {
+
+    public static Codec<Direction> HORIZONTAL_CODEC = Direction.CODEC.flatXmap(ModUtils::validateHorizontal, ModUtils::validateHorizontal);
+
+    private static DataResult<Direction> validateHorizontal(Direction direction) {
+        return direction.getAxis().isHorizontal() ? DataResult.success(direction) : DataResult.error("Expected a horizontal direction");
+    }
 
     public static BlockPos findSuitableTeleportDestination(World world, BlockPos pos) {
         for (int i = 0; i < ModConfig.MAX_TELEPORT_DEST_SEARCH_DISTANCE; i++) {

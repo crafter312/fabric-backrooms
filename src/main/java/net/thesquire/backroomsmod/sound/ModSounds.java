@@ -1,12 +1,12 @@
 package net.thesquire.backroomsmod.sound;
 
 import net.minecraft.registry.Registries;
+import net.minecraft.registry.Registry;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.Identifier;
-import net.minecraft.registry.Registry;
 import net.thesquire.backroomsmod.BackroomsMod;
 
 public class ModSounds {
@@ -64,12 +64,12 @@ public class ModSounds {
     }
 
     private static SoundEvent registerSoundEvent(String name) {
-        Identifier id = new Identifier(BackroomsMod.MOD_ID, name);
+        Identifier id = BackroomsMod.makeId(name);
         return Registry.register(Registries.SOUND_EVENT, id, SoundEvent.of(id));
     }
 
     private static RegistryEntry.Reference<SoundEvent> registerSoundEventReference(String name) {
-        Identifier id = new Identifier(BackroomsMod.MOD_ID, name);
+        Identifier id = BackroomsMod.makeId(name);
         return Registry.registerReference(Registries.SOUND_EVENT, id, SoundEvent.of(id));
     }
 

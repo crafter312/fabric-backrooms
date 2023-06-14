@@ -4,7 +4,6 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.fabricmc.fabric.api.resource.ResourcePackActivationType;
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.util.Identifier;
 import net.thesquire.backroomsmod.BackroomsMod;
 
 public class ModBuiltinResourcePack implements ModInitializer {
@@ -15,13 +14,13 @@ public class ModBuiltinResourcePack implements ModInitializer {
 
         // this first bit is for texture packs
         //FabricLoader.getInstance().getModContainer(BackroomsMod.MOD_ID)
-        //        .map(container -> ResourceManagerHelper.registerBuiltinResourcePack(new Identifier(BackroomsMod.MOD_ID, "test"),
+        //        .map(container -> ResourceManagerHelper.registerBuiltinResourcePack(BackroomsMod.makeId("test"),
         //                container, "Fabric Resource Loader Test Pack", ResourcePackActivationType.NORMAL))
         //        .filter(success -> !success).ifPresent(success -> BackroomsMod.LOGGER.warn("Could not register built-in resource pack with custom name."));
 
         // this next bit is for data packs
         FabricLoader.getInstance().getModContainer(BackroomsMod.MOD_ID)
-                .map(container -> ResourceManagerHelper.registerBuiltinResourcePack(new Identifier(BackroomsMod.MOD_ID, "backroomsmod"),
+                .map(container -> ResourceManagerHelper.registerBuiltinResourcePack(BackroomsMod.makeId("backroomsmod"),
                         container, ResourcePackActivationType.ALWAYS_ENABLED))
                 .filter(success -> !success).ifPresent(success -> BackroomsMod.LOGGER.warn("Could not register built-in resource pack."));
     }

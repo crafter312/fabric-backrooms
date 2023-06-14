@@ -4,7 +4,6 @@ import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
-import net.minecraft.util.Identifier;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.FeatureConfig;
 import net.minecraft.world.gen.feature.OreFeatureConfig;
@@ -19,6 +18,7 @@ public class ModFeatures {
     public static final RegistryKey<Feature<?>> WALL_MOUNTABLE_KEY = registerKey("wall_mountable");
     public static final RegistryKey<Feature<?>> DOUBLE_FEATURE_KEY = registerKey("double_feature");
     public static final RegistryKey<Feature<?>> FLAT_ORE_FEATURE_KEY = registerKey("flat_ore_feature");
+    public static final RegistryKey<Feature<?>> LOOT_CHEST_KEY = registerKey("loot_chest");
 
     public static Feature<ModSimpleWallFeatureConfig> WALL;
     public static Feature<ModThinWallFeatureConfig> THIN_WALL;
@@ -26,6 +26,7 @@ public class ModFeatures {
     public static Feature<ModWallMountableFeatureConfig> WALL_MOUNTABLE;
     public static Feature<ModDoubleFeatureConfig> DOUBLE_FEATURE;
     public static Feature<OreFeatureConfig> FLAT_ORE_FEATURE;
+    public static Feature<ModLootChestFeatureConfig> LOOT_CHEST;
 
     public static void registerModFeatures() {
         BackroomsMod.LOGGER.info("Registering mod features for " + BackroomsMod.MOD_ID);
@@ -36,14 +37,15 @@ public class ModFeatures {
         WALL_MOUNTABLE = register(WALL_MOUNTABLE_KEY.getValue().getPath(), new ModWallMountableFeature(ModWallMountableFeatureConfig.CODEC));
         DOUBLE_FEATURE = register(DOUBLE_FEATURE_KEY.getValue().getPath(), new ModDoubleFeature(ModDoubleFeatureConfig.CODEC));
         FLAT_ORE_FEATURE = register(FLAT_ORE_FEATURE_KEY.getValue().getPath(), new ModFlatOreFeature(OreFeatureConfig.CODEC));
+        LOOT_CHEST = register(LOOT_CHEST_KEY.getValue().getPath(), new ModLootChestFeature(ModLootChestFeatureConfig.CODEC));
     }
 
     public static RegistryKey<Feature<?>> registerKey(String name) {
-        return RegistryKey.of(RegistryKeys.FEATURE, new Identifier(BackroomsMod.MOD_ID, name));
+        return RegistryKey.of(RegistryKeys.FEATURE, BackroomsMod.makeId(name));
     }
 
     private static <FC extends FeatureConfig, F extends Feature<FC>> F register(String name, F feature) {
-        return Registry.register(Registries.FEATURE, new Identifier(BackroomsMod.MOD_ID, name), feature);
+        return Registry.register(Registries.FEATURE, BackroomsMod.makeId(name), feature);
     }
 
 }

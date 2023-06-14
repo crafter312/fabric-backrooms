@@ -35,11 +35,8 @@
             ]
           },
           {
-            "type": "minecraft:not",
-            "predicate": {
-              "type": "minecraft:matching_blocks",
-              "blocks": "minecraft:light_gray_concrete"
-            }
+            "type": "minecraft:matching_blocks",
+            "blocks": "minecraft:light_gray_carpet"
           }
         ]
       }

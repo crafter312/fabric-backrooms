@@ -6,7 +6,6 @@ import net.minecraft.block.BlockState;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtOps;
-import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.intprovider.BiasedToBottomIntProvider;
 import net.minecraft.util.math.intprovider.UniformIntProvider;
@@ -20,10 +19,6 @@ import net.thesquire.backroomsmod.block.entity.FlickeringBlockEntity;
 import net.thesquire.backroomsmod.config.ModConfig;
 import net.thesquire.backroomsmod.event.ModGameEvents;
 import net.thesquire.backroomsmod.event.custom.BlackoutListener;
-
-import java.util.Objects;
-
-//TODO add level_0 dimension local blackout events to temporarily turn off a group of lights
 
 public class MountableFluorescentLightBlockEntity extends FlickeringBlockEntity implements BlackoutListener.Callback {
 
@@ -48,8 +43,6 @@ public class MountableFluorescentLightBlockEntity extends FlickeringBlockEntity 
 
         if(state.get(ModBlockProperties.FLICKERING) && blockEntity.randomDouble() < 0.00001) {
             blockEntity.generateBlackoutParams();
-            Objects.requireNonNull(world.getServer()).sendMessage(Text.literal("Range: " + blockEntity.getBlackoutRange()));
-            Objects.requireNonNull(world.getServer()).sendMessage(Text.literal("Time: " + blockEntity.getBlackoutTime()));
             world.emitGameEvent(ModGameEvents.BLACKOUT, pos, new GameEvent.Emitter(null, null));
             return;
         }

@@ -6,8 +6,6 @@ import net.minecraft.registry.Registerable;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.gen.YOffset;
 import net.minecraft.world.gen.blockpredicate.BlockPredicate;
@@ -16,7 +14,7 @@ import net.minecraft.world.gen.feature.PlacedFeature;
 import net.minecraft.world.gen.placementmodifier.*;
 import net.thesquire.backroomsmod.BackroomsMod;
 import net.thesquire.backroomsmod.block.ModBlocks;
-import net.thesquire.backroomsmod.config.ModConfig;
+import net.thesquire.backroomsmod.world.feature.placement.WallAdjacentPlacementModifier;
 
 import java.util.List;
 
@@ -41,6 +39,7 @@ public class ModPlacedFeatures {
     public static RegistryKey<PlacedFeature> LEVEL_1_DRIPPING_REBAR_PLACED_KEY = registerKey("level_1_dripping_rebar_placed");
     public static RegistryKey<PlacedFeature> LEVEL_1_PUDDLE_DRIP_PLACED_KEY = registerKey("level_1_puddle_drip_placed");
     public static RegistryKey<PlacedFeature> LEVEL_1_REBAR_CONCRETE_PLACED_KEY = registerKey("level_1_rebar_concrete_placed");
+    public static RegistryKey<PlacedFeature> LEVEL_1_LOOT_CHEST_PLACED_KEY = registerKey("level_1_loot_chest_placed");
 
 
     public static void bootstrap(Registerable<PlacedFeature> context) {
@@ -48,13 +47,15 @@ public class ModPlacedFeatures {
 
         PlacementModifier lightBlockModifier = BlockFilterPlacementModifier.of(
                 BlockPredicate.matchingBlocks(Direction.DOWN.getVector(), List.of(Blocks.AIR)));
-        PlacementModifier level0WallBlockModifier = makeFloorPlacedFeatureBlockModifier(Blocks.LIGHT_GRAY_CONCRETE);
+        PlacementModifier level0WallBlockModifier = makeFloorPlacedFeatureBlockModifier(Blocks.LIGHT_GRAY_CONCRETE, Blocks.LIGHT_GRAY_CARPET);
+        PlacementModifier findAdjacentWall = WallAdjacentPlacementModifier.of(makeAdjacentWallBlockPredicate(ModBlocks.PAINTED_WAREHOUSE_CONCRETE), 16);
 
         PlacementModifier level0Floor = HeightRangePlacementModifier.uniform(YOffset.fixed(18), YOffset.fixed(22));
         PlacementModifier level0Ceiling = HeightRangePlacementModifier.uniform(YOffset.fixed(23), YOffset.fixed(25));
 
-        PlacementModifier level1LightPlacement = HeightRangePlacementModifier.uniform(YOffset.fixed(23), YOffset.fixed(23));
         PlacementModifier level1Floor = HeightRangePlacementModifier.uniform(YOffset.fixed(20), YOffset.fixed(20));
+        PlacementModifier level1OnFloor = HeightRangePlacementModifier.uniform(YOffset.fixed(21), YOffset.fixed(21));
+        PlacementModifier level1LightPlacement = HeightRangePlacementModifier.uniform(YOffset.fixed(23), YOffset.fixed(23));
         PlacementModifier level1Ceiling = HeightRangePlacementModifier.uniform(YOffset.fixed(25), YOffset.fixed(25));
 
         register(context, BISMUTHINITE_ORE_PLACED_KEY,
@@ -101,10 +102,13 @@ public class ModPlacedFeatures {
         register(context, LEVEL_1_REBAR_CONCRETE_PLACED_KEY,
                 configuredFeatureRegistryEntryLookup.getOrThrow(ModConfiguredFeatures.LEVEL_1_REBAR_CONCRETE_KEY),
                 modifiersWithCount(2, level1Ceiling));
+        register(context, LEVEL_1_LOOT_CHEST_PLACED_KEY,
+                configuredFeatureRegistryEntryLookup.getOrThrow(ModConfiguredFeatures.LEVEL_1_LOOT_CHEST_KEY),
+                List.of(RarityFilterPlacementModifier.of(8), SquarePlacementModifier.of(), level1OnFloor, findAdjacentWall, BiomePlacementModifier.of()));
     }
 
     public static RegistryKey<PlacedFeature> registerKey(String name) {
-        return RegistryKey.of(RegistryKeys.PLACED_FEATURE, new Identifier(BackroomsMod.MOD_ID, name));
+        return RegistryKey.of(RegistryKeys.PLACED_FEATURE, BackroomsMod.makeId(name));
     }
 
     private static void register(Registerable<PlacedFeature> context, RegistryKey<PlacedFeature> key,
@@ -117,10 +121,22 @@ public class ModPlacedFeatures {
         context.register(key, new PlacedFeature(configuration, List.of(modifiers)));
     }
 
-    private static PlacementModifier makeFloorPlacedFeatureBlockModifier(Block block) {
+    private static PlacementModifier makeFloorPlacedFeatureBlockModifier(Block block1, Block block2) {
         return BlockFilterPlacementModifier.of(BlockPredicate.bothOf(
-                BlockPredicate.matchingBlocks(Direction.DOWN.getVector(), List.of(block)),
-                BlockPredicate.not(BlockPredicate.matchingBlocks(BlockPos.ORIGIN, List.of(block)))));
+                BlockPredicate.matchingBlocks(Direction.DOWN.getVector(), block1),
+                BlockPredicate.matchingBlocks(block2)));
+    }
+
+    private static PlacementModifier makeFloorPlacedFeatureBlockModifier(Block block) {
+        return makeFloorPlacedFeatureBlockModifier(block, Blocks.AIR);
+    }
+
+    private static BlockPredicate makeAdjacentWallBlockPredicate(Block block) {
+        return BlockPredicate.anyOf(
+                BlockPredicate.matchingBlocks(Direction.NORTH.getVector(), block),
+                BlockPredicate.matchingBlocks(Direction.EAST.getVector(), block),
+                BlockPredicate.matchingBlocks(Direction.SOUTH.getVector(), block),
+                BlockPredicate.matchingBlocks(Direction.WEST.getVector(), block));
     }
 
     private static List<PlacementModifier> modifiers(PlacementModifier countModifier, PlacementModifier heightModifier, PlacementModifier blockPlacementModifier) {
@@ -129,6 +145,10 @@ public class ModPlacedFeatures {
 
     private static List<PlacementModifier> modifiers(PlacementModifier countModifier, PlacementModifier heightModifier) {
         return List.of(countModifier, SquarePlacementModifier.of(), heightModifier, BiomePlacementModifier.of());
+    }
+
+    private static List<PlacementModifier> modifiersNotSquare(PlacementModifier countModifier, PlacementModifier heightModifier, PlacementModifier blockPlacementModifier) {
+        return List.of(countModifier, heightModifier, blockPlacementModifier, BiomePlacementModifier.of());
     }
 
     private static List<PlacementModifier> modifiersWithCount(int count, PlacementModifier heightModifier, PlacementModifier blockPlacementModifier) {

@@ -2,7 +2,6 @@ package net.thesquire.backroomsmod.event;
 
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
-import net.minecraft.util.Identifier;
 import net.minecraft.world.event.GameEvent;
 import net.thesquire.backroomsmod.BackroomsMod;
 import net.thesquire.backroomsmod.config.ModConfig;
@@ -18,7 +17,7 @@ public class ModGameEvents {
     }
 
     private static GameEvent register(String name, int range) {
-        return Registry.register(Registries.GAME_EVENT, new Identifier(BackroomsMod.MOD_ID, name), new GameEvent(name, range));
+        return Registry.register(Registries.GAME_EVENT, BackroomsMod.makeId(name), new GameEvent(name, range));
     }
 
 }

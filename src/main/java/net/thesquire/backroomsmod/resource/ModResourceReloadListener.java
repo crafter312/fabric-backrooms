@@ -39,7 +39,7 @@ public class ModResourceReloadListener implements ModInitializer {
         ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(new SimpleSynchronousResourceReloadListener() {
             @Override
             public Identifier getFabricId() {
-                return new Identifier(BackroomsMod.MOD_ID, "client_second");
+                return BackroomsMod.makeId("client_second");
             }
 
             @Override
@@ -51,14 +51,14 @@ public class ModResourceReloadListener implements ModInitializer {
 
             @Override
             public Collection<Identifier> getFabricDependencies() {
-                return Collections.singletonList(new Identifier(BackroomsMod.MOD_ID, "client_first"));
+                return Collections.singletonList(BackroomsMod.makeId("client_first"));
             }
         });
 
         ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(new SimpleSynchronousResourceReloadListener() {
             @Override
             public Identifier getFabricId() {
-                return new Identifier(BackroomsMod.MOD_ID, "client_first");
+                return BackroomsMod.makeId("client_first");
             }
 
             @Override
@@ -72,7 +72,7 @@ public class ModResourceReloadListener implements ModInitializer {
         ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(new SimpleSynchronousResourceReloadListener() {
             @Override
             public Identifier getFabricId() {
-                return new Identifier(BackroomsMod.MOD_ID, "server_second");
+                return BackroomsMod.makeId("server_second");
             }
 
             @Override
@@ -84,14 +84,14 @@ public class ModResourceReloadListener implements ModInitializer {
 
             @Override
             public Collection<Identifier> getFabricDependencies() {
-                return Collections.singletonList(new Identifier(BackroomsMod.MOD_ID, "server_first"));
+                return Collections.singletonList(BackroomsMod.makeId("server_first"));
             }
         });
 
         ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(new SimpleSynchronousResourceReloadListener() {
             @Override
             public Identifier getFabricId() {
-                return new Identifier(BackroomsMod.MOD_ID, "server_first");
+                return BackroomsMod.makeId("server_first");
             }
 
             @Override

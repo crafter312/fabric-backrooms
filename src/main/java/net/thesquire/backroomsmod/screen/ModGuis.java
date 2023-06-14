@@ -1,11 +1,9 @@
 package net.thesquire.backroomsmod.screen;
 
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.util.Identifier;
 import net.thesquire.backroomsmod.BackroomsMod;
 import net.thesquire.backroomsmod.block.entity.IndustrialAlloySmelterBlockEntity;
 import net.thesquire.backroomsmod.block.entity.MagneticDistortionSystemControlComputerBlockEntity;
-import org.lwjgl.system.CallbackI;
 import techreborn.blockentity.GuiType;
 
 public class ModGuis {
@@ -21,7 +19,7 @@ public class ModGuis {
     }
 
     private static <T extends BlockEntity> GuiType<T> register(String name) {
-        return GuiType.register(new Identifier(BackroomsMod.MOD_ID, name));
+        return GuiType.register(BackroomsMod.makeId(name));
     }
 
 }

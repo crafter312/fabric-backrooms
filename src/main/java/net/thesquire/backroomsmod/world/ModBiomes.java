@@ -7,7 +7,6 @@ import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.sound.BiomeMoodSound;
 import net.minecraft.sound.MusicSound;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeEffects;
@@ -87,6 +86,8 @@ public class ModBiomes {
                 placedFeatureRegistryEntryLookup.getOrThrow(ModPlacedFeatures.CONCRETE_PUDDLE_INDIVIDUAL_PLACED_KEY));
         level1BiomeBuilder.feature(GenerationStep.Feature.LOCAL_MODIFICATIONS,
                 placedFeatureRegistryEntryLookup.getOrThrow(ModPlacedFeatures.LEVEL_1_REBAR_CONCRETE_PLACED_KEY));
+        level1BiomeBuilder.feature(GenerationStep.Feature.LOCAL_MODIFICATIONS,
+                placedFeatureRegistryEntryLookup.getOrThrow(ModPlacedFeatures.LEVEL_1_LOOT_CHEST_PLACED_KEY));
 
         // level 2 biome settings
         SpawnSettings.Builder level2SpawnBuilder = new SpawnSettings.Builder();
@@ -99,7 +100,7 @@ public class ModBiomes {
         SpawnSettings.Builder level2DarkSpawnBuilder = new SpawnSettings.Builder();
 
         GenerationSettings.Builder level2DarkBiomeBuilder = new GenerationSettings.Builder();
-        level2DarkBiomeBuilder.feature(GenerationStep.Feature.LOCAL_MODIFICATIONS,
+        level2DarkBiomeBuilder.feature(GenerationStep.Feature.UNDERGROUND_DECORATION,
                 placedFeatureRegistryEntryLookup.getOrThrow(ModPlacedFeatures.CONCRETE_PUDDLE_INDIVIDUAL_PLACED_KEY));
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -137,7 +138,7 @@ public class ModBiomes {
     }
 
     private static RegistryKey<Biome> registerKey(String name) {
-        return RegistryKey.of(RegistryKeys.BIOME, new Identifier(BackroomsMod.MOD_ID, name));
+        return RegistryKey.of(RegistryKeys.BIOME, BackroomsMod.makeId(name));
     }
 
     private static void register(Registerable<Biome> context, RegistryKey<Biome> key, Biome biome) {

@@ -6,12 +6,13 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.registry.Registries;
-import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
 import net.minecraft.registry.Registry;
+import net.minecraft.text.Text;
 import net.minecraft.world.World;
 import net.thesquire.backroomsmod.BackroomsMod;
+import net.thesquire.backroomsmod.item.custom.Drink;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -31,6 +32,10 @@ public class ModItems {
     public static Item SUPERCONDUCTOR_MAGNET_COIL;
     public static Item SUPERCONDUCTOR_MAGNET;
 
+    // food items
+    public static Item ALMOND_WATER;
+
+    // items with tooltips
     public static Item LOW_TEMP_SOLDER_INGOT;
     public static Item LN2_COOLANT_CELL;
 
@@ -50,6 +55,10 @@ public class ModItems {
         SUPERCONDUCTOR_MAGNET_COIL = registerSimpleItem("superconductor_magnet_coil");
         SUPERCONDUCTOR_MAGNET = registerSimpleItem("superconductor_magnet");
 
+        // food items
+        ALMOND_WATER = registerItem("almond_water", new Drink(new FabricItemSettings().food(ModFoodComponents.ALMOND_WATER)
+                .recipeRemainder(Items.GLASS_BOTTLE)));
+
         // items with tooltips
         LOW_TEMP_SOLDER_INGOT = registerSimpleItemWithTooltip("low_temp_solder_ingot",
                 "item.backroomsmod.low_temp_solder_ingot.tooltip_1", "item.backroomsmod.low_temp_solder_ingot.tooltip_2");
@@ -58,17 +67,16 @@ public class ModItems {
     }
 
     private static Item registerItem(String name, Item item) {
-        return Registry.register(Registries.ITEM, new Identifier(BackroomsMod.MOD_ID, name), item);
+        ItemGroupEvents.modifyEntriesEvent(ModItemGroup.BACKROOMS).register(entries -> entries.add(item));
+        return Registry.register(Registries.ITEM, BackroomsMod.makeId(name), item);
     }
 
     private static Item registerSimpleItem(String name){
-        Item item = registerItem(name, new Item(new FabricItemSettings()));
-        ItemGroupEvents.modifyEntriesEvent(ModItemGroup.BACKROOMS).register(entries -> entries.add(item));
-        return item;
+        return registerItem(name, new Item(new FabricItemSettings()));
     }
 
     private static Item registerSimpleItemWithTooltip(String name, String... tooltipKeys) {
-        Item item = registerItem(name,
+        return registerItem(name,
                 new Item(new FabricItemSettings()) {
                     @Override
                     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
@@ -81,8 +89,6 @@ public class ModItems {
                         }
                     }
                 });
-        ItemGroupEvents.modifyEntriesEvent(ModItemGroup.BACKROOMS).register(entries -> entries.add(item));
-        return item;
     }
 
 }

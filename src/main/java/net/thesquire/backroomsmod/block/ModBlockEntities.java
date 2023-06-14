@@ -7,7 +7,6 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.thesquire.backroomsmod.BackroomsMod;
 import net.thesquire.backroomsmod.block.entity.IndustrialAlloySmelterBlockEntity;
@@ -43,7 +42,7 @@ public class ModBlockEntities {
 
     public static <T extends BlockEntity> BlockEntityType<T> register(String name, BiFunction<BlockPos, BlockState, T> supplier, Block... blocks) {
         BlockEntityType<T> blockEntityType = FabricBlockEntityTypeBuilder.create(supplier::apply, blocks).build(null);
-        Registry.register(Registries.BLOCK_ENTITY_TYPE, new Identifier(BackroomsMod.MOD_ID, name), blockEntityType);
+        Registry.register(Registries.BLOCK_ENTITY_TYPE, BackroomsMod.makeId(name), blockEntityType);
         return blockEntityType;
     }
 
