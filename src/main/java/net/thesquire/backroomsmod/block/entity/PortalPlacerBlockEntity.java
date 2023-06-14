@@ -9,10 +9,7 @@ import net.minecraft.nbt.NbtHelper;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.property.Properties;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.math.Vec3i;
+import net.minecraft.util.math.*;
 import net.minecraft.world.World;
 import net.thesquire.backroomsmod.BackroomsMod;
 import net.thesquire.backroomsmod.block.ModBlockEntities;
@@ -74,7 +71,7 @@ public class PortalPlacerBlockEntity extends BlockEntity {
         ServerWorld serverWorld = (ServerWorld) world;
 
         boolean success = initPortal(serverWorld, state);
-        if(success) {
+        if(success && serverWorld.isChunkLoaded(ChunkPos.toLong(this.pos))) {
             placeDestStructure(state);
             world.setBlockState(getPos(), this.replacementState, Block.NOTIFY_ALL);
             world.removeBlockEntity(this.pos);

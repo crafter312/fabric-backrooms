@@ -24,7 +24,6 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Objects;
 
-//TODO fix not correctly removing block entity for portal placer block after structure is generated
 //TODO fix level 2 portal generating close to level 1 portal destination
 
 public class BackroomsMod implements ModInitializer {
