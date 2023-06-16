@@ -19,8 +19,15 @@
 - simplified creation of biomes with shared default attributes
 - fixed biome dark fog color (used for all added biomes so far)
 - added Level 1 dimension
-  - custom density function type generates warehouse columns during world generation (not as a feature)
+  - custom density functions generate columns and random walls
   - warehouse concrete block used for floor
+  - painted warehouse concrete block used for walls and ceiling
+  - patches of exposed rebar generate as features in ceiling
+    - sometimes accompanied by dripping water and puddle feature in floor
+  - random loot barrels containing almond water generate next to walls
+  - added portal structure to level 2
+    - contains portal placer block
+    - generates destination portal structure in level 2
 - updated mod to Minecraft 1.19.3
 - fixed "Normalizing zero-length quaternion" error present after updating to 1.19.3
 - added portal placer block
@@ -41,3 +48,6 @@
   - contains portal placer block to place the portals
   - 8 block wide portal
   - portal placer block places destination portal structure in level 1
+- added level 2 dimension
+  - random narrow hallways
+  - currently mostly empty
