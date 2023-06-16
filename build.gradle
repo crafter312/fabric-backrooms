@@ -1,5 +1,5 @@
 plugins {
-	id 'fabric-loom' version '1.0-SNAPSHOT'
+	id 'fabric-loom' version '1.2-SNAPSHOT'
 	id 'maven-publish'
 }
 
@@ -36,8 +36,8 @@ dependencies {
 	modApi fabricApi.module("fabric-transfer-api-v1", project.fabric_version)
 
 	// TechReborn mod dependency (release version and local repository; use one at a time!)
-	//modImplementation "TechReborn:TechReborn-${project.techreborn_version}"
-	modImplementation "TechReborn:TechReborn-unknown:5.5.0+local"
+	modImplementation "TechReborn:TechReborn-${project.techreborn_version}"
+	//modImplementation "TechReborn:TechReborn-unknown:5.5.0+local"
 
 	// Dependency of Immersive Portals Core:
 	modImplementation ("com.github.iPortalTeam.ImmersivePortalsMod:imm_ptl_core:${immersiveportals_version}"){
