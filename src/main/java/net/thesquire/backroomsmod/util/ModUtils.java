@@ -8,7 +8,9 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.StructureBlockBlockEntity;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtDouble;
 import net.minecraft.nbt.NbtElement;
+import net.minecraft.nbt.NbtList;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
@@ -38,7 +40,7 @@ public class ModUtils {
     public static Codec<Direction> HORIZONTAL_CODEC = Direction.CODEC.flatXmap(ModUtils::validateHorizontal, ModUtils::validateHorizontal);
 
     private static DataResult<Direction> validateHorizontal(Direction direction) {
-        return direction.getAxis().isHorizontal() ? DataResult.success(direction) : DataResult.error("Expected a horizontal direction");
+        return direction.getAxis().isHorizontal() ? DataResult.success(direction) : DataResult.error(() -> "Expected a horizontal direction");
     }
 
     public static BlockPos findSuitableTeleportDestination(World world, BlockPos pos) {
@@ -70,12 +72,35 @@ public class ModUtils {
         );
     }
 
+    public static Vec3i vec3dtoi(Vec3d vec) {
+        return new Vec3i(
+                (int) vec.getX(),
+                (int) vec.getY(),
+                (int) vec.getZ()
+        );
+    }
+
     public static Vec3i getVec3iComponents(NbtCompound nbt, String name, Vec3i oldVec) {
         return new Vec3i(
                 nbt.contains(name + "X") ? nbt.getInt(name + "X") : oldVec.getX(),
                 nbt.contains(name + "Y") ? nbt.getInt(name + "Y") : oldVec.getY(),
                 nbt.contains(name + "Z") ? nbt.getInt(name + "Z") : oldVec.getZ()
         );
+    }
+
+    public static NbtList toNbtList(double... values) {
+        NbtList nbtList = new NbtList();
+        for (double d : values) nbtList.add(NbtDouble.of(d));
+        return nbtList;
+    }
+
+    public static void putVec3D(NbtCompound nbt, String name, Vec3d vec) {
+        nbt.put(name, ModUtils.toNbtList(vec.getX(), vec.getY(), vec.getZ()));
+    }
+
+    public static Vec3d getVec3D(NbtCompound nbt, String name) {
+        NbtList nbtList = nbt.getList(name, NbtElement.DOUBLE_TYPE);
+        return new Vec3d(nbtList.getDouble(0), nbtList.getDouble(1), nbtList.getDouble(2));
     }
 
     public static RegistryKey<Structure> structureIdToKey(String str) {

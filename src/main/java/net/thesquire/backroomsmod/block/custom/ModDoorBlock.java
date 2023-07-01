@@ -1,6 +1,7 @@
 package net.thesquire.backroomsmod.block.custom;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockSetType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.DoorBlock;
 import net.minecraft.entity.Entity;
@@ -31,14 +32,13 @@ public class ModDoorBlock extends DoorBlock {
      * Access widened by architectury to accessible
      *
      * @param settings block settings
-     * @param closeSound door close sound
-     * @param openSound door open sound
+     * @param blockSetType sound group for block materials, used to get door close and open sounds
      */
-    public ModDoorBlock(Settings settings, SoundEvent closeSound, SoundEvent openSound) {
-        super(settings, closeSound, openSound);
+    public ModDoorBlock(Settings settings, BlockSetType blockSetType) {
+        super(settings, blockSetType);
         this.setDefaultState(this.getDefaultState().with(LOCKED, false));
-        this.closeSound = closeSound;
-        this.openSound = openSound;
+        this.closeSound = blockSetType.doorClose();
+        this.openSound = blockSetType.doorOpen();
     }
 
     @Override

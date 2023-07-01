@@ -138,7 +138,7 @@ public class MagneticDistortionSystemControlComputerBlockEntity extends GenericM
             if(initPortalCounter == initTries) {
                 destPortalInfo = Level0Teleporter.findDestinationPortal(
                         Objects.requireNonNull(serverWorld.getServer().getWorld(destDim)),
-                        new BlockPos(portalOrigin),
+                        new BlockPos(ModUtils.vec3dtoi(portalOrigin)),
                         frameBlock);
                 if (destPortalInfo.getLeft().isEmpty())
                     throw new IllegalStateException("Unable to find destination for portal at " + portalOrigin);
@@ -260,7 +260,7 @@ public class MagneticDistortionSystemControlComputerBlockEntity extends GenericM
         portalUUID = portal.getUuid();
         destPortalUUID = destPortal.getUuid();
 
-        BackroomsMod.portalStorage.addDestPortal(new BlockPos(destPortalPos), this.getPos());
+        BackroomsMod.portalStorage.addDestPortal(destPortalPos, this.getPos());
     }
 
     private void deactivatePortal() {
@@ -269,7 +269,7 @@ public class MagneticDistortionSystemControlComputerBlockEntity extends GenericM
         portalUUID = null;
         destPortalUUID = null;
 
-        BackroomsMod.portalStorage.removeDestPortal(new BlockPos(destPortalPos), this.getPos());
+        BackroomsMod.portalStorage.removeDestPortal(destPortalPos, this.getPos());
     }
 
     public void killDestPortal() {

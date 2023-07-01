@@ -3,8 +3,10 @@ package net.thesquire.backroomsmod.portal.util;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.PersistentState;
 import net.thesquire.backroomsmod.block.entity.MagneticDistortionSystemControlComputerBlockEntity;
+import net.thesquire.backroomsmod.util.ModUtils;
 
 import java.util.Objects;
 import java.util.Stack;
@@ -12,7 +14,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class PortalStorage extends PersistentState {
 
-    private final ConcurrentHashMap<BlockPos, Stack<BlockPos>> level0DestPortals = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<Vec3d, Stack<BlockPos>> level0DestPortals = new ConcurrentHashMap<>();
     private final ConcurrentHashMap<BlockPos, MagneticDistortionSystemControlComputerBlockEntity> portalControlComputers = new ConcurrentHashMap<>();
 
     public static PortalStorage createFromNBT(NbtCompound nbt) {
@@ -21,7 +23,7 @@ public class PortalStorage extends PersistentState {
 
         for(int i = 0; i < portals.size(); i++) {
             NbtCompound portal = portals.getCompound(i);
-            portalStorage.initDestPortal(BlockPos.fromLong(portal.getLong("destPos")), BlockPos.fromLong(portal.getLong("computerPos")));
+            portalStorage.initDestPortal(ModUtils.getVec3D(portal, "destPos"), BlockPos.fromLong(portal.getLong("computerPos")));
         }
         return portalStorage;
     }
@@ -32,14 +34,13 @@ public class PortalStorage extends PersistentState {
     public NbtCompound writeNbt(NbtCompound nbt) {
         NbtList portals = new NbtList();
 
-        level0DestPortals.keys().asIterator().forEachRemaining(destPos -> {
-            level0DestPortals.get(destPos).forEach(computerPos -> {
-                NbtCompound portal = new NbtCompound();
-                portal.putLong("destPos", destPos.asLong());
-                portal.putLong("computerPos", computerPos.asLong());
-                portals.add(portal);
-            });
-        });
+        level0DestPortals.keys().asIterator().forEachRemaining(destPos ->
+                level0DestPortals.get(destPos).forEach(computerPos -> {
+            NbtCompound portal = new NbtCompound();
+            ModUtils.putVec3D(portal, "destPos", destPos);
+            portal.putLong("computerPos", computerPos.asLong());
+            portals.add(portal);
+        }));
 
         nbt.put("level0DestPortals", portals);
         return nbt;
@@ -48,13 +49,13 @@ public class PortalStorage extends PersistentState {
     // This method is only used when initializing a PortalStorage object from existing NBT data.
     // In this case, there is no need to kill the previous destination portal since we are not
     // adding any new portals.
-    private void initDestPortal(BlockPos destPos, BlockPos computerPos) {
+    private void initDestPortal(Vec3d destPos, BlockPos computerPos) {
         if (!level0DestPortals.containsKey(destPos))
             level0DestPortals.put(destPos, new Stack<>());
         level0DestPortals.get(destPos).push(computerPos);
     }
 
-    public void addDestPortal(BlockPos destPos, BlockPos computerPos) {
+    public void addDestPortal(Vec3d destPos, BlockPos computerPos) {
         if (!level0DestPortals.containsKey(destPos))
             level0DestPortals.put(destPos, new Stack<>());
         else
@@ -63,14 +64,14 @@ public class PortalStorage extends PersistentState {
         level0DestPortals.get(destPos).push(computerPos);
     }
 
-    public void removeDestPortal(BlockPos destPortalPos, BlockPos computerPos) {
-        BlockPos oldHeadPos = level0DestPortals.get(destPortalPos).peek();
+    public void removeDestPortal(Vec3d destPos, BlockPos computerPos) {
+        BlockPos oldHeadPos = level0DestPortals.get(destPos).peek();
 
-        level0DestPortals.get(destPortalPos).removeElement(computerPos);
-        if(level0DestPortals.get(destPortalPos).isEmpty())
-            level0DestPortals.remove(destPortalPos);
+        level0DestPortals.get(destPos).removeElement(computerPos);
+        if(level0DestPortals.get(destPos).isEmpty())
+            level0DestPortals.remove(destPos);
         else if(computerPos.equals(oldHeadPos))
-            portalControlComputers.get(level0DestPortals.get(destPortalPos).peek()).spawnDestPortal();
+            portalControlComputers.get(level0DestPortals.get(destPos).peek()).spawnDestPortal();
     }
 
     public void addPortalComputer(BlockPos computerPos, MagneticDistortionSystemControlComputerBlockEntity computer) {

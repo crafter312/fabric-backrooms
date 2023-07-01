@@ -1,12 +1,10 @@
 package net.thesquire.backroomsmod.util.mixin;
 
 import net.fabricmc.fabric.api.dimension.v1.FabricDimensions;
-import net.fabricmc.yarn.constants.MiningLevels;
 import net.minecraft.block.BlockState;
-import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.damage.DamageTypes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.PickaxeItem;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
@@ -43,7 +41,7 @@ public class MixinCallbacks {
             if (player.world instanceof ServerWorld) {
                 ServerWorld serverWorld = (ServerWorld) player.world;
                 if (serverWorld.getRegistryKey() != World.OVERWORLD) return;
-                if (source.equals(DamageSource.IN_WALL) || source.isOutOfWorld()) {
+                if (source.isOf(DamageTypes.IN_WALL) || source.isOf(DamageTypes.OUT_OF_WORLD)) {
                     if (Random.create().nextFloat() > 0.01) return;
                     ServerWorld destServerWorld = serverWorld.getServer().getWorld(ModDimensionKeys.LEVEL_0);
                     BlockPos destPos = ModUtils.findSuitableTeleportDestination(destServerWorld, player.getBlockPos());

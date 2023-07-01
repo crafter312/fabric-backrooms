@@ -155,7 +155,7 @@ public class ModBiomes {
 
     private static Biome.Builder defaultBiomeSettings() {
         return (new Biome.Builder())
-                .precipitation(Biome.Precipitation.NONE)
+                .precipitation(false)
                 .temperature(defaultTemperature)
                 .downfall(0f);
     }

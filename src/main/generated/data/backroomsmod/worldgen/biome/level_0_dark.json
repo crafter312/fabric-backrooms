@@ -29,7 +29,7 @@
       "backroomsmod:fluorescent_light_flickering_placed"
     ]
   ],
-  "precipitation": "none",
+  "has_precipitation": false,
   "spawn_costs": {},
   "spawners": {
     "ambient": [

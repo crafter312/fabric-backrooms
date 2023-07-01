@@ -19,12 +19,12 @@ public class SquareColumns implements DensityFunction.Base {
     private static final Function<Pair<Integer, Integer>, DataResult<Pair<Integer, Integer>>> X_CHECKER = (value) -> {
         int total_size = value.getFirst() + value.getSecond();
         return total_size >= MIN_TOTAL && total_size <= MAX_TOTAL ? DataResult.success(value)
-                : DataResult.error("Total x size " + total_size + " outside of range [" + MIN_TOTAL + ":" + MAX_TOTAL + "]", value);
+                : DataResult.error(() -> "Total x size " + total_size + " outside of range [" + MIN_TOTAL + ":" + MAX_TOTAL + "]", value);
     };
     private static final Function<Pair<Integer, Integer>, DataResult<Pair<Integer, Integer>>> Z_CHECKER = (value) -> {
         int total_size = value.getFirst() + value.getSecond();
         return total_size >= MIN_TOTAL && total_size <= MAX_TOTAL ? DataResult.success(value)
-                : DataResult.error("Total z size " + total_size + " outside of range [" + MIN_TOTAL + ":" + MAX_TOTAL + "]", value);
+                : DataResult.error(() -> "Total z size " + total_size + " outside of range [" + MIN_TOTAL + ":" + MAX_TOTAL + "]", value);
     };
     private static final MapCodec<SquareColumns> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
             SIZE_CODEC.fieldOf("x_params").flatXmap(X_CHECKER, X_CHECKER)

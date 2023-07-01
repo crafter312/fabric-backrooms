@@ -113,7 +113,7 @@ public class MountableFluorescentLightBlock extends HorizontalFacingBlock implem
     @Nullable
     @Override
     public BlockState getPlacementState(ItemPlacementContext ctx) {
-        BlockState facingState = getDefaultState().with(FACING, ctx.getPlayerFacing().getOpposite());
+        BlockState facingState = getDefaultState().with(FACING, ctx.getHorizontalPlayerFacing().getOpposite());
         Direction blockFace = ctx.getSide();
         return switch (blockFace) {
             case DOWN -> facingState.with(WALL_MOUNT_LOCATION, WallMountLocation.CEILING);

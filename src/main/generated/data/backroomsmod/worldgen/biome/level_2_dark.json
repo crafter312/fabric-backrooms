@@ -31,7 +31,7 @@
       "backroomsmod:level_1_puddle_individual_placed"
     ]
   ],
-  "precipitation": "none",
+  "has_precipitation": false,
   "spawn_costs": {},
   "spawners": {
     "ambient": [],

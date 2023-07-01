@@ -29,12 +29,12 @@ public class GridWalls implements DensityFunction.Base {
     private static final Function<GridWallsData, DataResult<GridWallsData>> X_CHECKER = (value) -> {
         int total_size = value.x_spacing() + value.x_wall_thickness();
         return total_size >= MIN_TOTAL && total_size <= MAX_TOTAL ? DataResult.success(value)
-                : DataResult.error("Total x size " + total_size + " outside of range [" + MIN_TOTAL + ":" + MAX_TOTAL + "]", value);
+                : DataResult.error(() -> "Total x size " + total_size + " outside of range [" + MIN_TOTAL + ":" + MAX_TOTAL + "]", value);
     };
     private static final Function<GridWallsData, DataResult<GridWallsData>> Z_CHECKER = (value) -> {
         int total_size = value.z_spacing() + value.z_wall_thickness();
         return total_size >= MIN_TOTAL && total_size <= MAX_TOTAL ? DataResult.success(value)
-                : DataResult.error("Total z size " + total_size + " outside of range [" + MIN_TOTAL + ":" + MAX_TOTAL + "]", value);
+                : DataResult.error(() -> "Total z size " + total_size + " outside of range [" + MIN_TOTAL + ":" + MAX_TOTAL + "]", value);
     };
     private static final Function<GridWallsData, DataResult<GridWallsData>> DOOR_CHECKER = (value) -> {
         if (!value.has_doors()) return DataResult.success(value);
@@ -42,7 +42,7 @@ public class GridWalls implements DensityFunction.Base {
         int max_x_width = value.x_spacing() / 2;
         int max_z_width = value.z_spacing() / 2;
         return door_width >= MIN_DOOR_WIDTH && door_width <= max_x_width && door_width <= max_z_width ? DataResult.success(value)
-                : DataResult.error("Door width " + door_width + " outside of range [" + MIN_DOOR_WIDTH + ":" + Math.min(max_x_width, max_z_width));
+                : DataResult.error(() -> "Door width " + door_width + " outside of range [" + MIN_DOOR_WIDTH + ":" + Math.min(max_x_width, max_z_width));
     };
 
     private static final MapCodec<GridWalls> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(

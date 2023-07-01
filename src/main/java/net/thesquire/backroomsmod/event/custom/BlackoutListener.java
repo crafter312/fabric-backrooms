@@ -16,6 +16,7 @@ import net.thesquire.backroomsmod.block.ModBlockEntities;
 import net.thesquire.backroomsmod.block.ModBlockProperties;
 import net.thesquire.backroomsmod.block.entity.flickering.MountableFluorescentLightBlockEntity;
 import net.thesquire.backroomsmod.tag.ModTags;
+import net.thesquire.backroomsmod.util.ModUtils;
 
 import java.util.Optional;
 
@@ -56,7 +57,7 @@ public class BlackoutListener implements GameEventListener {
     public boolean listen(ServerWorld world, GameEvent event, GameEvent.Emitter emitter, Vec3d emitterPos) {
         if(this.blackoutTime > 0) return false;
 
-        Optional<MountableFluorescentLightBlockEntity> optionalBlockEntity = world.getBlockEntity(new BlockPos(emitterPos), ModBlockEntities.MOUNTABLE_FLUORESCENT_LIGHT);
+        Optional<MountableFluorescentLightBlockEntity> optionalBlockEntity = world.getBlockEntity(new BlockPos(ModUtils.vec3dtoi(emitterPos)), ModBlockEntities.MOUNTABLE_FLUORESCENT_LIGHT);
         MountableFluorescentLightBlockEntity blockEntity;
         if(optionalBlockEntity.isEmpty() || !this.callback.canAccept(event, blockEntity = optionalBlockEntity.get())) return false;
 
@@ -69,7 +70,7 @@ public class BlackoutListener implements GameEventListener {
 
         // with all the checks completed, start the blackout event
         this.blackoutTime = blockEntity.getBlackoutTime();
-        BlockPos listenerBlockPos = new BlockPos(listenerPos);
+        BlockPos listenerBlockPos = new BlockPos(ModUtils.vec3dtoi(listenerPos));
         BlockState listenerState = world.getBlockState(listenerBlockPos);
         if (listenerState.contains(ModBlockProperties.LUMINANCE))
             world.setBlockState(listenerBlockPos, listenerState.with(ModBlockProperties.LUMINANCE, 0), Block.NOTIFY_ALL);
@@ -95,10 +96,6 @@ public class BlackoutListener implements GameEventListener {
     public boolean isBlackout() { return this.blackoutTime > 0; }
 
     public int getBlackoutTime() { return this.blackoutTime; }
-
-    private void setBlackoutTime(int blackoutTime) {
-        this.blackoutTime = blackoutTime;
-    }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////
 

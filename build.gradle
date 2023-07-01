@@ -39,6 +39,10 @@ dependencies {
 	modImplementation "TechReborn:TechReborn-${project.techreborn_version}"
 	//modImplementation "TechReborn:TechReborn-unknown:5.5.0+local"
 
+	// MixinExtras API for Immersive Portals
+	api("com.github.LlamaLad7:MixinExtras:${project.mixinextras_version}")
+	annotationProcessor("com.github.LlamaLad7:MixinExtras:${project.mixinextras_version}")
+
 	// Dependency of Immersive Portals Core:
 	modImplementation ("com.github.iPortalTeam.ImmersivePortalsMod:imm_ptl_core:${immersiveportals_version}"){
 		exclude(group: "net.fabricmc.fabric-api")
