@@ -51,3 +51,5 @@
 - added level 2 dimension
   - random narrow hallways
   - currently mostly empty
+- updated to Minecraft 1.19.4
+- possibly some other things that I might be forgetting, I've made a lot of changes since the last release version
