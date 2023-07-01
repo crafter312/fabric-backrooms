@@ -1,4 +1,4 @@
-# fabric-backrooms-1.19.3
+# fabric-backrooms-1.19.4
 My take on a Backrooms mod for minecraft fabric!
 
 CURRENT FEATURES
@@ -48,8 +48,16 @@ Backrooms level 1 dimension:
 - mountable fluorescent light block on walls for lighting
   - custom model
   - flickers just like normal fluorescent light block
+  - random blackout events causes whole area to plunge into darkness
 - "puddles" of waterlogged warehouse concrete blocks spawn
   - custom step sound effect when waterlogged
+  - dripping water from exposed rebar in ceiling into puddle
+- loot barrels spawn next to walls with almond water
+- portal structure to level 2 dimension
+  - staircase leading up to iron door
+
+Backrooms level 2 dimension:
+- long (currently empty) hallways
 
 Other features:
   - "no-clipping" (teleporting) into Backrooms Level 0 when taking suffocation or void damage; this currently happens 1% of the time (might change in the future)
@@ -60,9 +68,9 @@ IN PROGRESS FEATURES
 
 The following features are currently in progress or next on the list of things to implement:
   - Backrooms Level 0 dimension
-    - custom colored carpet block
     - other less common features, like grids of wall pillars in large open spaces or something like that (to make things more interesting)
-    - experiment with biome noise settings to make dark biomes smaller (or both biomes smaller, whichever one I manage to do first)
+  - Backrooms Level 2 dimension
+    - any other features to fill the currently empty hallways
 
 
 PLANNED FEATURES
