@@ -1,0 +1,19 @@
+{
+	"credit": "Made with Blockbench",
+	"texture_size": [16, 16],
+	"textures": {
+		"0": "backroomsmod:block/level_2/pipe_face",
+		"particle": "backroomsmod:block/level_2/pipe_face"
+	},
+	"elements": [
+		{
+			"name": "pipe_face",
+			"from": [3, 3, 3],
+			"to": [13, 13, 3],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 8, 8]},
+			"faces": {
+				"north": {"uv": [0, 0, 10, 10], "texture": "#0"}
+			}
+		}
+	]
+}

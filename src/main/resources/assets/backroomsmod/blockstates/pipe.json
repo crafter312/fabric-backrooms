@@ -1,0 +1,151 @@
+{
+  "multipart": [
+    {
+      "apply": {
+        "model": "backroomsmod:block/level_2/pipe_part"
+      },
+      "when": {
+        "north": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "backroomsmod:block/level_2/pipe_part",
+        "y": 90
+      },
+      "when": {
+        "east": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "backroomsmod:block/level_2/pipe_part",
+        "y": 180
+      },
+      "when": {
+        "south": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "backroomsmod:block/level_2/pipe_part",
+        "y": 270
+      },
+      "when": {
+        "west": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "backroomsmod:block/level_2/pipe_part",
+        "x": 270
+      },
+      "when": {
+        "up": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "backroomsmod:block/level_2/pipe_part",
+        "x": 90
+      },
+      "when": {
+        "down": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "backroomsmod:block/level_2/pipe_face"
+      },
+      "when": {
+        "north": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "backroomsmod:block/level_2/pipe_face",
+        "y": 90
+      },
+      "when": {
+        "east": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "backroomsmod:block/level_2/pipe_face",
+        "y": 180
+      },
+      "when": {
+        "south": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "backroomsmod:block/level_2/pipe_face",
+        "y": 270
+      },
+      "when": {
+        "west": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "backroomsmod:block/level_2/pipe_face",
+        "x": 270
+      },
+      "when": {
+        "up": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "backroomsmod:block/level_2/pipe_face",
+        "x": 90
+      },
+      "when": {
+        "down": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "backroomsmod:block/level_2/pipe_support_ring"
+      },
+      "when": {
+        "north": "true",
+        "east": "false",
+        "south": "true",
+        "west": "false",
+        "up": "false",
+        "down": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "backroomsmod:block/level_2/pipe_support_ring",
+        "y": 90
+      },
+      "when": {
+        "north": "false",
+        "east": "true",
+        "south": "false",
+        "west": "true",
+        "up": "false",
+        "down": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "backroomsmod:block/level_2/pipe_support_ring",
+        "x": 90
+      },
+      "when": {
+        "north": "false",
+        "east": "false",
+        "south": "false",
+        "west": "false",
+        "up": "true",
+        "down": "true"
+      }
+    }
+  ]
+}

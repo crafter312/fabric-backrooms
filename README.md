@@ -57,6 +57,7 @@ Backrooms level 1 dimension:
   - staircase leading up to iron door
 
 Backrooms level 2 dimension:
+- decorative pipe block
 - long (currently empty) hallways
 
 Other features:
