@@ -1,2 +1,3 @@
 - incremented version number
 - added decorative pipe block
+- fixed locked door opening with redstone
