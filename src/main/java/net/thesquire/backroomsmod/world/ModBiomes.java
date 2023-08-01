@@ -93,15 +93,11 @@ public class ModBiomes {
         SpawnSettings.Builder level2SpawnBuilder = new SpawnSettings.Builder();
 
         GenerationSettings.Builder level2BiomeBuilder = new GenerationSettings.Builder();
-        level2BiomeBuilder.feature(GenerationStep.Feature.LOCAL_MODIFICATIONS,
-                placedFeatureRegistryEntryLookup.getOrThrow(ModPlacedFeatures.CONCRETE_PUDDLE_INDIVIDUAL_PLACED_KEY));
 
         // level 2 dark biome settings
         SpawnSettings.Builder level2DarkSpawnBuilder = new SpawnSettings.Builder();
 
         GenerationSettings.Builder level2DarkBiomeBuilder = new GenerationSettings.Builder();
-        level2DarkBiomeBuilder.feature(GenerationStep.Feature.UNDERGROUND_DECORATION,
-                placedFeatureRegistryEntryLookup.getOrThrow(ModPlacedFeatures.CONCRETE_PUDDLE_INDIVIDUAL_PLACED_KEY));
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
