@@ -55,9 +55,9 @@ public class ModBiomes {
         level0BiomeBuilder.feature(GenerationStep.Feature.LOCAL_MODIFICATIONS,
                 placedFeatureRegistryEntryLookup.getOrThrow(ModPlacedFeatures.LEVEL_0_WALL_PLACED_KEY));
         level0BiomeBuilder.feature(GenerationStep.Feature.LOCAL_MODIFICATIONS,
-                placedFeatureRegistryEntryLookup.getOrThrow(ModPlacedFeatures.FLUORESCENT_LIGHT_FLICKERING_PLACED_KEY));
+                placedFeatureRegistryEntryLookup.getOrThrow(ModPlacedFeatures.LEVEL_0_FLUORESCENT_LIGHT_FLICKERING_PLACED_KEY));
         level0BiomeBuilder.feature(GenerationStep.Feature.LOCAL_MODIFICATIONS,
-                placedFeatureRegistryEntryLookup.getOrThrow(ModPlacedFeatures.FLUORESCENT_LIGHT_PLACED_KEY));
+                placedFeatureRegistryEntryLookup.getOrThrow(ModPlacedFeatures.LEVEL_0_FLUORESCENT_LIGHT_PLACED_KEY));
 
         // level 0 dark biome settings
         SpawnSettings.Builder level0DarkSpawnBuilder = new SpawnSettings.Builder();
@@ -71,7 +71,7 @@ public class ModBiomes {
         level0DarkBiomeBuilder.feature(GenerationStep.Feature.LOCAL_MODIFICATIONS,
                 placedFeatureRegistryEntryLookup.getOrThrow(ModPlacedFeatures.LEVEL_0_WALL_PLACED_KEY));
         level0DarkBiomeBuilder.feature(GenerationStep.Feature.LOCAL_MODIFICATIONS,
-                placedFeatureRegistryEntryLookup.getOrThrow(ModPlacedFeatures.FLUORESCENT_LIGHT_FLICKERING_PLACED_KEY));
+                placedFeatureRegistryEntryLookup.getOrThrow(ModPlacedFeatures.LEVEL_0_FLUORESCENT_LIGHT_FLICKERING_PLACED_KEY));
 
         // level 1 biome settings
         SpawnSettings.Builder level1SpawnBuilder = new SpawnSettings.Builder();
@@ -93,11 +93,15 @@ public class ModBiomes {
         SpawnSettings.Builder level2SpawnBuilder = new SpawnSettings.Builder();
 
         GenerationSettings.Builder level2BiomeBuilder = new GenerationSettings.Builder();
+        level2BiomeBuilder.feature(GenerationStep.Feature.LOCAL_MODIFICATIONS,
+                placedFeatureRegistryEntryLookup.getOrThrow(ModPlacedFeatures.LEVEL_2_PIPE_NETWORK_PLACED_KEY));
 
         // level 2 dark biome settings
         SpawnSettings.Builder level2DarkSpawnBuilder = new SpawnSettings.Builder();
 
         GenerationSettings.Builder level2DarkBiomeBuilder = new GenerationSettings.Builder();
+        level2DarkBiomeBuilder.feature(GenerationStep.Feature.LOCAL_MODIFICATIONS,
+                placedFeatureRegistryEntryLookup.getOrThrow(ModPlacedFeatures.LEVEL_2_PIPE_NETWORK_PLACED_KEY));
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

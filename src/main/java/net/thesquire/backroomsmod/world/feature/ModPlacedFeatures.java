@@ -22,14 +22,14 @@ public class ModPlacedFeatures {
 
     // generic features
     public static RegistryKey<PlacedFeature> BISMUTHINITE_ORE_PLACED_KEY = registerKey("bismuthinite_ore_placed");
-    public static RegistryKey<PlacedFeature> FLUORESCENT_LIGHT_PLACED_KEY = registerKey("fluorescent_light_placed");
-    public static RegistryKey<PlacedFeature> FLUORESCENT_LIGHT_FLICKERING_PLACED_KEY = registerKey("fluorescent_light_flickering_placed");
     public static RegistryKey<PlacedFeature> CONCRETE_PUDDLE_INDIVIDUAL_PLACED_KEY = registerKey("level_1_puddle_individual_placed");
 
     // level 0 features
     public static RegistryKey<PlacedFeature> LEVEL_0_WALL_PLACED_KEY = registerKey("level_0_wall_placed");
     public static RegistryKey<PlacedFeature> LEVEL_0_THIN_STRAIGHT_WALL_PLACED_KEY = registerKey("level_0_thin_straight_wall_placed");
     public static RegistryKey<PlacedFeature> LEVEL_0_THIN_CROOKED_WALL_PLACED_KEY = registerKey("level_0_thin_crooked_wall_placed");
+    public static RegistryKey<PlacedFeature> LEVEL_0_FLUORESCENT_LIGHT_PLACED_KEY = registerKey("level_0_fluorescent_light_placed");
+    public static RegistryKey<PlacedFeature> LEVEL_0_FLUORESCENT_LIGHT_FLICKERING_PLACED_KEY = registerKey("level_0_fluorescent_light_flickering_placed");
 
     // level 1 features
     public static RegistryKey<PlacedFeature> LEVEL_1_WALL_LIGHTS_PLACED_KEY = registerKey("level_1_wall_lights_placed");
@@ -41,49 +41,52 @@ public class ModPlacedFeatures {
     public static RegistryKey<PlacedFeature> LEVEL_1_REBAR_CONCRETE_PLACED_KEY = registerKey("level_1_rebar_concrete_placed");
     public static RegistryKey<PlacedFeature> LEVEL_1_LOOT_CHEST_PLACED_KEY = registerKey("level_1_loot_chest_placed");
 
+    // level 2 features
+    public static RegistryKey<PlacedFeature> LEVEL_2_PIPE_NETWORK_PLACED_KEY = registerKey("level_2_pipe_network_placed");
+
 
     public static void bootstrap(Registerable<PlacedFeature> context) {
         var configuredFeatureRegistryEntryLookup = context.getRegistryLookup(RegistryKeys.CONFIGURED_FEATURE);
 
         PlacementModifier lightBlockModifier = BlockFilterPlacementModifier.of(
                 BlockPredicate.matchingBlocks(Direction.DOWN.getVector(), List.of(Blocks.AIR)));
-        PlacementModifier level0WallBlockModifier = makeFloorPlacedFeatureBlockModifier(Blocks.LIGHT_GRAY_CONCRETE, Blocks.LIGHT_GRAY_CARPET);
         PlacementModifier findAdjacentWall = WallAdjacentPlacementModifier.of(makeAdjacentWallBlockPredicate(ModBlocks.PAINTED_WAREHOUSE_CONCRETE), 16);
+        PlacementModifier findAdjacentWall2 = WallAdjacentPlacementModifier.of(Direction.NORTH, makeAdjacentWallBlockPredicate(ModBlocks.WAREHOUSE_CONCRETE),
+                BlockPredicate.not(BlockPredicate.matchingBlocks(ModBlocks.PIPE_BLOCK)),16);
 
-        PlacementModifier level0Floor = HeightRangePlacementModifier.uniform(YOffset.fixed(18), YOffset.fixed(22));
-        PlacementModifier level0Ceiling = HeightRangePlacementModifier.uniform(YOffset.fixed(23), YOffset.fixed(25));
-
-        PlacementModifier level1Floor = HeightRangePlacementModifier.uniform(YOffset.fixed(20), YOffset.fixed(20));
-        PlacementModifier level1OnFloor = HeightRangePlacementModifier.uniform(YOffset.fixed(21), YOffset.fixed(21));
-        PlacementModifier level1LightPlacement = HeightRangePlacementModifier.uniform(YOffset.fixed(23), YOffset.fixed(23));
-        PlacementModifier level1Ceiling = HeightRangePlacementModifier.uniform(YOffset.fixed(25), YOffset.fixed(25));
+        // fixed y values
+        PlacementModifier y20 = HeightRangePlacementModifier.uniform(YOffset.fixed(20), YOffset.fixed(20));
+        PlacementModifier y21 = HeightRangePlacementModifier.uniform(YOffset.fixed(21), YOffset.fixed(21));
+        PlacementModifier y23 = HeightRangePlacementModifier.uniform(YOffset.fixed(23), YOffset.fixed(23));
+        PlacementModifier y24 = HeightRangePlacementModifier.uniform(YOffset.fixed(24), YOffset.fixed(24));
+        PlacementModifier y25 = HeightRangePlacementModifier.uniform(YOffset.fixed(25), YOffset.fixed(25));
 
         register(context, BISMUTHINITE_ORE_PLACED_KEY,
                 configuredFeatureRegistryEntryLookup.getOrThrow(ModConfiguredFeatures.BISMUTHINITE_ORE_KEY),
                 modifiersWithCount(8, HeightRangePlacementModifier.trapezoid(YOffset.fixed(70), YOffset.fixed(160))));
-        register(context, FLUORESCENT_LIGHT_PLACED_KEY,
-                configuredFeatureRegistryEntryLookup.getOrThrow(ModConfiguredFeatures.FLUORESCENT_LIGHT_KEY),
-                modifiersWithCount(12, level0Ceiling, lightBlockModifier));
-        register(context, FLUORESCENT_LIGHT_FLICKERING_PLACED_KEY,
-                configuredFeatureRegistryEntryLookup.getOrThrow(ModConfiguredFeatures.FLUORESCENT_LIGHT_FLICKERING_KEY),
-                modifiersWithRarity(48, level0Ceiling, lightBlockModifier));
         register(context, CONCRETE_PUDDLE_INDIVIDUAL_PLACED_KEY,
                 configuredFeatureRegistryEntryLookup.getOrThrow(ModConfiguredFeatures.CONCRETE_PUDDLE_KEY),
-                modifiersWithCount(8, level1Floor));
+                modifiersWithCount(8, y20));
 
         register(context, LEVEL_0_WALL_PLACED_KEY,
                 configuredFeatureRegistryEntryLookup.getOrThrow(ModConfiguredFeatures.LEVEL_0_WALL_KEY),
-                modifiersWithCount(8, level0Floor, level0WallBlockModifier));
+                modifiersWithCount(2, y20));
         register(context, LEVEL_0_THIN_STRAIGHT_WALL_PLACED_KEY,
                 configuredFeatureRegistryEntryLookup.getOrThrow(ModConfiguredFeatures.LEVEL_0_THIN_STRAIGHT_WALL_KEY),
-                modifiersWithCount(14, level0Floor, level0WallBlockModifier));
+                modifiersWithCount(3, y20));
         register(context, LEVEL_0_THIN_CROOKED_WALL_PLACED_KEY,
                 configuredFeatureRegistryEntryLookup.getOrThrow(ModConfiguredFeatures.LEVEL_0_THIN_CROOKED_WALL_KEY),
-                modifiersWithCount(12, level0Floor, level0WallBlockModifier));
+                modifiersWithCount(3, y20));
+        register(context, LEVEL_0_FLUORESCENT_LIGHT_PLACED_KEY,
+                configuredFeatureRegistryEntryLookup.getOrThrow(ModConfiguredFeatures.FLUORESCENT_LIGHT_KEY),
+                modifiersWithCount(4, y24, lightBlockModifier));
+        register(context, LEVEL_0_FLUORESCENT_LIGHT_FLICKERING_PLACED_KEY,
+                configuredFeatureRegistryEntryLookup.getOrThrow(ModConfiguredFeatures.FLUORESCENT_LIGHT_FLICKERING_KEY),
+                modifiersWithRarity(100, y24, lightBlockModifier));
 
         register(context, LEVEL_1_WALL_LIGHTS_PLACED_KEY,
                 configuredFeatureRegistryEntryLookup.getOrThrow(ModConfiguredFeatures.LEVEL_1_WALL_LIGHTS_KEY),
-                modifiersWithCount(14, level1LightPlacement));
+                modifiersWithCount(14, y23));
         register(context, LEVEL_1_PUDDLE_PLACED_KEY,
                 configuredFeatureRegistryEntryLookup.getOrThrow(ModConfiguredFeatures.CONCRETE_PUDDLE_KEY),
                 BlockFilterPlacementModifier.of(BlockPredicate.matchingBlocks(ModBlocks.WAREHOUSE_CONCRETE)));
@@ -98,13 +101,17 @@ public class ModPlacedFeatures {
                 BlockFilterPlacementModifier.of(BlockPredicate.matchingBlocks(ModBlocks.PAINTED_WAREHOUSE_CONCRETE)));
         register(context, LEVEL_1_PUDDLE_DRIP_PLACED_KEY,
                 configuredFeatureRegistryEntryLookup.getOrThrow(ModConfiguredFeatures.LEVEL_1_PUDDLE_DRIP_KEY),
-                modifiersWithCount(3, level1Ceiling));
+                modifiersWithCount(3, y25));
         register(context, LEVEL_1_REBAR_CONCRETE_PLACED_KEY,
                 configuredFeatureRegistryEntryLookup.getOrThrow(ModConfiguredFeatures.LEVEL_1_REBAR_CONCRETE_KEY),
-                modifiersWithCount(2, level1Ceiling));
+                modifiersWithCount(2, y25));
         register(context, LEVEL_1_LOOT_CHEST_PLACED_KEY,
                 configuredFeatureRegistryEntryLookup.getOrThrow(ModConfiguredFeatures.LEVEL_1_LOOT_CHEST_KEY),
-                List.of(RarityFilterPlacementModifier.of(8), SquarePlacementModifier.of(), level1OnFloor, findAdjacentWall, BiomePlacementModifier.of()));
+                List.of(RarityFilterPlacementModifier.of(8), SquarePlacementModifier.of(), y21, findAdjacentWall, BiomePlacementModifier.of()));
+
+        register(context, LEVEL_2_PIPE_NETWORK_PLACED_KEY,
+                configuredFeatureRegistryEntryLookup.getOrThrow(ModConfiguredFeatures.LEVEL_2_PIPE_NETWORK_KEY),
+                List.of(CountPlacementModifier.of(6), SquarePlacementModifier.of(), y23, findAdjacentWall2, BiomePlacementModifier.of()));
     }
 
     public static RegistryKey<PlacedFeature> registerKey(String name) {
@@ -121,16 +128,6 @@ public class ModPlacedFeatures {
         context.register(key, new PlacedFeature(configuration, List.of(modifiers)));
     }
 
-    private static PlacementModifier makeFloorPlacedFeatureBlockModifier(Block block1, Block block2) {
-        return BlockFilterPlacementModifier.of(BlockPredicate.bothOf(
-                BlockPredicate.matchingBlocks(Direction.DOWN.getVector(), block1),
-                BlockPredicate.matchingBlocks(block2)));
-    }
-
-    private static PlacementModifier makeFloorPlacedFeatureBlockModifier(Block block) {
-        return makeFloorPlacedFeatureBlockModifier(block, Blocks.AIR);
-    }
-
     private static BlockPredicate makeAdjacentWallBlockPredicate(Block block) {
         return BlockPredicate.anyOf(
                 BlockPredicate.matchingBlocks(Direction.NORTH.getVector(), block),
@@ -145,10 +142,6 @@ public class ModPlacedFeatures {
 
     private static List<PlacementModifier> modifiers(PlacementModifier countModifier, PlacementModifier heightModifier) {
         return List.of(countModifier, SquarePlacementModifier.of(), heightModifier, BiomePlacementModifier.of());
-    }
-
-    private static List<PlacementModifier> modifiersNotSquare(PlacementModifier countModifier, PlacementModifier heightModifier, PlacementModifier blockPlacementModifier) {
-        return List.of(countModifier, heightModifier, blockPlacementModifier, BiomePlacementModifier.of());
     }
 
     private static List<PlacementModifier> modifiersWithCount(int count, PlacementModifier heightModifier, PlacementModifier blockPlacementModifier) {

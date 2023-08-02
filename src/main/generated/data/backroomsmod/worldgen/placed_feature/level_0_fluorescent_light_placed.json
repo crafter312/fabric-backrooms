@@ -1,9 +1,9 @@
 {
-  "feature": "backroomsmod:fluorescent_light_flickering",
+  "feature": "backroomsmod:fluorescent_light",
   "placement": [
     {
-      "type": "minecraft:rarity_filter",
-      "chance": 48
+      "type": "minecraft:count",
+      "count": 4
     },
     {
       "type": "minecraft:in_square"
@@ -13,10 +13,10 @@
       "height": {
         "type": "minecraft:uniform",
         "max_inclusive": {
-          "absolute": 25
+          "absolute": 24
         },
         "min_inclusive": {
-          "absolute": 23
+          "absolute": 24
         }
       }
     },

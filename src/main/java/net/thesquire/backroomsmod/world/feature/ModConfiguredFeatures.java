@@ -13,6 +13,7 @@ import net.minecraft.structure.rule.TagMatchRuleTest;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.util.math.intprovider.ConstantIntProvider;
 import net.minecraft.util.math.intprovider.UniformIntProvider;
+import net.minecraft.world.gen.blockpredicate.BlockPredicate;
 import net.minecraft.world.gen.feature.*;
 import net.thesquire.backroomsmod.BackroomsMod;
 import net.thesquire.backroomsmod.block.ModBlockProperties;
@@ -41,6 +42,9 @@ public class ModConfiguredFeatures {
     public static final RegistryKey<ConfiguredFeature<?, ?>> LEVEL_1_DRIPPING_REBAR_KEY = registerKey("level_1_dripping_rebar");
     public static final RegistryKey<ConfiguredFeature<?, ?>> LEVEL_1_PUDDLE_DRIP_KEY = registerKey("level_1_puddle_drip");
     public static final RegistryKey<ConfiguredFeature<?, ?>> LEVEL_1_LOOT_CHEST_KEY = registerKey("level_1_loot_chest");
+
+    // level 2 features
+    public static final RegistryKey<ConfiguredFeature<?, ?>> LEVEL_2_PIPE_NETWORK_KEY = registerKey("level_2_pipe_network");
 
     public static void bootstrap(Registerable<ConfiguredFeature<?,?>> context) {
         var placedFeatureRegistryEntryLookup = context.getRegistryLookup(RegistryKeys.PLACED_FEATURE);
@@ -101,6 +105,9 @@ public class ModConfiguredFeatures {
                 new Vec3i(0, -5, 0)));
         register(context, LEVEL_1_LOOT_CHEST_KEY, ModFeatures.LOOT_CHEST,
                 new ModLootChestFeatureConfig(BackroomsMod.makeId("chests/level_1_supplies")));
+
+        register(context, LEVEL_2_PIPE_NETWORK_KEY, ModFeatures.PIPE_NETWORK,
+                ModPipeNetworkFeatureConfig.of(ModBlocks.PIPE_BLOCK.getDefaultState(), 1.0f, ConstantIntProvider.create(3), BlockPredicate.replaceable()));
     }
 
     public static RegistryKey<ConfiguredFeature<?, ?>> registerKey(String name) {
