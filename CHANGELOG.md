@@ -1,3 +1,8 @@
 - incremented version number
 - added decorative pipe block
 - fixed locked door opening with redstone
+- improved pipe network feature
+- updated README.md
+- new blackout_dimensions tag determines in which dimensions mountable fluorescent lights can cause blackouts
+- updated level 2 destination structure to match new dimension blocks
+- added wall lights feature in level 2

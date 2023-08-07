@@ -19,6 +19,7 @@ import net.thesquire.backroomsmod.block.entity.FlickeringBlockEntity;
 import net.thesquire.backroomsmod.config.ModConfig;
 import net.thesquire.backroomsmod.event.ModGameEvents;
 import net.thesquire.backroomsmod.event.custom.BlackoutListener;
+import net.thesquire.backroomsmod.tag.ModTags;
 
 public class MountableFluorescentLightBlockEntity extends FlickeringBlockEntity implements BlackoutListener.Callback {
 
@@ -41,7 +42,7 @@ public class MountableFluorescentLightBlockEntity extends FlickeringBlockEntity 
             world.setBlockState(pos, state.with(ModBlockProperties.LUMINANCE, defaultLuminance), Block.NOTIFY_ALL);
         blockEntity.resetBlackoutParams();
 
-        if(state.get(ModBlockProperties.FLICKERING) && blockEntity.randomDouble() < 0.00001) {
+        if(state.get(ModBlockProperties.FLICKERING) && world.getDimensionEntry().isIn(ModTags.BLACKOUT_DIMENSIONS) && blockEntity.randomDouble() < 0.00001) {
             blockEntity.generateBlackoutParams();
             world.emitGameEvent(ModGameEvents.BLACKOUT, pos, new GameEvent.Emitter(null, null));
             return;

@@ -43,6 +43,7 @@ public class ModPlacedFeatures {
 
     // level 2 features
     public static RegistryKey<PlacedFeature> LEVEL_2_PIPE_NETWORK_PLACED_KEY = registerKey("level_2_pipe_network_placed");
+    public static RegistryKey<PlacedFeature> LEVEL_2_WALL_LIGHTS_PLACED_KEY = registerKey("level_2_wall_lights_placed");
 
 
     public static void bootstrap(Registerable<PlacedFeature> context) {
@@ -57,6 +58,7 @@ public class ModPlacedFeatures {
         // fixed y values
         PlacementModifier y20 = HeightRangePlacementModifier.uniform(YOffset.fixed(20), YOffset.fixed(20));
         PlacementModifier y21 = HeightRangePlacementModifier.uniform(YOffset.fixed(21), YOffset.fixed(21));
+        PlacementModifier y22 = HeightRangePlacementModifier.uniform(YOffset.fixed(22), YOffset.fixed(22));
         PlacementModifier y23 = HeightRangePlacementModifier.uniform(YOffset.fixed(23), YOffset.fixed(23));
         PlacementModifier y24 = HeightRangePlacementModifier.uniform(YOffset.fixed(24), YOffset.fixed(24));
         PlacementModifier y25 = HeightRangePlacementModifier.uniform(YOffset.fixed(25), YOffset.fixed(25));
@@ -85,7 +87,7 @@ public class ModPlacedFeatures {
                 modifiersWithRarity(100, y24, lightBlockModifier));
 
         register(context, LEVEL_1_WALL_LIGHTS_PLACED_KEY,
-                configuredFeatureRegistryEntryLookup.getOrThrow(ModConfiguredFeatures.LEVEL_1_WALL_LIGHTS_KEY),
+                configuredFeatureRegistryEntryLookup.getOrThrow(ModConfiguredFeatures.WALL_LIGHTS_KEY),
                 modifiersWithCount(14, y23));
         register(context, LEVEL_1_PUDDLE_PLACED_KEY,
                 configuredFeatureRegistryEntryLookup.getOrThrow(ModConfiguredFeatures.CONCRETE_PUDDLE_KEY),
@@ -111,7 +113,10 @@ public class ModPlacedFeatures {
 
         register(context, LEVEL_2_PIPE_NETWORK_PLACED_KEY,
                 configuredFeatureRegistryEntryLookup.getOrThrow(ModConfiguredFeatures.LEVEL_2_PIPE_NETWORK_KEY),
-                List.of(CountPlacementModifier.of(6), SquarePlacementModifier.of(), y23, findAdjacentWall2, BiomePlacementModifier.of()));
+                List.of(CountPlacementModifier.of(14), SquarePlacementModifier.of(), y23, findAdjacentWall2, BiomePlacementModifier.of()));
+        register(context, LEVEL_2_WALL_LIGHTS_PLACED_KEY,
+                configuredFeatureRegistryEntryLookup.getOrThrow(ModConfiguredFeatures.WALL_LIGHTS_KEY),
+                modifiersWithCount(14, y22));
     }
 
     public static RegistryKey<PlacedFeature> registerKey(String name) {

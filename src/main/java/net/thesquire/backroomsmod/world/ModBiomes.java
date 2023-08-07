@@ -95,6 +95,8 @@ public class ModBiomes {
         GenerationSettings.Builder level2BiomeBuilder = new GenerationSettings.Builder();
         level2BiomeBuilder.feature(GenerationStep.Feature.LOCAL_MODIFICATIONS,
                 placedFeatureRegistryEntryLookup.getOrThrow(ModPlacedFeatures.LEVEL_2_PIPE_NETWORK_PLACED_KEY));
+        level2BiomeBuilder.feature(GenerationStep.Feature.LOCAL_MODIFICATIONS,
+                placedFeatureRegistryEntryLookup.getOrThrow(ModPlacedFeatures.LEVEL_2_WALL_LIGHTS_PLACED_KEY));
 
         // level 2 dark biome settings
         SpawnSettings.Builder level2DarkSpawnBuilder = new SpawnSettings.Builder();

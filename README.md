@@ -57,8 +57,9 @@ Backrooms level 1 dimension:
   - staircase leading up to iron door
 
 Backrooms level 2 dimension:
-- decorative pipe block
-- long (currently empty) hallways
+- decorative pipe feature with custom pipe block
+- long hallways with wall-mounted fluorescent lights
+- dark biomes with no fluorescent lights
 
 Other features:
   - "no-clipping" (teleporting) into Backrooms Level 0 when taking suffocation or void damage; this currently happens 1% of the time (might change in the future)

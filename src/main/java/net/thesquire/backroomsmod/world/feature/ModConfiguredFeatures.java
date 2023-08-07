@@ -28,7 +28,8 @@ public class ModConfiguredFeatures {
     public static final RegistryKey<ConfiguredFeature<?, ?>> BISMUTHINITE_ORE_KEY = registerKey("bismuthinite_ore");
     public static final RegistryKey<ConfiguredFeature<?, ?>> FLUORESCENT_LIGHT_KEY = registerKey("fluorescent_light");
     public static final RegistryKey<ConfiguredFeature<?, ?>> FLUORESCENT_LIGHT_FLICKERING_KEY = registerKey("fluorescent_light_flickering");
-    public static final RegistryKey<ConfiguredFeature<?, ?>> CONCRETE_PUDDLE_KEY = registerKey("level_1_puddle");
+    public static final RegistryKey<ConfiguredFeature<?, ?>> CONCRETE_PUDDLE_KEY = registerKey("concrete_puddle");
+    public static final RegistryKey<ConfiguredFeature<?, ?>> WALL_LIGHTS_KEY = registerKey("wall_lights");
 
     // level 0 features
     public static final RegistryKey<ConfiguredFeature<?, ?>> LEVEL_0_WALL_KEY = registerKey("level_0_wall");
@@ -36,7 +37,6 @@ public class ModConfiguredFeatures {
     public static final RegistryKey<ConfiguredFeature<?, ?>> LEVEL_0_THIN_CROOKED_WALL_KEY = registerKey("level_0_thin_crooked_wall");
 
     // level 1 features
-    public static final RegistryKey<ConfiguredFeature<?, ?>> LEVEL_1_WALL_LIGHTS_KEY = registerKey("level_1_wall_lights");
     public static final RegistryKey<ConfiguredFeature<?, ?>> LEVEL_1_DRIPPING_CONCRETE_KEY = registerKey("level_1_dripping_concrete");
     public static final RegistryKey<ConfiguredFeature<?, ?>> LEVEL_1_REBAR_CONCRETE_KEY = registerKey("level_1_rebar_concrete");
     public static final RegistryKey<ConfiguredFeature<?, ?>> LEVEL_1_DRIPPING_REBAR_KEY = registerKey("level_1_dripping_rebar");
@@ -82,6 +82,8 @@ public class ModConfiguredFeatures {
         register(context, FLUORESCENT_LIGHT_FLICKERING_KEY, ModFeatures.BLOCK_GRID, new ModBlockGridFeatureConfig(fluorescentLightTarget,
                 UniformIntProvider.create(2, 4), UniformIntProvider.create(2, 4), ConstantIntProvider.create(1), 0.5f));
         register(context, CONCRETE_PUDDLE_KEY, Feature.ORE, new OreFeatureConfig(Level1PuddleTarget, 30, 0f));
+        register(context, WALL_LIGHTS_KEY, ModFeatures.WALL_MOUNTABLE, new ModWallMountableFeatureConfig(
+                ModBlocks.MOUNTABLE_FLUORESCENT_LIGHT.getDefaultState(), ConstantIntProvider.create(18), 0.02f, 0.1f));
 
         register(context, LEVEL_0_WALL_KEY, ModFeatures.WALL, new ModSimpleWallFeatureConfig(Level0WallTarget,
                 ConstantIntProvider.create(4), UniformIntProvider.create(4, 8), UniformIntProvider.create(4, 8)));
@@ -90,8 +92,6 @@ public class ModConfiguredFeatures {
         register(context, LEVEL_0_THIN_CROOKED_WALL_KEY, ModFeatures.THIN_WALL, new ModThinWallFeatureConfig(Level0WallTarget,
                 UniformIntProvider.create(3, 6), UniformIntProvider.create(8, 14), ConstantIntProvider.create(4), false));
 
-        register(context, LEVEL_1_WALL_LIGHTS_KEY, ModFeatures.WALL_MOUNTABLE, new ModWallMountableFeatureConfig(
-                ModBlocks.MOUNTABLE_FLUORESCENT_LIGHT.getDefaultState(), ConstantIntProvider.create(18), 0.02f, 0.1f));
         register(context, LEVEL_1_DRIPPING_CONCRETE_KEY, Feature.REPLACE_SINGLE_BLOCK, new EmeraldOreFeatureConfig(Level1DrippingConcreteTarget));
         register(context, LEVEL_1_REBAR_CONCRETE_KEY, ModFeatures.FLAT_ORE_FEATURE,
                 new OreFeatureConfig(Level1RebarConcreteTarget, 10, 0f));

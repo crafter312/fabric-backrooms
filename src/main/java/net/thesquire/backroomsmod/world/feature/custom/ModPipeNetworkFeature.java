@@ -48,22 +48,35 @@ public class ModPipeNetworkFeature extends Feature<ModPipeNetworkFeatureConfig> 
         while (ChunkSectionPos.getSectionCoord(mutablePos.getX()) == chunkPos.x &&
                 ChunkSectionPos.getSectionCoord(mutablePos.getZ()) == chunkPos.z &&
                 target.test(world, mutablePos) && !stopCondition.test(world, mutablePos)) {
-            if (state.getBlock() instanceof PipeBlock) {
-                PipeBlock pipeBlock = (PipeBlock)state.getBlock();
-                BlockPos adjacentBlock = mutablePos.offset(branchDirection.getOpposite());
-                world.setBlockState(mutablePos, pipeBlock.withConnectionProperties(world, mutablePos), Block.NOTIFY_ALL);
-                world.setBlockState(adjacentBlock, pipeBlock.withConnectionProperties(world, adjacentBlock), Block.NOTIFY_ALL);
-            }
-            else world.setBlockState(mutablePos, state, Block.NOTIFY_ALL);
 
             Direction left = branchDirection.rotateYCounterclockwise();
             Direction right = branchDirection.rotateYClockwise();
-            if (target.test(world, mutablePos.offset(left, 3)) && leftCount >= leftSpacing && random.nextFloat() < branchProbability) {
-                generateBranch(world, chunkPos, mutablePos.offset(left), left, branchProbability, branchSpacing, state, target, stopCondition, random);
+            BlockPos leftPos = mutablePos.offset(left);
+            BlockPos rightPos = mutablePos.offset(right);
+            BlockPos nextPos = mutablePos.offset(branchDirection);
+            if (state.getBlock() instanceof PipeBlock) {
+                PipeBlock pipeBlock = (PipeBlock)state.getBlock();
+                BlockPos previousPos = mutablePos.offset(branchDirection.getOpposite());
+                world.setBlockState(mutablePos, pipeBlock.withConnectionProperties(world, mutablePos), Block.NOTIFY_ALL);
+                world.setBlockState(previousPos, pipeBlock.withConnectionProperties(world, previousPos), Block.NOTIFY_ALL);
+
+                if(world.getBlockState(leftPos).getBlock() instanceof PipeBlock)
+                    world.setBlockState(leftPos, pipeBlock.withConnectionProperties(world, leftPos), Block.NOTIFY_ALL);
+                if(world.getBlockState(rightPos).getBlock() instanceof PipeBlock)
+                    world.setBlockState(rightPos, pipeBlock.withConnectionProperties(world, rightPos), Block.NOTIFY_ALL);
+                if(world.getBlockState(nextPos).getBlock() instanceof PipeBlock)
+                    world.setBlockState(nextPos, pipeBlock.withConnectionProperties(world, nextPos), Block.NOTIFY_ALL);
+            }
+            else world.setBlockState(mutablePos, state, Block.NOTIFY_ALL);
+
+            if (canBranch(world, state, mutablePos, left, target, leftCount, leftSpacing) && random.nextFloat() < branchProbability) {
+                generateBranch(world, chunkPos, leftPos, left, branchProbability, branchSpacing, state, target, stopCondition, random);
+                leftCount = 0;
             }
             else ++leftCount;
-            if (target.test(world, mutablePos.offset(right, 3)) && rightCount >= rightSpacing && random.nextFloat() < branchProbability) {
-                generateBranch(world, chunkPos, mutablePos.offset(right), right, branchProbability, branchSpacing, state, target, stopCondition, random);
+            if (canBranch(world, state, mutablePos, right, target, rightCount, rightSpacing) && random.nextFloat() < branchProbability) {
+                generateBranch(world, chunkPos, rightPos, right, branchProbability, branchSpacing, state, target, stopCondition, random);
+                rightCount = 0;
             }
             else ++rightCount;
 
@@ -75,6 +88,15 @@ public class ModPipeNetworkFeature extends Feature<ModPipeNetworkFeatureConfig> 
         for (Direction dir : Direction.Type.HORIZONTAL)
             if (world.getBlockState(pos.offset(dir)).getMaterial().isSolid()) return dir;
         return Direction.fromHorizontal(random.nextBetween(0, 3));
+    }
+
+    private boolean canBranch(StructureWorldAccess world, BlockState state, BlockPos pos, Direction dir, BlockPredicate target, int count, int spacing) {
+        return target.test(world, pos.offset(dir, 3)) && count >= spacing && !hasAdjacentState(world, state, pos.offset(dir), dir);
+    }
+
+    private boolean hasAdjacentState(StructureWorldAccess world, BlockState state, BlockPos pos, Direction dir) {
+        return world.getBlockState(pos.offset(dir.rotateYClockwise())).isOf(state.getBlock()) ||
+                world.getBlockState(pos.offset(dir.rotateYCounterclockwise())).isOf(state.getBlock());
     }
 
 }
