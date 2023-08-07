@@ -54,6 +54,9 @@ public class ModBlocks {
     public static final Block WAREHOUSE_CONCRETE_STAIRS = registerBlock("warehouse_concrete_stairs",
             new WarehouseConcreteStairsBlock(ModBlocks.WAREHOUSE_CONCRETE.getDefaultState(), FabricBlockSettings.copy(ModBlocks.WAREHOUSE_CONCRETE)));
 
+    public static final Block PIPE_BLOCK = registerBlock("pipe",
+            new PipeBlock(FabricBlockSettings.copy(Blocks.IRON_BLOCK)));
+
     // Blocks with a GUI or BlockEntity have to be registered in the method below to ensure proper register order!
     public static Block INDUSTRIAL_ALLOY_SMELTER;
     public static Block MAGNETIC_DISTORTION_SYSTEM_CONTROL_COMPUTER;

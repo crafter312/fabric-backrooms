@@ -19,6 +19,7 @@ public class ModFeatures {
     public static final RegistryKey<Feature<?>> DOUBLE_FEATURE_KEY = registerKey("double_feature");
     public static final RegistryKey<Feature<?>> FLAT_ORE_FEATURE_KEY = registerKey("flat_ore_feature");
     public static final RegistryKey<Feature<?>> LOOT_CHEST_KEY = registerKey("loot_chest");
+    public static final RegistryKey<Feature<?>> PIPE_NETWORK_KEY = registerKey("pipe_network");
 
     public static Feature<ModSimpleWallFeatureConfig> WALL;
     public static Feature<ModThinWallFeatureConfig> THIN_WALL;
@@ -27,6 +28,7 @@ public class ModFeatures {
     public static Feature<ModDoubleFeatureConfig> DOUBLE_FEATURE;
     public static Feature<OreFeatureConfig> FLAT_ORE_FEATURE;
     public static Feature<ModLootChestFeatureConfig> LOOT_CHEST;
+    public static Feature<ModPipeNetworkFeatureConfig> PIPE_NETWORK;
 
     public static void registerModFeatures() {
         BackroomsMod.LOGGER.info("Registering mod features for " + BackroomsMod.MOD_ID);
@@ -38,6 +40,7 @@ public class ModFeatures {
         DOUBLE_FEATURE = register(DOUBLE_FEATURE_KEY.getValue().getPath(), new ModDoubleFeature(ModDoubleFeatureConfig.CODEC));
         FLAT_ORE_FEATURE = register(FLAT_ORE_FEATURE_KEY.getValue().getPath(), new ModFlatOreFeature(OreFeatureConfig.CODEC));
         LOOT_CHEST = register(LOOT_CHEST_KEY.getValue().getPath(), new ModLootChestFeature(ModLootChestFeatureConfig.CODEC));
+        PIPE_NETWORK = register(PIPE_NETWORK_KEY.getValue().getPath(), new ModPipeNetworkFeature(ModPipeNetworkFeatureConfig.CODEC));
     }
 
     public static RegistryKey<Feature<?>> registerKey(String name) {

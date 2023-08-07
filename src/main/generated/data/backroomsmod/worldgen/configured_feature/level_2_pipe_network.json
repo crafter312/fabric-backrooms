@@ -1,0 +1,27 @@
+{
+  "type": "backroomsmod:pipe_network",
+  "config": {
+    "branch_probability": 1.0,
+    "branch_spacing": 3,
+    "state": {
+      "Name": "backroomsmod:pipe",
+      "Properties": {
+        "down": "false",
+        "east": "false",
+        "north": "false",
+        "south": "false",
+        "up": "false",
+        "west": "false"
+      }
+    },
+    "stop_placement_predicate": {
+      "type": "minecraft:not",
+      "predicate": {
+        "type": "minecraft:true"
+      }
+    },
+    "target_predicate": {
+      "type": "minecraft:replaceable"
+    }
+  }
+}

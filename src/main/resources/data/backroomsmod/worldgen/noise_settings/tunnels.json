@@ -100,7 +100,7 @@
         "if_true": {
           "type": "minecraft:y_above",
           "anchor": {
-            "absolute": 20
+            "absolute": 21
           },
           "surface_depth_multiplier": 0,
           "add_stone_depth": false
@@ -112,7 +112,7 @@
             "invert": {
               "type": "minecraft:y_above",
               "anchor": {
-                "absolute": 26
+                "absolute": 25
               },
               "surface_depth_multiplier": 0,
               "add_stone_depth": false
@@ -124,24 +124,27 @@
               {
                 "type": "minecraft:condition",
                 "if_true": {
-                  "type": "minecraft:y_above",
-                  "anchor": {
-                    "absolute": 21
-                  },
-                  "surface_depth_multiplier": 0,
-                  "add_stone_depth": false
+                  "type": "minecraft:not",
+                  "invert": {
+                    "type": "minecraft:y_above",
+                    "anchor": {
+                      "absolute": 24
+                    },
+                    "surface_depth_multiplier": 0,
+                    "add_stone_depth": false
+                  }
                 },
                 "then_run": {
                   "type": "minecraft:block",
                   "result_state": {
-                    "Name": "minecraft:light_gray_concrete"
+                    "Name": "backroomsmod:warehouse_concrete"
                   }
                 }
               },
               {
                 "type": "minecraft:block",
                 "result_state": {
-                  "Name": "backroomsmod:warehouse_concrete"
+                  "Name": "backroomsmod:ceiling_tile"
                 }
               }
             ]

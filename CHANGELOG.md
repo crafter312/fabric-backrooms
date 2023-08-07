@@ -1,55 +1,8 @@
 - incremented version number
-- added missing loot tables for existing blocks
-- added warehouse concrete block
-  - waterloggable
-  - custom texture and step sounds for waterlogged state
-- added painted warehouse concrete block
-  - block state to drip water from bottom of block
-  - water drip particles make drip sound in level 1
-  - multipart blockstate json file enables each block side to be either plain or have rebar
-  - block sides can be "chiseled" with pickaxe right click to expose rebar
-- added mountable fluorescent light
-  - custom block model and voxel shape
-  - can be placed on floor, wall, ceiling, and oriented in different directions
-  - emits light
-  - breaks when mount surface breaks, like torches
-- added FlickeringBlockEntity super class
-  - used for both fluorescent light blocks
-  - simplifies shared light flickering functionality
-- simplified creation of biomes with shared default attributes
-- fixed biome dark fog color (used for all added biomes so far)
-- added Level 1 dimension
-  - custom density functions generate columns and random walls
-  - warehouse concrete block used for floor
-  - painted warehouse concrete block used for walls and ceiling
-  - patches of exposed rebar generate as features in ceiling
-    - sometimes accompanied by dripping water and puddle feature in floor
-  - random loot barrels containing almond water generate next to walls
-  - added portal structure to level 2
-    - contains portal placer block
-    - generates destination portal structure in level 2
-- updated mod to Minecraft 1.19.3
-- fixed "Normalizing zero-length quaternion" error present after updating to 1.19.3
-- added portal placer block
-  - for use in structures and features
-  - places configured portal on first tick
-  - then destroys itself and replaces with specified block state (air by default)
-  - width, height, destination dimension, replace block, etc. can all be configured via nbt data
-    - "active" nbt tag can be set false to disable portal creation while configuring the block
-    - this tag does not save when closing the world, can only be written to
-  - replace block uses same format as BlockStateTag described in Minecraft wiki
-    - https://minecraft.fandom.com/wiki/Tutorials/Command_NBT_tags#Blocks
-  - can be configured to place an additional structure in the destination dimension
-  - additional isMiddlePortal tag specifies whether portal generates in middle of block like vanilla portals or not
-- fixed ModSounds class related crash
-- re-did flat_no_caves.json noise settings to fix missing ceiling tiles
-- added level 1 portal structure
-  - generates in level 0
-  - contains portal placer block to place the portals
-  - 8 block wide portal
-  - portal placer block places destination portal structure in level 1
-- added level 2 dimension
-  - random narrow hallways
-  - currently mostly empty
-- updated to Minecraft 1.19.4
-- possibly some other things that I might be forgetting, I've made a lot of changes since the last release version
+- added decorative pipe block
+- fixed locked door opening with redstone
+- improved pipe network feature
+- updated README.md
+- new blackout_dimensions tag determines in which dimensions mountable fluorescent lights can cause blackouts
+- updated level 2 destination structure to match new dimension blocks
+- added wall lights feature in level 2

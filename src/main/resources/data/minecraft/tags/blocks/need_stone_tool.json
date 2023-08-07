@@ -1,5 +1,7 @@
 {
   "replace": false,
   "values": [
+    "backroomsmod:custom_door",
+    "backroomsmod:pipe"
   ]
 }

@@ -19,6 +19,7 @@ public class BackroomsModClient implements ClientModInitializer {
 
         BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.MOUNTABLE_FLUORESCENT_LIGHT, RenderLayer.getCutout());
         BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.IRON_DOOR, RenderLayer.getCutout());
+        BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.PIPE_BLOCK, RenderLayer.getCutout());
 
         MixinCallbacks.registerClientCallbacks();
         ModClientGuis.registerClientGuis();

@@ -1,5 +1,5 @@
 {
-  "feature": "backroomsmod:level_1_puddle",
+  "feature": "backroomsmod:concrete_puddle",
   "placement": [
     {
       "type": "minecraft:block_predicate_filter",

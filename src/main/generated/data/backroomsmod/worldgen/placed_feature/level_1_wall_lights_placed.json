@@ -1,5 +1,5 @@
 {
-  "feature": "backroomsmod:level_1_wall_lights",
+  "feature": "backroomsmod:wall_lights",
   "placement": [
     {
       "type": "minecraft:count",

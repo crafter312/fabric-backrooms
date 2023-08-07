@@ -1,0 +1,80 @@
+{
+  "feature": "backroomsmod:level_2_pipe_network",
+  "placement": [
+    {
+      "type": "minecraft:count",
+      "count": 14
+    },
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "type": "minecraft:height_range",
+      "height": {
+        "type": "minecraft:uniform",
+        "max_inclusive": {
+          "absolute": 23
+        },
+        "min_inclusive": {
+          "absolute": 23
+        }
+      }
+    },
+    {
+      "type": "minecraft:wall_adjacent",
+      "allowed_search_condition": {
+        "type": "minecraft:not",
+        "predicate": {
+          "type": "minecraft:matching_blocks",
+          "blocks": "backroomsmod:pipe"
+        }
+      },
+      "initial_direction": "north",
+      "max_steps": 16,
+      "target_condition": {
+        "type": "minecraft:any_of",
+        "predicates": [
+          {
+            "type": "minecraft:matching_blocks",
+            "blocks": "backroomsmod:warehouse_concrete",
+            "offset": [
+              0,
+              0,
+              -1
+            ]
+          },
+          {
+            "type": "minecraft:matching_blocks",
+            "blocks": "backroomsmod:warehouse_concrete",
+            "offset": [
+              1,
+              0,
+              0
+            ]
+          },
+          {
+            "type": "minecraft:matching_blocks",
+            "blocks": "backroomsmod:warehouse_concrete",
+            "offset": [
+              0,
+              0,
+              1
+            ]
+          },
+          {
+            "type": "minecraft:matching_blocks",
+            "blocks": "backroomsmod:warehouse_concrete",
+            "offset": [
+              -1,
+              0,
+              0
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "type": "minecraft:biome"
+    }
+  ]
+}

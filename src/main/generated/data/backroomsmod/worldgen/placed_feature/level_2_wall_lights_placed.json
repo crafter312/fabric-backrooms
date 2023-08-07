@@ -1,9 +1,9 @@
 {
-  "feature": "backroomsmod:level_0_wall",
+  "feature": "backroomsmod:wall_lights",
   "placement": [
     {
       "type": "minecraft:count",
-      "count": 2
+      "count": 14
     },
     {
       "type": "minecraft:in_square"
@@ -13,10 +13,10 @@
       "height": {
         "type": "minecraft:uniform",
         "max_inclusive": {
-          "absolute": 20
+          "absolute": 22
         },
         "min_inclusive": {
-          "absolute": 20
+          "absolute": 22
         }
       }
     },

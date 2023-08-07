@@ -9,7 +9,7 @@
     "TheSquire"
   ],
   "contact": {
-    "sources": "https://github.com/crafter312/fabric-backrooms-1.19.2"
+    "sources": "https://github.com/crafter312/fabric-backrooms"
   },
 
   "license": "GPL-3",
@@ -41,7 +41,6 @@
     "fabric": ">=0.83.0",
     "minecraft": "~1.19.4",
     "techreborn": ">=5.7.0",
-    "immersive_portals": ">=2.7.3",
     "java": ">=17"
   },
   "suggests": {

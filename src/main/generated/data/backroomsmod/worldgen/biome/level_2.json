@@ -23,7 +23,8 @@
     [],
     [],
     [
-      "backroomsmod:level_1_puddle_individual_placed"
+      "backroomsmod:level_2_pipe_network_placed",
+      "backroomsmod:level_2_wall_lights_placed"
     ]
   ],
   "has_precipitation": false,
