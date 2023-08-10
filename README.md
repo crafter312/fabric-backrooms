@@ -63,6 +63,10 @@ Backrooms level 2 dimension:
 
 Other features:
   - "no-clipping" (teleporting) into Backrooms Level 0 when taking suffocation or void damage; this currently happens 1% of the time (might change in the future)
+  - portal placer block to be used in structures for portal placement when the structure is generated in the world
+  - elevator button
+    - extends the portal placer block features with basic portal animation functions
+    - intended to be used as 1-way interdimensional "elevator"
 
 
 IN PROGRESS FEATURES

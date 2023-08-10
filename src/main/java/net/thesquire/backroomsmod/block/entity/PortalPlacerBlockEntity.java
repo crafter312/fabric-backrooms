@@ -2,8 +2,9 @@ package net.thesquire.backroomsmod.block.entity;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtHelper;
 import net.minecraft.registry.RegistryKey;
@@ -20,6 +21,8 @@ import qouteall.imm_ptl.core.portal.PortalManipulation;
 import qouteall.q_misc_util.Helper;
 import qouteall.q_misc_util.dimension.DimId;
 
+import java.util.UUID;
+
 /**
  * For the time being, this block entity assumes that there is no scale transformation between the two dimensions.
  * Additionally, if creating a vertical portal, please don't change the facing direction of the block when placing
@@ -28,23 +31,24 @@ import qouteall.q_misc_util.dimension.DimId;
  */
 public class PortalPlacerBlockEntity extends BlockEntity {
 
-    private RegistryKey<World> dimensionTo = null;
-    private int width = 10;
-    private int height = 4;
-    private Vec3d origin;
-    private boolean isMiddlePortal = false;
-    private Double destinationX = null;
-    private Double destinationY = null;
-    private Double destinationZ = null;
-    private BlockState replacementState = Blocks.AIR.getDefaultState();
-    private Vec3i destStructureOffset = new Vec3i(0, 0, 0);
+    protected RegistryKey<World> dimensionTo = null;
+    protected int width = 10;
+    protected int height = 4;
+    protected Vec3d origin;
+    protected boolean isMiddlePortal = false;
+    protected Double destinationX = null;
+    protected Double destinationY = null;
+    protected Double destinationZ = null;
+    protected BlockState replacementState = null;
+    protected Vec3i destStructureOffset = new Vec3i(0, 0, 0);
 
     // string describing the file path of the destination structure nbt file
     // e.g. "backroomsmod:level_1/level_1_portal_destination_8w"
-    private String destStructureNbtPath = null;
+    protected String destStructureNbtPath = null;
 
     // the portal is not stored as nbt, it's just used to get the destination world for extra structure placement
-    private Portal portal = null;
+    protected Portal portal = null;
+    protected UUID portalUUID = null;
 
     /**
      * This parameter can be written to via the {@code PortalPlacerBlockEntity::readNbt} method,
@@ -55,24 +59,36 @@ public class PortalPlacerBlockEntity extends BlockEntity {
      * specified portal on its first tick, since the {@code active} parameter always initializes
      * as {@code true}.
      */
-    private boolean active = true;
+    protected boolean active = true;
 
     public PortalPlacerBlockEntity(BlockPos pos, BlockState state) {
-        super(ModBlockEntities.PORTAL_PLACER, pos, state);
+        this(ModBlockEntities.PORTAL_PLACER, pos, state);
+    }
+
+    protected PortalPlacerBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
+        super(type, pos, state);
         this.origin = getPortalOrigin(state);
     }
 
     public void tick(World world, BlockState state) {
+        if(portal != null || world.isClient || !this.active || this.dimensionTo == null) return;
+        if(this.portalUUID != null) {
+            this.getPortalEntity(world);
+            return;
+        }
+
         // update portal origin to account for parameters changed via nbt data (e.g. during setblock command)
-        this.origin = getPortalOrigin(state);
+        this.updatePortalOrigin(state);
 
-        if(world.isClient() || !this.active || this.dimensionTo == null || !state.contains(Properties.FACING)) return;
-
+        // initialize portal
         ServerWorld serverWorld = (ServerWorld) world;
+        this.initPortal(serverWorld, state);
+        if(this.portalUUID == null) return;
 
-        boolean success = initPortal(serverWorld, state);
-        if(success && serverWorld.isChunkLoaded(ChunkPos.toLong(this.pos))) {
+        // place destination structure and replacement state
+        if(serverWorld.isChunkLoaded(ChunkPos.toLong(this.pos)))
             placeDestStructure(state);
+        if(this.replacementState != null) {
             world.setBlockState(getPos(), this.replacementState, Block.NOTIFY_ALL);
             world.removeBlockEntity(this.pos);
         }
@@ -91,10 +107,13 @@ public class PortalPlacerBlockEntity extends BlockEntity {
             nbt.putDouble("destinationY", this.destinationY);
         if(this.destinationZ != null)
             nbt.putDouble("destinationZ", this.destinationZ);
-        nbt.put("replacementState", NbtHelper.fromBlockState(this.replacementState));
+        if(this.replacementState != null)
+            nbt.put("replacementState", NbtHelper.fromBlockState(this.replacementState));
         Helper.putVec3i(nbt, "destStructureOffset", this.destStructureOffset);
         if(this.destStructureNbtPath != null)
             nbt.putString("destStructureNbtPath", this.destStructureNbtPath);
+        if(this.portalUUID != null)
+            nbt.putUuid("portalUUID", this.portalUUID);
     }
 
     // each nbt key is treated as optional so the nbt can be partially set using the setblock command
@@ -119,16 +138,18 @@ public class PortalPlacerBlockEntity extends BlockEntity {
         this.destStructureOffset = ModUtils.getVec3iComponents(nbt, "destStructureOffset", this.destStructureOffset);
         if(nbt.contains("destStructureNbtPath"))
             this.destStructureNbtPath = nbt.getString("destStructureNbtPath");
+        if(nbt.containsUuid("portalUUID"))
+            this.portalUUID = nbt.getUuid("portalUUID");
 
         // read only nbt value to disable portal creation upon placement by setblock command or similar method
         if(nbt.contains("active"))
             this.active = nbt.getBoolean("active");
     }
 
-    public boolean initPortal(ServerWorld serverWorld, BlockState state) {
+    public void initPortal(ServerWorld serverWorld, BlockState state) {
         this.portal = Portal.entityType.create(serverWorld);
         if(this.portal == null)
-            return false;
+            return;
 
         this.portal.setOriginPos(this.origin);
         this.portal.setDestinationDimension(this.dimensionTo != null ? this.dimensionTo : serverWorld.getRegistryKey());
@@ -148,7 +169,7 @@ public class PortalPlacerBlockEntity extends BlockEntity {
         boolean spawned = this.portal.world.spawnEntity(this.portal);
         if(!spawned) {
             BackroomsMod.LOGGER.warn("Failed to spawn portal at " + this.origin);
-            return false;
+            return;
         }
         PortalManipulation.completeBiWayBiFacedPortal(
                 this.portal,
@@ -156,7 +177,7 @@ public class PortalPlacerBlockEntity extends BlockEntity {
                 (p) -> {},
                 Portal.entityType
         );
-        return true;
+        this.portalUUID = this.portal.getUuid();
     }
 
     public void placeDestStructure(BlockState state) {
@@ -178,11 +199,22 @@ public class PortalPlacerBlockEntity extends BlockEntity {
         ModUtils.placeStructure((ServerWorld) this.portal.getDestinationWorld(), this.destStructureNbtPath, destStructurePos, angle);
     }
 
+    private void getPortalEntity(World world) {
+        Entity entity = ((ServerWorld) world).getEntity(this.portalUUID);
+        if(entity == null || !entity.getType().equals(Portal.entityType)) return;
+
+        this.portal = (Portal) entity;
+    }
+
     private Vec3d getPortalOrigin(BlockState state) {
         return getPos().toCenterPos()
                 .add(getPortalUpVec(state).multiply((((float) this.height) / 2) - 0.5))
                 .add(getPortalHorizontalVec(state).multiply((1 - (this.width % 2)) * 0.5))
-                .add(ModUtils.vec3itod(getFacingOrDefault(state)).multiply(ModUtils.boolToFloat(this.isMiddlePortal, 0, 0.5f)));
+                .add(ModUtils.vec3itod(this.getFacingOrDefault(state)).multiply(ModUtils.boolToFloat(this.isMiddlePortal, 0, 0.5f)));
+    }
+
+    public void updatePortalOrigin(BlockState state) {
+        this.origin = this.getPortalOrigin(state);
     }
 
     private Vec3d getPortalUpVec(BlockState state) {
@@ -191,12 +223,14 @@ public class PortalPlacerBlockEntity extends BlockEntity {
     }
 
     private Vec3d getPortalHorizontalVec(BlockState state) {
-        Vec3i facing = getFacingOrDefault(state);
+        Vec3i facing = this.getFacingOrDefault(state);
         return getPortalUpVec(state).crossProduct(new Vec3d(facing.getX(), facing.getY(), facing.getZ()));
     }
 
-    private Vec3i getFacingOrDefault(BlockState state) {
+    protected Vec3i getFacingOrDefault(BlockState state) {
         return state.contains(Properties.FACING) ? state.get(Properties.FACING).getVector() : Direction.SOUTH.getVector();
     }
+
+    public boolean hasPortal() { return this.portal != null && this.portalUUID != null; }
 
 }

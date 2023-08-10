@@ -17,9 +17,11 @@ public class BackroomsModClient implements ClientModInitializer {
     public void onInitializeClient() {
         BlockEntityRendererFactories.register(ModBlockEntities.MAGNETIC_DISTORTION_SYSTEM_CONTROL_COMPUTER, MultiblockRenderer::new);
 
-        BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.MOUNTABLE_FLUORESCENT_LIGHT, RenderLayer.getCutout());
-        BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.IRON_DOOR, RenderLayer.getCutout());
-        BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.PIPE_BLOCK, RenderLayer.getCutout());
+        BlockRenderLayerMap.INSTANCE.putBlocks(RenderLayer.getCutout(),
+                ModBlocks.MOUNTABLE_FLUORESCENT_LIGHT,
+                ModBlocks.IRON_DOOR,
+                ModBlocks.PIPE_BLOCK,
+                ModBlocks.ELEVATOR_BUTTON);
 
         MixinCallbacks.registerClientCallbacks();
         ModClientGuis.registerClientGuis();

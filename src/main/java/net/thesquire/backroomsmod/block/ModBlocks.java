@@ -57,12 +57,16 @@ public class ModBlocks {
     public static final Block PIPE_BLOCK = registerBlock("pipe",
             new PipeBlock(FabricBlockSettings.copy(Blocks.IRON_BLOCK)));
 
+    public static final Block IRON_BUTTON = registerBlock("iron_button",
+            new ButtonBlock(FabricBlockSettings.of(Material.DECORATION).noCollision().strength(0.5f).requiresTool(), BlockSetType.IRON, 20, false));
+
     // Blocks with a GUI or BlockEntity have to be registered in the method below to ensure proper register order!
     public static Block INDUSTRIAL_ALLOY_SMELTER;
     public static Block MAGNETIC_DISTORTION_SYSTEM_CONTROL_COMPUTER;
     public static Block FLUORESCENT_LIGHT;
     public static Block MOUNTABLE_FLUORESCENT_LIGHT;
     public static Block PORTAL_PLACER;
+    public static Block ELEVATOR_BUTTON;
 
     public static void registerModBlocks() {
         BackroomsMod.LOGGER.info("Registering mod blocks for " + BackroomsMod.MOD_ID);
@@ -85,6 +89,9 @@ public class ModBlocks {
 
         PORTAL_PLACER = registerBlockWithoutBlockItem("portal_placer",
                 new PortalPlacerBlock(FabricBlockSettings.of(Material.AIR).noCollision().dropsNothing().noBlockBreakParticles()));
+
+        ELEVATOR_BUTTON = registerBlockWithoutBlockItem("elevator_button",
+                new ElevatorButton(FabricBlockSettings.copy(IRON_BUTTON), BlockSetType.IRON, 20, false));
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////

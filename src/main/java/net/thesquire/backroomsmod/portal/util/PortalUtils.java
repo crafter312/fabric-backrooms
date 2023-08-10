@@ -12,8 +12,13 @@ import net.minecraft.world.BlockLocating;
 import net.thesquire.backroomsmod.block.ModBlocks;
 import org.jetbrains.annotations.Nullable;
 import qouteall.imm_ptl.core.McHelper;
+import qouteall.imm_ptl.core.commands.PortalAnimationCommand;
 import qouteall.imm_ptl.core.portal.Portal;
+import qouteall.imm_ptl.core.portal.animation.NormalAnimation;
+import qouteall.imm_ptl.core.portal.animation.PortalAnimation;
+import qouteall.imm_ptl.core.portal.animation.PortalAnimationDriver;
 import qouteall.q_misc_util.Helper;
+import qouteall.q_misc_util.my_util.Access;
 
 public class PortalUtils {
 
@@ -160,6 +165,45 @@ public class PortalUtils {
             case 270 -> new Vec3i(vec.getZ(), vec.getY(), (vec.getX() * -1));
             default -> vec;
         };
+    }
+
+    public static PortalAnimationCommand.AnimationBuilderContext getAnimationBuilderContext(Portal portal) {
+        PortalAnimation animation = portal.animation;
+        if (animation.thisSideAnimations.isEmpty() || animation.otherSideAnimations.isEmpty()) return null;
+
+        int thisSideIndex = animation.thisSideAnimations.size() - 1;
+        PortalAnimationDriver lastThisSideAnimation = animation.thisSideAnimations.get(thisSideIndex);
+        if (!(lastThisSideAnimation instanceof NormalAnimation thisSideNormalAnimation)) return null;
+
+        int otherSideIndex = animation.otherSideAnimations.size() - 1;
+        PortalAnimationDriver lastOtherSideAnimation = animation.otherSideAnimations.get(otherSideIndex);
+        if (!(lastOtherSideAnimation instanceof NormalAnimation otherSideNormalAnimation)) return null;
+
+        return new PortalAnimationCommand.AnimationBuilderContext(
+                portal,
+                new Access<>() {
+                    @Override
+                    public NormalAnimation get() {
+                        return thisSideNormalAnimation;
+                    }
+
+                    @Override
+                    public void set(NormalAnimation normalAnimation) {
+                        animation.thisSideAnimations.set(thisSideIndex, normalAnimation);
+                    }
+                },
+                new Access<>() {
+                    @Override
+                    public NormalAnimation get() {
+                        return otherSideNormalAnimation;
+                    }
+
+                    @Override
+                    public void set(NormalAnimation normalAnimation) {
+                        animation.otherSideAnimations.set(otherSideIndex, normalAnimation);
+                    }
+                }
+        );
     }
 
 }

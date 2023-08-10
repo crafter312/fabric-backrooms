@@ -1,8 +1,13 @@
 - incremented version number
-- added decorative pipe block
-- fixed locked door opening with redstone
-- improved pipe network feature
-- updated README.md
-- new blackout_dimensions tag determines in which dimensions mountable fluorescent lights can cause blackouts
-- updated level 2 destination structure to match new dimension blocks
-- added wall lights feature in level 2
+- added pipe block loot table
+- added iron button
+  - works the same as a stone button
+  - crafted with an iron ingot in a stonecutter
+- added elevator button
+  - drops iron button when broken
+  - works similarly to portal placer block, with extra features:
+    - portal facing direction specified manually instead of using block facing property
+    - can specify portal origin offset from button position
+    - portal placed when testing by shift right-clicking instead of just right-clicking
+    - animates portal when button pressed with simple 1D translation animation
+  -  basically, this is designed to be used as a 1-way interdimensional elevator

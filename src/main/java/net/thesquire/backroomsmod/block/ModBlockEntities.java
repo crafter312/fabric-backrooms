@@ -9,6 +9,7 @@ import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.util.math.BlockPos;
 import net.thesquire.backroomsmod.BackroomsMod;
+import net.thesquire.backroomsmod.block.entity.ElevatorButtonBlockEntity;
 import net.thesquire.backroomsmod.block.entity.IndustrialAlloySmelterBlockEntity;
 import net.thesquire.backroomsmod.block.entity.MagneticDistortionSystemControlComputerBlockEntity;
 import net.thesquire.backroomsmod.block.entity.PortalPlacerBlockEntity;
@@ -24,6 +25,7 @@ public class ModBlockEntities {
     public static BlockEntityType<FluorescentLightBlockEntity> FLUORESCENT_LIGHT;
     public static BlockEntityType<MountableFluorescentLightBlockEntity> MOUNTABLE_FLUORESCENT_LIGHT;
     public static BlockEntityType<PortalPlacerBlockEntity> PORTAL_PLACER;
+    public static BlockEntityType<ElevatorButtonBlockEntity> ELEVATOR_BUTTON;
 
     public static void registerBlockEntities() {
         BackroomsMod.LOGGER.info("Registering block entities for " + BackroomsMod.MOD_ID);
@@ -38,6 +40,8 @@ public class ModBlockEntities {
                 MountableFluorescentLightBlockEntity::new, ModBlocks.MOUNTABLE_FLUORESCENT_LIGHT);
         PORTAL_PLACER = register("portal_placer",
                 PortalPlacerBlockEntity::new, ModBlocks.PORTAL_PLACER);
+        ELEVATOR_BUTTON = register("elevator_button",
+                ElevatorButtonBlockEntity::new, ModBlocks.ELEVATOR_BUTTON);
     }
 
     public static <T extends BlockEntity> BlockEntityType<T> register(String name, BiFunction<BlockPos, BlockState, T> supplier, Block... blocks) {

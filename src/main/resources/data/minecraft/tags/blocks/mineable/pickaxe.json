@@ -11,6 +11,8 @@
     "backroomsmod:mountable_fluorescent_light",
     "backroomsmod:custom_door",
     "backroomsmod:warehouse_concrete_stairs",
-    "backroomsmod:pipe"
+    "backroomsmod:pipe",
+    "backroomsmod:iron_button",
+    "backroomsmod:elevator_button"
   ]
 }
