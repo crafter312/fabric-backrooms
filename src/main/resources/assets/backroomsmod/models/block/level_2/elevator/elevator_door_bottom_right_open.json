@@ -1,0 +1,37 @@
+{
+	"credit": "Made with Blockbench",
+	"textures": {
+		"0": "backroomsmod:block/level_2/elevator_door_frame_side",
+		"1": "backroomsmod:block/level_2/elevator_door",
+		"particle": "backroomsmod:block/level_2/elevator_door"
+	},
+	"elements": [
+		{
+			"name": "door",
+			"from": [2, 0, 1],
+			"to": [3, 16, 5],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 0, 8]},
+			"faces": {
+				"north": {"uv": [14, 0, 13.5, 8], "texture": "#1", "cullface": "north"},
+				"east": {"uv": [4.5, 8, 2.5, 16], "texture": "#1"},
+				"south": {"uv": [0.5, 0, 0, 8], "texture": "#1"},
+				"up": {"uv": [7, 8, 5, 8.5], "rotation": 90, "texture": "#1", "cullface": "up"},
+				"down": {"uv": [9, 8.5, 7, 8], "rotation": 270, "texture": "#1", "cullface": "down"}
+			}
+		},
+		{
+			"name": "frame",
+			"from": [0, 0, 0],
+			"to": [2, 16, 6],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 0, 8]},
+			"faces": {
+				"north": {"uv": [8, 0, 6, 16], "texture": "#0", "cullface": "north"},
+				"east": {"uv": [5, 8, 2, 16], "texture": "#1"},
+				"south": {"uv": [8, 0, 6, 16], "texture": "#0"},
+				"west": {"uv": [6, 0, 0, 16], "texture": "#0", "cullface": "west"},
+				"up": {"uv": [14, 0, 8, 2], "rotation": 90, "texture": "#0", "cullface": "up"},
+				"down": {"uv": [14, 2, 8, 0], "rotation": 270, "texture": "#0", "cullface": "down"}
+			}
+		}
+	]
+}

@@ -15,6 +15,7 @@
   "block.backroomsmod.pipe": "Pipe",
   "block.backroomsmod.iron_button": "Iron Button",
   "block.backroomsmod.elevator_button": "Elevator Button",
+  "block.backroomsmod.elevator_door": "Elevator Door",
 
   "_comment2": "Mod Items",
   "item.backroomsmod.raw_bismuthinite": "Raw Bismuthinite",

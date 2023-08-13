@@ -192,4 +192,8 @@ public class ModUtils {
         return template.place(world, pos, pos, structurePlacementData, StructureBlockBlockEntity.createRandom(0L), Block.NOTIFY_LISTENERS);
     }
 
+    public static double log(double base, double logNumber) {
+        return Math.log(logNumber) / Math.log(base);
+    }
+
 }

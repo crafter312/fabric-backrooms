@@ -48,8 +48,8 @@ public class ModBlocks {
     public static final Block PAINTED_WAREHOUSE_CONCRETE = registerBlock("painted_warehouse_concrete",
             new PaintedWarehouseConcreteBlock(FabricBlockSettings.copy(WAREHOUSE_CONCRETE)));
 
-    public static final Block IRON_DOOR = registerBlock("custom_door",
-            new ModDoorBlock(FabricBlockSettings.copy(Blocks.IRON_DOOR), BlockSetType.IRON));
+    public static final Block CUSTOM_DOOR = registerBlock("custom_door",
+            new LockedDoorBlock(FabricBlockSettings.copy(Blocks.IRON_DOOR), BlockSetType.IRON));
 
     public static final Block WAREHOUSE_CONCRETE_STAIRS = registerBlock("warehouse_concrete_stairs",
             new WarehouseConcreteStairsBlock(ModBlocks.WAREHOUSE_CONCRETE.getDefaultState(), FabricBlockSettings.copy(ModBlocks.WAREHOUSE_CONCRETE)));
@@ -67,6 +67,7 @@ public class ModBlocks {
     public static Block MOUNTABLE_FLUORESCENT_LIGHT;
     public static Block PORTAL_PLACER;
     public static Block ELEVATOR_BUTTON;
+    public static Block ELEVATOR_DOOR;
 
     public static void registerModBlocks() {
         BackroomsMod.LOGGER.info("Registering mod blocks for " + BackroomsMod.MOD_ID);
@@ -92,6 +93,9 @@ public class ModBlocks {
 
         ELEVATOR_BUTTON = registerBlockWithoutBlockItem("elevator_button",
                 new ElevatorButton(FabricBlockSettings.copy(IRON_BUTTON), BlockSetType.IRON, 20, false));
+
+        ELEVATOR_DOOR = registerBlock("elevator_door",
+                new ElevatorDoor(FabricBlockSettings.copy(Blocks.IRON_DOOR), BlockSetType.IRON));
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////

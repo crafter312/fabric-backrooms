@@ -4,10 +4,8 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockSetType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.DoorBlock;
-import net.minecraft.block.enums.DoubleBlockHalf;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.state.StateManager;
@@ -22,7 +20,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.event.GameEvent;
 import org.jetbrains.annotations.Nullable;
 
-public class ModDoorBlock extends DoorBlock {
+public class LockedDoorBlock extends DoorBlock {
 
     public static final BooleanProperty LOCKED = Properties.LOCKED;
 
@@ -36,7 +34,7 @@ public class ModDoorBlock extends DoorBlock {
      * @param settings block settings
      * @param blockSetType sound group for block materials, used to get door close and open sounds
      */
-    public ModDoorBlock(Settings settings, BlockSetType blockSetType) {
+    public LockedDoorBlock(Settings settings, BlockSetType blockSetType) {
         super(settings, blockSetType);
         this.setDefaultState(this.getDefaultState().with(LOCKED, false));
         this.closeSound = blockSetType.doorClose();

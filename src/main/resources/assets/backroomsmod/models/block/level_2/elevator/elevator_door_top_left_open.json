@@ -1,0 +1,59 @@
+{
+	"credit": "Made with Blockbench",
+	"textures": {
+		"0": "backroomsmod:block/level_2/elevator_door_frame_side",
+		"1": "backroomsmod:block/level_2/elevator_door",
+		"2": "backroomsmod:block/level_2/elevator_door_frame_top",
+		"particle": "backroomsmod:block/level_2/elevator_door"
+	},
+	"elements": [
+		{
+			"name": "door",
+			"from": [2, 0, 11],
+			"to": [3, 14, 15],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 0, 8]},
+			"faces": {
+				"north": {"uv": [0, 1, 0.5, 8], "texture": "#1"},
+				"east": {"uv": [2.5, 9, 4.5, 16], "texture": "#1"},
+				"south": {"uv": [13.5, 1, 14, 8], "texture": "#1"},
+				"down": {"uv": [9, 8, 7, 8.5], "rotation": 90, "texture": "#1", "cullface": "down"}
+			}
+		},
+		{
+			"name": "side",
+			"from": [0, 0, 10],
+			"to": [2, 16, 16],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 0, 8]},
+			"faces": {
+				"north": {"uv": [6, 0, 8, 16], "texture": "#0"},
+				"east": {"uv": [2, 8, 5, 16], "texture": "#1"},
+				"south": {"uv": [6, 0, 8, 16], "texture": "#0", "cullface": "south"},
+				"west": {"uv": [0, 0, 6, 16], "texture": "#0", "cullface": "west"},
+				"up": {"uv": [14, 2, 8, 0], "rotation": 270, "texture": "#0", "cullface": "up"},
+				"down": {"uv": [14, 0, 8, 2], "rotation": 90, "texture": "#0", "cullface": "down"}
+			}
+		},
+		{
+			"name": "top",
+			"from": [2, 14, 10],
+			"to": [16, 16, 16],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 0, 8]},
+			"faces": {
+				"north": {"uv": [0, 0, 14, 2], "texture": "#2"},
+				"east": {"uv": [6, 2, 12, 4], "texture": "#2", "cullface": "east"},
+				"south": {"uv": [0, 0, 14, 2], "texture": "#2", "cullface": "south"},
+				"up": {"uv": [6, 16, 0, 2], "rotation": 270, "texture": "#2", "cullface": "up"},
+				"down": {"uv": [6, 2, 0, 16], "rotation": 90, "texture": "#2"}
+			}
+		}
+	],
+	"groups": [
+		0,
+		{
+			"name": "frame",
+			"origin": [0, 0, 0],
+			"color": 0,
+			"children": [1, 2]
+		}
+	]
+}
