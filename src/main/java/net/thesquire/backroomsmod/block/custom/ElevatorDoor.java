@@ -1,6 +1,9 @@
 package net.thesquire.backroomsmod.block.custom;
 
 import net.minecraft.block.*;
+import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.BlockEntityTicker;
+import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.block.enums.DoorHinge;
 import net.minecraft.block.enums.DoubleBlockHalf;
 import net.minecraft.util.function.BooleanBiFunction;
@@ -9,9 +12,13 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
+import net.minecraft.world.World;
+import net.thesquire.backroomsmod.block.ModBlockEntities;
+import net.thesquire.backroomsmod.block.entity.ElevatorDoorBlockEntity;
 import net.thesquire.backroomsmod.util.ModUtils;
+import org.jetbrains.annotations.Nullable;
 
-public class ElevatorDoor extends DoorBlock {
+public class ElevatorDoor extends DoorBlock implements BlockEntityProvider {
 
     private static final VoxelShape NORTH_BOTTOM_LEFT = VoxelShapes.combineAndSimplify(
             Block.createCuboidShape(2, 0, 11, 16, 16, 15),
@@ -197,6 +204,35 @@ public class ElevatorDoor extends DoorBlock {
     public ElevatorDoor(Settings settings, BlockSetType blockSetType) {
         super(settings, blockSetType);
         this.connectionsToShape = generateStateToShapeMap();
+    }
+
+    @Nullable
+    @Override
+    public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+        return new ElevatorDoorBlockEntity(pos, state);
+    }
+
+    @Nullable
+    @Override
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
+        return ModBlockWithEntity.checkType(type, ModBlockEntities.ELEVATOR_DOOR, ElevatorDoorBlockEntity::tick);
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public BlockRenderType getRenderType(BlockState state) {
+        return BlockRenderType.ENTITYBLOCK_ANIMATED;
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public boolean onSyncedBlockEvent(BlockState state, World world, BlockPos pos, int type, int data) {
+        super.onSyncedBlockEvent(state, world, pos, type, data);
+        BlockEntity blockEntity = world.getBlockEntity(pos);
+        if (blockEntity == null) {
+            return false;
+        }
+        return blockEntity.onSyncedBlockEvent(type, data);
     }
 
     @Override

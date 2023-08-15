@@ -1,10 +1,10 @@
 {
 	"credit": "Made with Blockbench",
 	"textures": {
-		"0": "backroomsmod:block/level_2/elevator_door",
-		"1": "backroomsmod:block/level_2/elevator_door_frame_side",
-		"2": "backroomsmod:block/level_2/elevator_door_frame_top",
-		"particle": "backroomsmod:block/level_2/elevator_door"
+		"0": "backroomsmod:block/level_2/inventory/elevator_door",
+		"1": "backroomsmod:block/level_2/inventory/elevator_door_frame_side",
+		"2": "backroomsmod:block/level_2/inventory/elevator_door_frame_top",
+		"particle": "backroomsmod:block/level_2/inventory/elevator_door"
 	},
 	"elements": [
 		{
