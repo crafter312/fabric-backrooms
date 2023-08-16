@@ -4,6 +4,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.DoorBlock;
+import net.minecraft.block.DoubleBlockProperties;
 import net.minecraft.block.enums.DoorHinge;
 import net.minecraft.block.enums.DoubleBlockHalf;
 import net.minecraft.client.model.*;
@@ -18,6 +19,7 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.RotationAxis;
 import net.minecraft.world.World;
 import net.thesquire.backroomsmod.BackroomsMod;
+import net.thesquire.backroomsmod.block.ModBlockEntities;
 import net.thesquire.backroomsmod.block.ModBlocks;
 import net.thesquire.backroomsmod.block.custom.ElevatorDoor;
 import net.thesquire.backroomsmod.block.entity.ElevatorDoorBlockEntity;
@@ -34,7 +36,8 @@ public class ElevatorDoorBlockEntityRenderer implements BlockEntityRenderer<Elev
     public static final String DOOR = "door";
     public static final String FRAME = "frame";
 
-    public static final ModelTransform MODEL_TRANSFORM = ModelTransform.pivot(8.0F, 16.0F, -2.0F);
+    private static final ModelTransform MODEL_TRANSFORM = ModelTransform.pivot(8.0F, 16.0F, -2.0F);
+    private static final float OPEN_DISTANCE = 12.0F;
 
     public static TexturedModelData getBottomLeftTexturedModelData() {
         ModelData modelData = new ModelData();
@@ -96,6 +99,9 @@ public class ElevatorDoorBlockEntityRenderer implements BlockEntityRenderer<Elev
     private final ModelPart topRightDoor;
     private final ModelPart topRightFrame;
 
+    private final float leftDoorPivotX;
+    private final float rightDoorPivotX;
+
     public ElevatorDoorBlockEntityRenderer(BlockEntityRendererFactory.Context context) {
         ModelPart bottomLeftModel = context.getLayerModelPart(ModEntityModelLayers.ELEVATOR_DOOR_BOTTOM_LEFT);
         this.bottomLeftDoor = bottomLeftModel.getChild(DOOR);
@@ -109,40 +115,64 @@ public class ElevatorDoorBlockEntityRenderer implements BlockEntityRenderer<Elev
         ModelPart topRightModel = context.getLayerModelPart(ModEntityModelLayers.ELEVATOR_DOOR_TOP_RIGHT);
         this.topRightDoor = topRightModel.getChild(DOOR);
         this.topRightFrame = topRightModel.getChild(FRAME);
+
+        this.leftDoorPivotX = this.bottomLeftDoor.pivotX;
+        this.rightDoorPivotX = this.bottomRightDoor.pivotX;
     }
 
     @Override
     public void render(ElevatorDoorBlockEntity entity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
         World world = entity.getWorld();
-        BlockState blockState = world != null ? entity.getCachedState() : ModBlocks.ELEVATOR_DOOR.getDefaultState();
+        boolean bl = world != null;
+        BlockState blockState = bl ? entity.getCachedState() : ModBlocks.ELEVATOR_DOOR.getDefaultState();
         if (!(blockState.getBlock() instanceof ElevatorDoor)) return;
 
+        // START RENDERING
         matrices.push();
+
+        // set block facing rotation
         float f = blockState.get(DoorBlock.FACING).asRotation();
         matrices.translate(0.5f, 0.5f, 0.5f);
         matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(-f));
         matrices.translate(-0.5f, -0.5f, -0.5f);
-        //matrices.translate(0.0f, -0.5f, 0.0f);
 
+        // get animation progress
+        // note that 0 <= g <= 1
+        DoubleBlockProperties.PropertySource<ElevatorDoorBlockEntity> propertySource = DoubleBlockProperties.toPropertySource(
+                ModBlockEntities.ELEVATOR_DOOR,
+                ElevatorDoor::getDoorPart,
+                ElevatorDoor::getOppositePartDirection,
+                DoorBlock.FACING,
+                blockState,
+                world,
+                entity.getPos(),
+                (worldAccess, pos) -> false);
+        float g = propertySource.apply(ElevatorDoor.getAnimationProgressRetriever(entity)).get(tickDelta);
+
+        // render door according to block properties
         DoubleBlockHalf doorHalf = blockState.contains(DoorBlock.HALF) ? blockState.get(DoorBlock.HALF) : DoubleBlockHalf.LOWER;
         DoorHinge hingeSide = blockState.contains(DoorBlock.HINGE) ? blockState.get(DoorBlock.HINGE) : DoorHinge.LEFT;
         VertexConsumer vertexConsumer = DOOR_TEXTURE_ALL.getVertexConsumer(vertexConsumers, RenderLayer::getEntitySolid);
         if (doorHalf == DoubleBlockHalf.LOWER) {
             if (hingeSide == DoorHinge.LEFT)
-                this.render(matrices, vertexConsumer, this.bottomLeftDoor, this.bottomLeftFrame, light, overlay);
+                this.render(matrices, vertexConsumer, this.bottomLeftDoor, this.bottomLeftFrame, hingeSide, g, light, overlay);
             else
-                this.render(matrices, vertexConsumer, this.bottomRightDoor, this.bottomRightFrame, light, overlay);
+                this.render(matrices, vertexConsumer, this.bottomRightDoor, this.bottomRightFrame, hingeSide, g, light, overlay);
         }
         else {
             if (hingeSide == DoorHinge.LEFT)
-                this.render(matrices, vertexConsumer, this.topLeftDoor, this.topLeftFrame, light, overlay);
+                this.render(matrices, vertexConsumer, this.topLeftDoor, this.topLeftFrame, hingeSide, g, light, overlay);
             else
-                this.render(matrices, vertexConsumer, this.topRightDoor, this.topRightFrame, light, overlay);
+                this.render(matrices, vertexConsumer, this.topRightDoor, this.topRightFrame, hingeSide, g, light, overlay);
         }
+
+        // END RENDERING
         matrices.pop();
     }
 
-    private void render(MatrixStack matrices, VertexConsumer vertices, ModelPart door, ModelPart frame, int light, int overlay) {
+    private void render(MatrixStack matrices, VertexConsumer vertices, ModelPart door, ModelPart frame, DoorHinge hingeSide, float openFactor, int light, int overlay) {
+        float delta = (hingeSide == DoorHinge.LEFT ? 1 : -1) * OPEN_DISTANCE * openFactor;
+        door.pivotX = (hingeSide == DoorHinge.LEFT ? this.leftDoorPivotX : this.rightDoorPivotX) + delta;
         door.render(matrices, vertices, light, overlay);
         frame.render(matrices, vertices, light, overlay);
     }

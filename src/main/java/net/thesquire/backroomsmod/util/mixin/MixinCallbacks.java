@@ -2,6 +2,7 @@ package net.thesquire.backroomsmod.util.mixin;
 
 import net.fabricmc.fabric.api.dimension.v1.FabricDimensions;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.DoorBlock;
 import net.minecraft.entity.damage.DamageTypes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -23,9 +24,7 @@ import net.thesquire.backroomsmod.block.custom.PaintedWarehouseConcreteBlock;
 import net.thesquire.backroomsmod.dimension.ModDimensionKeys;
 import net.thesquire.backroomsmod.sound.ModSounds;
 import net.thesquire.backroomsmod.util.ModUtils;
-import net.thesquire.backroomsmod.util.mixin.callback.IAddParticleCallback;
-import net.thesquire.backroomsmod.util.mixin.callback.IPickaxeItemCallback;
-import net.thesquire.backroomsmod.util.mixin.callback.IPlayerDamageCallback;
+import net.thesquire.backroomsmod.util.mixin.callback.*;
 
 /**
  * For information on how to properly set up a mixin callback,
@@ -75,6 +74,13 @@ public class MixinCallbacks {
             }
             ci.setReturnValue(ActionResult.success(world.isClient()));
         });
+
+        // triggers synced block event when ElevatorDoor block opens or closes
+        // this in turn triggers the door animation to open or close accordingly
+        IDoorBlockNeighborUpdateCallback.EVENT.register((state, world, pos, sourceBlock, sourcePos, notify, ci) ->
+                world.addSyncedBlockEvent(pos, state.getBlock(), 1, ModUtils.boolToInt(state.get(DoorBlock.OPEN), 0, 1)));
+        IDoorBlockOnUseCallback.EVENT.register((state, world, pos, player, hand, hit, ci) ->
+                world.addSyncedBlockEvent(pos, state.getBlock(), 1, ModUtils.boolToInt(state.get(DoorBlock.OPEN), 0, 1)));
 
     }
 

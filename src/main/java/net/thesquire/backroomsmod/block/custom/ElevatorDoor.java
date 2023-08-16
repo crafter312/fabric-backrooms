@@ -1,5 +1,6 @@
 package net.thesquire.backroomsmod.block.custom;
 
+import it.unimi.dsi.fastutil.floats.Float2FloatFunction;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
@@ -199,6 +200,37 @@ public class ElevatorDoor extends DoorBlock implements BlockEntityProvider {
                     BooleanBiFunction.OR),
             BooleanBiFunction.OR);
 
+    public static Direction getOppositePartDirection(BlockState state) {
+        return state.get(DoorBlock.HALF) == DoubleBlockHalf.LOWER ? Direction.UP : Direction.DOWN;
+    }
+
+    public static DoubleBlockProperties.Type getDoorPart(BlockState state) {
+        return state.get(DoorBlock.HALF) == DoubleBlockHalf.LOWER ? DoubleBlockProperties.Type.FIRST : DoubleBlockProperties.Type.SECOND;
+    }
+
+    public static DoubleBlockProperties.PropertyRetriever<ElevatorDoorBlockEntity, Float2FloatFunction> getAnimationProgressRetriever(final ElevatorDoorBlockEntity elevatorDoor) {
+        return new DoubleBlockProperties.PropertyRetriever<>() {
+
+            @Override
+            public Float2FloatFunction getFromBoth(ElevatorDoorBlockEntity elevatorDoorBlockEntity, ElevatorDoorBlockEntity elevatorDoorBlockEntity2) {
+                return tickDelta -> Math.max(elevatorDoorBlockEntity.getAnimationProgress(tickDelta), elevatorDoorBlockEntity2.getAnimationProgress(tickDelta));
+            }
+
+            @Override
+            public Float2FloatFunction getFrom(ElevatorDoorBlockEntity chestBlockEntity) {
+                return chestBlockEntity::getAnimationProgress;
+            }
+
+            @Override
+            public Float2FloatFunction getFallback() {
+                return elevatorDoor::getAnimationProgress;
+            }
+
+        };
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////////
+
     private final VoxelShape[] connectionsToShape;
 
     public ElevatorDoor(Settings settings, BlockSetType blockSetType) {
@@ -215,7 +247,7 @@ public class ElevatorDoor extends DoorBlock implements BlockEntityProvider {
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-        return ModBlockWithEntity.checkType(type, ModBlockEntities.ELEVATOR_DOOR, ElevatorDoorBlockEntity::tick);
+        return world.isClient ? ModBlockWithEntity.checkType(type, ModBlockEntities.ELEVATOR_DOOR, ElevatorDoorBlockEntity::clientTick) : null;
     }
 
     @SuppressWarnings("deprecation")
