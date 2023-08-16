@@ -37,8 +37,8 @@ public class MixinCallbacks {
 
         // teleports player from overworld to backrooms level 0 upon taking suffocation or void damage
         IPlayerDamageCallback.EVENT.register((source, player) -> {
-            if (player.world instanceof ServerWorld) {
-                ServerWorld serverWorld = (ServerWorld) player.world;
+            if (player.getWorld() instanceof ServerWorld) {
+                ServerWorld serverWorld = (ServerWorld) player.getWorld();
                 if (serverWorld.getRegistryKey() != World.OVERWORLD) return;
                 if (source.isOf(DamageTypes.IN_WALL) || source.isOf(DamageTypes.OUT_OF_WORLD)) {
                     if (Random.create().nextFloat() > 0.01) return;

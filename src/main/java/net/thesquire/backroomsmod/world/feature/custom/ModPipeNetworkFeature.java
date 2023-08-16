@@ -85,8 +85,10 @@ public class ModPipeNetworkFeature extends Feature<ModPipeNetworkFeatureConfig> 
     }
 
     private Direction findAdjacentBlock(StructureWorldAccess world, BlockPos pos, Random random) {
-        for (Direction dir : Direction.Type.HORIZONTAL)
-            if (world.getBlockState(pos.offset(dir)).getMaterial().isSolid()) return dir;
+        for (Direction dir : Direction.Type.HORIZONTAL) {
+            BlockPos pos2 = pos.offset(dir);
+            if (world.getBlockState(pos2).isSolidBlock(world, pos)) return dir;
+        }
         return Direction.fromHorizontal(random.nextBetween(0, 3));
     }
 

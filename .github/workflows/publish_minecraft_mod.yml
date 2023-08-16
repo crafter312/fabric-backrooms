@@ -3,10 +3,10 @@ name: Publish on Github, Curseforge & Modrinth    #The name of your Github Actio
 on: [ pull_request, workflow_dispatch ]           #When your Github Action will be executed ('pull_request' -> on every Merge(/Pull) Request; 'workflow_dispatch' -> allows manual execution through Github.com
 
 env:                                              #Environment variables that can later be referenced using ${{ env.MINECRAFT_VERSION }}. These are useful for repeating information and allow for quick changes for new mod updates
-  MINECRAFT_VERSION: 1.19.4
+  MINECRAFT_VERSION: 1.20.1
   JAVA_VERSION: 17
-  MOD_VERSION: 0.7.0-1.19.4
-  MOD_RELEASE_NAME: Immersive Portals 0.7.0 for Minecraft 1.19.4
+  MOD_VERSION: 0.7.0-1.20.1
+  MOD_RELEASE_NAME: Immersive Portals 0.7.0 for Minecraft 1.20.1
 
 permissions:
   contents: write

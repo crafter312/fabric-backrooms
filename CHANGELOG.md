@@ -1,4 +1,5 @@
 - incremented version number
+- updated to Minecraft 1.20.1
 - added pipe block loot table
 - added iron button
   - works the same as a stone button

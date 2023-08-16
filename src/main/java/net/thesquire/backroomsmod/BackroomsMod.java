@@ -8,6 +8,7 @@ import net.thesquire.backroomsmod.block.ModBlockEntities;
 import net.thesquire.backroomsmod.block.ModBlocks;
 import net.thesquire.backroomsmod.dimension.ModDimensionKeys;
 import net.thesquire.backroomsmod.event.ModGameEvents;
+import net.thesquire.backroomsmod.item.ModItemGroup;
 import net.thesquire.backroomsmod.item.ModItems;
 import net.thesquire.backroomsmod.portal.util.PortalStorage;
 import net.thesquire.backroomsmod.recipe.ModRecipes;
@@ -55,6 +56,7 @@ public class BackroomsMod implements ModInitializer {
 		ModGuis.registerGuis();
 		ModSounds.registerModSounds();
 		ModGameEvents.registerModGameEvents();
+		ModItemGroup.registerModItemGroups();
 		ModBlocks.registerModBlocks();
 		ModItems.registerModItems();
 		MixinCallbacks.registerCallbacks();

@@ -21,7 +21,7 @@ public class ModServerboundPackets {
             BlockPos pos = buf.readBlockPos();
 
             server.execute(() -> {
-                BlockEntity blockEntity = player.world.getBlockEntity(pos);
+                BlockEntity blockEntity = player.getWorld().getBlockEntity(pos);
                 if (blockEntity instanceof MagneticDistortionSystemControlComputerBlockEntity) {
                     ((MagneticDistortionSystemControlComputerBlockEntity) blockEntity).setSide(side);
                 }
@@ -33,7 +33,7 @@ public class ModServerboundPackets {
             BlockPos pos = buf.readBlockPos();
 
             server.execute(() -> {
-                BlockEntity blockEntity = player.world.getBlockEntity(pos);
+                BlockEntity blockEntity = player.getWorld().getBlockEntity(pos);
                 if (blockEntity instanceof  MagneticDistortionSystemControlComputerBlockEntity) {
                     ((MagneticDistortionSystemControlComputerBlockEntity) blockEntity).setActive(active);
                 }

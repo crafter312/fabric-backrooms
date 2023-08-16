@@ -249,11 +249,11 @@ public class MagneticDistortionSystemControlComputerBlockEntity extends GenericM
 
     private void activatePortal() {
         if(portal.isRemoved()) portal.myUnsetRemoved();
-        portal.world.spawnEntity(portal);
+        portal.getWorld().spawnEntity(portal);
 
         if(destPortal != null) {
             if(destPortal.isRemoved()) destPortal.myUnsetRemoved();
-            destPortal.world.spawnEntity(destPortal);
+            destPortal.getWorld().spawnEntity(destPortal);
         }
         else destPortal = PortalManipulation.completeBiWayPortal(portal, Portal.entityType);
 
@@ -273,14 +273,14 @@ public class MagneticDistortionSystemControlComputerBlockEntity extends GenericM
     }
 
     public void killDestPortal() {
-        if(destPortal != null && !destPortal.world.isClient()) destPortal.kill();
+        if(destPortal != null && !destPortal.getWorld().isClient()) destPortal.kill();
         destPortalUUID = null;
     }
 
     public void spawnDestPortal() {
-        if(destPortal != null && !destPortal.world.isClient()) {
+        if(destPortal != null && !destPortal.getWorld().isClient()) {
             destPortal.myUnsetRemoved();
-            destPortal.world.spawnEntity(destPortal);
+            destPortal.getWorld().spawnEntity(destPortal);
             destPortalUUID = destPortal.getUuid();
         }
         else if(destPortal == null)
@@ -288,8 +288,8 @@ public class MagneticDistortionSystemControlComputerBlockEntity extends GenericM
     }
 
     private Direction getSideDir(boolean side) {
-        return Direction.fromVector(new BlockPos(getFacing().rotateYCounterclockwise().getVector()
-                .multiply(ModUtils.boolToInt(side, 1, -1))));
+        Vec3i vec = getFacing().rotateYCounterclockwise().getVector().multiply(ModUtils.boolToInt(side, 1, -1));
+        return Direction.fromVector(vec.getX(), vec.getY(), vec.getZ());
     }
 
     // "dir" is a Direction object describing on what side of this block entity the portal is located

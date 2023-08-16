@@ -166,7 +166,7 @@ public class PortalPlacerBlockEntity extends BlockEntity {
                 this.height
         );
 
-        boolean spawned = this.portal.world.spawnEntity(this.portal);
+        boolean spawned = this.portal.getWorld().spawnEntity(this.portal);
         if(!spawned) {
             BackroomsMod.LOGGER.warn("Failed to spawn portal at " + this.origin);
             return;

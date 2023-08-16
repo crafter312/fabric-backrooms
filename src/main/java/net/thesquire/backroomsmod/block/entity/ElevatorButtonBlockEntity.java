@@ -60,7 +60,7 @@ public class ElevatorButtonBlockEntity extends PortalPlacerBlockEntity {
                 this.height
         );
 
-        if(!this.portal.world.spawnEntity(this.portal)) {
+        if(!this.portal.getWorld().spawnEntity(this.portal)) {
             BackroomsMod.LOGGER.warn("Failed to spawn portal at " + this.origin);
             return;
         }
@@ -125,8 +125,10 @@ public class ElevatorButtonBlockEntity extends PortalPlacerBlockEntity {
 
     @Override
     public void readNbt(NbtCompound nbt) {
-        if(nbt.contains("portalFacingX"))
-            this.portalFacing = Direction.fromVector(new BlockPos(Helper.getVec3i(nbt, "portalFacing")));
+        if(nbt.contains("portalFacingX")) {
+            Vec3i vec = Helper.getVec3i(nbt, "portalFacing");
+            this.portalFacing = Direction.fromVector(vec.getX(), vec.getY(), vec.getZ());
+        }
         this.offset = Helper.getVec3dOptional(nbt, "offset");
         if(nbt.contains("durationTicks"))
             this.durationTicks = nbt.getInt("durationTicks");
