@@ -7,6 +7,7 @@ import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.block.enums.DoorHinge;
 import net.minecraft.block.enums.DoubleBlockHalf;
+import net.minecraft.entity.Entity;
 import net.minecraft.util.function.BooleanBiFunction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -14,6 +15,7 @@ import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
+import net.minecraft.world.event.GameEvent;
 import net.thesquire.backroomsmod.block.ModBlockEntities;
 import net.thesquire.backroomsmod.block.entity.ElevatorDoorBlockEntity;
 import net.thesquire.backroomsmod.util.ModUtils;
@@ -236,6 +238,14 @@ public class ElevatorDoor extends DoorBlock implements BlockEntityProvider {
     public ElevatorDoor(Settings settings, BlockSetType blockSetType) {
         super(settings, blockSetType);
         this.connectionsToShape = generateStateToShapeMap();
+    }
+
+    @Override
+    public void setOpen(@Nullable Entity entity, World world, BlockState state, BlockPos pos, boolean open) {
+        if (!state.isOf(this) || state.get(OPEN) == open) return;
+        world.setBlockState(pos, state.with(OPEN, open), Block.NOTIFY_LISTENERS | Block.REDRAW_ON_MAIN_THREAD);
+        world.emitGameEvent(entity, open ? GameEvent.BLOCK_OPEN : GameEvent.BLOCK_CLOSE, pos);
+        world.addSyncedBlockEvent(pos, state.getBlock(), 1, ModUtils.boolToInt(state.get(DoorBlock.OPEN), 0, 1));
     }
 
     @Nullable

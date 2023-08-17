@@ -3,6 +3,7 @@ package net.thesquire.backroomsmod.util.mixin;
 import net.fabricmc.fabric.api.dimension.v1.FabricDimensions;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.DoorBlock;
+import net.minecraft.block.enums.DoorHinge;
 import net.minecraft.entity.damage.DamageTypes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -13,6 +14,7 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.TeleportTarget;
@@ -20,6 +22,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.event.GameEvent;
 import net.thesquire.backroomsmod.BackroomsMod;
 import net.thesquire.backroomsmod.block.ModBlocks;
+import net.thesquire.backroomsmod.block.custom.ElevatorDoor;
 import net.thesquire.backroomsmod.block.custom.PaintedWarehouseConcreteBlock;
 import net.thesquire.backroomsmod.dimension.ModDimensionKeys;
 import net.thesquire.backroomsmod.sound.ModSounds;
@@ -77,11 +80,26 @@ public class MixinCallbacks {
 
         // triggers synced block event when ElevatorDoor block opens or closes
         // this in turn triggers the door animation to open or close accordingly
-        IDoorBlockNeighborUpdateCallback.EVENT.register((state, world, pos, sourceBlock, sourcePos, notify, ci) ->
-                world.addSyncedBlockEvent(pos, state.getBlock(), 1, ModUtils.boolToInt(state.get(DoorBlock.OPEN), 0, 1)));
-        IDoorBlockOnUseCallback.EVENT.register((state, world, pos, player, hand, hit, ci) ->
-                world.addSyncedBlockEvent(pos, state.getBlock(), 1, ModUtils.boolToInt(state.get(DoorBlock.OPEN), 0, 1)));
-
+        //TODO: fix door not properly closing if you interact with a different door part than the one you used to open it
+        IDoorBlockNeighborUpdateCallback.EVENT.register((state, world, pos, sourceBlock, sourcePos, notify, ci) -> {
+            world.addSyncedBlockEvent(pos, state.getBlock(), 1, ModUtils.boolToInt(state.get(DoorBlock.OPEN), 0, 1));
+        });
+        IDoorBlockOnUseCallback.EVENT.register((state, world, pos, player, hand, hit, ci) -> {
+            world.addSyncedBlockEvent(pos, state.getBlock(), 1, ModUtils.boolToInt(state.get(DoorBlock.OPEN), 1, 0));
+            Direction facing = state.get(DoorBlock.FACING);
+            BlockPos neighborPos = pos.offset(
+                    state.get(DoorBlock.HINGE).equals(DoorHinge.LEFT)
+                            ? facing.rotateYClockwise()
+                            : facing.rotateYCounterclockwise());
+            BlockState neighborState = world.getBlockState(neighborPos);
+            if (neighborState.isOf(state.getBlock())
+                    && neighborState.get(DoorBlock.FACING).equals(state.get(DoorBlock.FACING))
+                    && neighborState.get(DoorBlock.HALF).equals(state.get(DoorBlock.HALF))
+                    && !neighborState.get(DoorBlock.HINGE).equals(state.get(DoorBlock.HINGE))
+                    && !neighborState.get(DoorBlock.OPEN).equals(state.get(DoorBlock.OPEN))
+                    && !neighborState.get(DoorBlock.POWERED))
+                ((ElevatorDoor) neighborState.getBlock()).setOpen(player, world, neighborState, neighborPos, !neighborState.get(DoorBlock.OPEN));
+        });
     }
 
     public static void registerClientCallbacks() {

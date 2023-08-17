@@ -30,10 +30,7 @@ public abstract class DoorBlockMixin {
             IDoorBlockNeighborUpdateCallback.EVENT.invoker().interact(state, world, pos, sourceBlock, sourcePos, notify, ci);
     }
 
-    @Inject(method = "onUse",
-            at = @At(value = "INVOKE",
-                    target = "Lnet/minecraft/world/World;setBlockState(Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/BlockState;I)Z",
-                    shift = At.Shift.AFTER))
+    @Inject(method = "onUse", at = @At(value = "RETURN", ordinal = 1), cancellable = true)
     public void onOnUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit, CallbackInfoReturnable<ActionResult> ci) {
         if(state.getBlock() instanceof ElevatorDoor)
             IDoorBlockOnUseCallback.EVENT.invoker().interact(state, world, pos, player, hand, hit, ci);

@@ -109,7 +109,7 @@ public class ModBlocks {
                 new ElevatorButton(FabricBlockSettings.copy(IRON_BUTTON), BlockSetType.IRON, 20, false));
 
         ELEVATOR_DOOR = registerBlock("elevator_door",
-                new ElevatorDoor(FabricBlockSettings.copy(Blocks.IRON_DOOR), BlockSetType.IRON));
+                new ElevatorDoor(FabricBlockSettings.copy(Blocks.IRON_DOOR), ModBlockSetTypes.ELEVATOR));
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////

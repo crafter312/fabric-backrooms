@@ -13,6 +13,7 @@
     "backroomsmod:warehouse_concrete_stairs",
     "backroomsmod:pipe",
     "backroomsmod:iron_button",
-    "backroomsmod:elevator_button"
+    "backroomsmod:elevator_button",
+    "backroomsmod:elevator_door"
   ]
 }
