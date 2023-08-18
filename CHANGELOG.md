@@ -12,3 +12,9 @@
     - portal placed when testing by shift right-clicking instead of just right-clicking
     - animates portal when button pressed with simple 1D translation animation
   -  basically, this is designed to be used as a 1-way interdimensional elevator
+- added elevator door block
+  - extends vanilla door block class
+  - custom model and block entity renderer
+    - renders smooth door open/close animation
+  - double door behavior
+    - opening/closing one side of a double door opens/closes both sides
