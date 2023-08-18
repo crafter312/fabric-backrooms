@@ -80,10 +80,6 @@ public class MixinCallbacks {
 
         // triggers synced block event when ElevatorDoor block opens or closes
         // this in turn triggers the door animation to open or close accordingly
-        //TODO: fix door not properly closing if you interact with a different door part than the one you used to open it
-        IDoorBlockNeighborUpdateCallback.EVENT.register((state, world, pos, sourceBlock, sourcePos, notify, ci) -> {
-            world.addSyncedBlockEvent(pos, state.getBlock(), 1, ModUtils.boolToInt(state.get(DoorBlock.OPEN), 0, 1));
-        });
         IDoorBlockOnUseCallback.EVENT.register((state, world, pos, player, hand, hit, ci) -> {
             world.addSyncedBlockEvent(pos, state.getBlock(), 1, ModUtils.boolToInt(state.get(DoorBlock.OPEN), 1, 0));
             Direction facing = state.get(DoorBlock.FACING);
@@ -99,6 +95,12 @@ public class MixinCallbacks {
                     && !neighborState.get(DoorBlock.OPEN).equals(state.get(DoorBlock.OPEN))
                     && !neighborState.get(DoorBlock.POWERED))
                 ((ElevatorDoor) neighborState.getBlock()).setOpen(player, world, neighborState, neighborPos, !neighborState.get(DoorBlock.OPEN));
+        });
+        IDoorBlockGetStateForNeighborUpdateCallback.EVENT.register((state, direction, neighborState, world, pos, neighborPos, ci) -> {
+            if (!world.isClient()) {
+                ServerWorld serverWorld = (ServerWorld) world;
+                serverWorld.addSyncedBlockEvent(pos, state.getBlock(), 1, ModUtils.boolToInt(neighborState.get(DoorBlock.OPEN), 1, 0));
+            }
         });
     }
 

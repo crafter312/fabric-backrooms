@@ -219,8 +219,8 @@ public class ElevatorDoor extends DoorBlock implements BlockEntityProvider {
             }
 
             @Override
-            public Float2FloatFunction getFrom(ElevatorDoorBlockEntity chestBlockEntity) {
-                return chestBlockEntity::getAnimationProgress;
+            public Float2FloatFunction getFrom(ElevatorDoorBlockEntity elevatorDoorBlockEntity) {
+                return elevatorDoorBlockEntity::getAnimationProgress;
             }
 
             @Override
