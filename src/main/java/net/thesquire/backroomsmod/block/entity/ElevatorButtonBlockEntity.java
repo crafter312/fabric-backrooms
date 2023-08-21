@@ -2,6 +2,7 @@ package net.thesquire.backroomsmod.block.entity;
 
 import com.google.common.collect.ImmutableList;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
@@ -54,8 +55,8 @@ public class ElevatorButtonBlockEntity extends PortalPlacerBlockEntity {
         ));
 
         this.portal.setOrientationAndSize(
-                this.getPortalHorizontalVec(this.portalFacing),
-                this.getPortalUpVec(this.portalFacing),
+                this.getPortalHorizontalVec(state),
+                this.getPortalUpVec(state),
                 this.width,
                 this.height
         );
@@ -140,19 +141,27 @@ public class ElevatorButtonBlockEntity extends PortalPlacerBlockEntity {
         super.readNbt(nbt);
     }
 
-    private Vec3d getPortalUpVec(Direction portalFacing) {
-        Direction upDir = portalFacing.getAxis().isHorizontal() ? Direction.UP : Direction.NORTH;
+    private Direction getRealPortalFacing(BlockState state) {
+        if (this.portalFacing == null) return Direction.NORTH;
+        return this.portalFacing.getAxis().isVertical() ? this.portalFacing : state.get(HorizontalFacingBlock.FACING);
+    }
+
+    @Override
+    protected Vec3d getPortalUpVec(BlockState state) {
+        Direction upDir = this.portalFacing != null && this.portalFacing.getAxis().isVertical()
+                ? state.get(HorizontalFacingBlock.FACING) : Direction.UP;
         return new Vec3d(upDir.getOffsetX(), upDir.getOffsetY(), upDir.getOffsetZ());
     }
 
-    private Vec3d getPortalHorizontalVec(Direction portalFacing) {
-        Vec3i facingVec = portalFacing.getVector();
-        return getPortalUpVec(portalFacing).crossProduct(new Vec3d(facingVec.getX(), facingVec.getY(), facingVec.getZ()));
+    @Override
+    protected Vec3d getPortalHorizontalVec(BlockState state) {
+        Vec3i facingVec = this.getRealPortalFacing(state).getVector();
+        return this.getPortalUpVec(state).crossProduct(new Vec3d(facingVec.getX(), facingVec.getY(), facingVec.getZ()));
     }
 
     @Override
     protected Vec3i getFacingOrDefault(BlockState state) {
-        return this.portalFacing == null ? Direction.NORTH.getVector() : this.portalFacing.getVector();
+        return this.portalFacing == null ? Direction.NORTH.getVector() : this.getRealPortalFacing(state).getVector();
     }
 
 }

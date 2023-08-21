@@ -77,6 +77,9 @@ public class ModBlocks {
     public static final Block IRON_BUTTON = registerBlock("iron_button",
             new ButtonBlock(FabricBlockSettings.create().noCollision().strength(0.5f).requiresTool().pistonBehavior(PistonBehavior.DESTROY), BlockSetType.IRON, 20, false));
 
+    public static final Block DUMMIE_BUTTON = registerBlockWithoutBlockItem("dummie_button",
+            new ButtonBlock(FabricBlockSettings.create().noCollision().strength(0.5f).requiresTool().pistonBehavior(PistonBehavior.DESTROY), BlockSetType.IRON, 20, false));
+
     // Blocks with a GUI or BlockEntity have to be registered in the method below to ensure proper register order!
     public static Block INDUSTRIAL_ALLOY_SMELTER;
     public static Block MAGNETIC_DISTORTION_SYSTEM_CONTROL_COMPUTER;

@@ -14,6 +14,7 @@
     "backroomsmod:pipe",
     "backroomsmod:iron_button",
     "backroomsmod:elevator_button",
-    "backroomsmod:elevator_door"
+    "backroomsmod:elevator_door",
+    "backroomsmod:dummie_button"
   ]
 }

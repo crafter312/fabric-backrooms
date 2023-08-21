@@ -217,12 +217,12 @@ public class PortalPlacerBlockEntity extends BlockEntity {
         this.origin = this.getPortalOrigin(state);
     }
 
-    private Vec3d getPortalUpVec(BlockState state) {
+    protected Vec3d getPortalUpVec(BlockState state) {
         Direction upDir = !state.contains(Properties.FACING) || state.get(Properties.FACING).getAxis().isHorizontal() ? Direction.UP : Direction.NORTH;
         return new Vec3d(upDir.getOffsetX(), upDir.getOffsetY(), upDir.getOffsetZ());
     }
 
-    private Vec3d getPortalHorizontalVec(BlockState state) {
+    protected Vec3d getPortalHorizontalVec(BlockState state) {
         Vec3i facing = this.getFacingOrDefault(state);
         return getPortalUpVec(state).crossProduct(new Vec3d(facing.getX(), facing.getY(), facing.getZ()));
     }

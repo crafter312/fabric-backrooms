@@ -21,13 +21,17 @@ import net.minecraft.world.TeleportTarget;
 import net.minecraft.world.World;
 import net.minecraft.world.event.GameEvent;
 import net.thesquire.backroomsmod.BackroomsMod;
+import net.thesquire.backroomsmod.block.ModBlockEntities;
 import net.thesquire.backroomsmod.block.ModBlocks;
 import net.thesquire.backroomsmod.block.custom.ElevatorDoor;
 import net.thesquire.backroomsmod.block.custom.PaintedWarehouseConcreteBlock;
+import net.thesquire.backroomsmod.block.entity.ElevatorButtonBlockEntity;
 import net.thesquire.backroomsmod.dimension.ModDimensionKeys;
 import net.thesquire.backroomsmod.sound.ModSounds;
 import net.thesquire.backroomsmod.util.ModUtils;
 import net.thesquire.backroomsmod.util.mixin.callback.*;
+
+import java.util.Optional;
 
 /**
  * For information on how to properly set up a mixin callback,
@@ -100,6 +104,15 @@ public class MixinCallbacks {
             if (!world.isClient()) {
                 ServerWorld serverWorld = (ServerWorld) world;
                 serverWorld.addSyncedBlockEvent(pos, state.getBlock(), 1, ModUtils.boolToInt(neighborState.get(DoorBlock.OPEN), 1, 0));
+            }
+        });
+
+        // this removes any relevant portals if the block an elevator button is placed on is broken
+        //TODO fix elevator button mixin not killing portal when elevator button is broken
+        IWallMountedBlockGetStateForNeighborUpdateCallback.EVENT.register((state, direction, neighborState, world, pos, neighborPos, ci) -> {
+            if (!world.isClient()) {
+                Optional<ElevatorButtonBlockEntity> optional = world.getBlockEntity(pos, ModBlockEntities.ELEVATOR_BUTTON);
+                optional.ifPresent(ElevatorButtonBlockEntity::onBreak);
             }
         });
     }

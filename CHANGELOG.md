@@ -8,6 +8,8 @@
   - drops iron button when broken
   - works similarly to portal placer block, with extra features:
     - portal facing direction specified manually instead of using block facing property
+      - only works to specify vertical direction
+      - otherwise uses block facing property like portal placer
     - can specify portal origin offset from button position
     - portal placed when testing by shift right-clicking instead of just right-clicking
     - animates portal when button pressed with simple 1D translation animation
