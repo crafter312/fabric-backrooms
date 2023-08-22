@@ -108,7 +108,6 @@ public class MixinCallbacks {
         });
 
         // this removes any relevant portals if the block an elevator button is placed on is broken
-        //TODO fix elevator button mixin not killing portal when elevator button is broken
         IWallMountedBlockGetStateForNeighborUpdateCallback.EVENT.register((state, direction, neighborState, world, pos, neighborPos, ci) -> {
             if (!world.isClient()) {
                 Optional<ElevatorButtonBlockEntity> optional = world.getBlockEntity(pos, ModBlockEntities.ELEVATOR_BUTTON);

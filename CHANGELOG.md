@@ -6,6 +6,7 @@
   - crafted with an iron ingot in a stonecutter
 - added elevator button
   - drops iron button when broken
+    - also removes associated portal entities when broken
   - works similarly to portal placer block, with extra features:
     - portal facing direction specified manually instead of using block facing property
       - only works to specify vertical direction

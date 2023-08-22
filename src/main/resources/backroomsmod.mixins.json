@@ -6,7 +6,8 @@
   "mixins": [
     "PlayerEntityMixin",
     "PickaxeItemMixin",
-    "DoorBlockMixin"
+    "DoorBlockMixin",
+    "WallMountedBlockMixin"
   ],
   "client": [
     "WaterDripMixin"
