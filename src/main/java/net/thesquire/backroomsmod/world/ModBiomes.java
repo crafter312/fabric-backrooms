@@ -1,5 +1,6 @@
 package net.thesquire.backroomsmod.world;
 
+import net.minecraft.client.sound.MusicType;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;
 import net.minecraft.registry.Registerable;
@@ -20,16 +21,13 @@ import net.thesquire.backroomsmod.world.feature.ModPlacedFeatures;
 
 public class ModBiomes {
 
-    // level 0 biomes
+    // biomes in level order
     public static final RegistryKey<Biome> LEVEL_0 = registerKey("level_0");
     public static final RegistryKey<Biome> LEVEL_0_DARK = registerKey("level_0_dark");
-
-    // level 1 biome
     public static final RegistryKey<Biome> LEVEL_1 = registerKey("level_1");
-
-    // level 2 biomes
     public static final RegistryKey<Biome> LEVEL_2 = registerKey("level_2");
     public static final RegistryKey<Biome> LEVEL_2_DARK = registerKey("level_2_dark");
+    public static final RegistryKey<Biome> LEVEL_4= registerKey("level_4");
 
     // biome music
     public static final MusicSound NORMAL_MUSIC = null;
@@ -105,6 +103,11 @@ public class ModBiomes {
         level2DarkBiomeBuilder.feature(GenerationStep.Feature.LOCAL_MODIFICATIONS,
                 placedFeatureRegistryEntryLookup.getOrThrow(ModPlacedFeatures.LEVEL_2_PIPE_NETWORK_PLACED_KEY));
 
+        // level 4 biome settings
+        SpawnSettings.Builder level4SpawnBuilder = new SpawnSettings.Builder();
+
+        GenerationSettings.Builder level4BiomeBuilder = new GenerationSettings.Builder();
+
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         register(context, LEVEL_0,
@@ -136,6 +139,12 @@ public class ModBiomes {
                         .effects(defaultBiomeEffects().fogColor(darkFogColor).build())
                         .spawnSettings(level2DarkSpawnBuilder.build())
                         .generationSettings(level2DarkBiomeBuilder.build())
+                        .build());
+        register(context, LEVEL_4,
+                defaultBiomeSettings()
+                        .effects(defaultBiomeEffects().music(MusicType.GAME).build())
+                        .spawnSettings(level4SpawnBuilder.build())
+                        .generationSettings(level4BiomeBuilder.build())
                         .build());
     }
 
