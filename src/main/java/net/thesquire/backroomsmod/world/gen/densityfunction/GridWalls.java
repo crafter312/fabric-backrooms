@@ -6,7 +6,9 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.util.dynamic.CodecHolder;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.noise.InterpolatedNoiseSampler;
+import net.minecraft.util.math.random.Random;
 import net.minecraft.world.gen.densityfunction.DensityFunction;
 import net.thesquire.backroomsmod.util.ModUtils;
 
@@ -121,15 +123,16 @@ public class GridWalls implements DensityFunction.Base {
         double is_wall = Math.signum(sample);
         if(!this.has_doors || (x_result && z_result) || is_wall < 0) return is_wall;
 
+        double scaled_sample = MathHelper.clamp(Math.abs(sample), 0d, 1d) * 10000d;
+        double new_sample = scaled_sample - (int) scaled_sample;
         return z_result
-                ? ModUtils.boolToInt(((1L << x_mod) & makeDoorMask(sample, this.x_spacing, this.x_wall_thickness, this.x_mask)) == 0, 1, -1)
-                : ModUtils.boolToInt(((1L << z_mod) & makeDoorMask(sample, this.z_spacing, this.z_wall_thickness, this.z_mask)) == 0, 1, -1);
+                ? ModUtils.boolToInt(((1L << x_mod) & makeDoorMask(new_sample, this.x_spacing)) == 0, 1, -1)
+                : ModUtils.boolToInt(((1L << z_mod) & makeDoorMask(new_sample, this.z_spacing)) == 0, 1, -1);
     }
 
-    private long makeDoorMask(double sample, int spacing, int wall_thickness, long mask) {
-        long door_mask_temp = ((1L << this.door_width) - 1) << (int) (Math.abs(sample) * (spacing - (2 * (this.door_width - 1))));
-        return door_mask_temp << (ModUtils.boolToInt((door_mask_temp & mask) > 0, 1, 0)
-                * (this.door_width + wall_thickness - 1));
+    private long makeDoorMask(double sample, int spacing) {
+        long mask = ((1L << this.door_width) - 1) << ((int) (sample * (spacing - this.door_width - 1))) + 1;
+        return mask;
     }
 
     @Override

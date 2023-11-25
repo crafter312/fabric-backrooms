@@ -19,6 +19,7 @@ public class ModDensityFunctions {
 
     public static final RegistryKey<DensityFunction> BASE_3D_NOISE_LEVEL_4 = ModDensityFunctions.of("level_4/base_3d_noise");
     public static final RegistryKey<DensityFunction> GRID_WALLS_LEVEL_4 = ModDensityFunctions.of("level_4/grid_walls");
+    public static final RegistryKey<DensityFunction> GRID_WALLS_DOORS_LEVEL_4 = ModDensityFunctions.of("level_4/grid_walls_doors");
 
     public static void bootstrap(Registerable<DensityFunction> context) {
         var densityFunctionRegistryEntryLookup = context.getRegistryLookup(RegistryKeys.DENSITY_FUNCTION);
@@ -41,6 +42,9 @@ public class ModDensityFunctions {
         context.register(BASE_3D_NOISE_LEVEL_4, InterpolatedNoiseSampler.createBase3dNoiseFunction(
                 120, 0.125, 80.0, 160.0, 8.0));
         context.register(GRID_WALLS_LEVEL_4, new GridWalls(
+                densityFunctionRegistryEntryLookup.getOrThrow(BASE_3D_NOISE_LEVEL_4),
+                new GridWalls.GridWallsData(15, 1, 15, 1, false)));
+        context.register(GRID_WALLS_DOORS_LEVEL_4, new GridWalls(
                 densityFunctionRegistryEntryLookup.getOrThrow(BASE_3D_NOISE_LEVEL_4),
                 new GridWalls.GridWallsData(15, 1, 15, 1, true, 2)));
     }

@@ -49,7 +49,14 @@
             "column_size": 2
           }
         },
-        "argument2": "backroomsmod:level_4/grid_walls"
+        "argument2": {
+          "type": "minecraft:range_choice",
+          "input": "minecraft:y",
+          "min_inclusive": 21,
+          "max_exclusive": 24,
+          "when_in_range": "backroomsmod:level_4/grid_walls_doors",
+          "when_out_of_range": "backroomsmod:level_4/grid_walls"
+        }
       },
       "when_out_of_range": 1
     },
