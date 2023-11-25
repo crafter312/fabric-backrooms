@@ -10,11 +10,13 @@ import net.thesquire.backroomsmod.BackroomsMod;
 public class ModPlacementModifierTypes {
 
     public static PlacementModifierType<WallAdjacentPlacementModifier> WALL_ADJACENT;
+    public static PlacementModifierType<NoiseThresholdPlacementModifier> NOISE_THRESHOLD;
 
     public static void registerPlacementModifierTypes() {
         BackroomsMod.LOGGER.info("Registering placement modifier types for " + BackroomsMod.MOD_ID);
 
         WALL_ADJACENT = register("wall_adjacent", WallAdjacentPlacementModifier.MODIFIER_CODEC);
+        NOISE_THRESHOLD= register("noise_threshold", NoiseThresholdPlacementModifier.MODIFIER_CODEC);
     }
 
     private static <P extends PlacementModifier> PlacementModifierType<P> register(String id, Codec<P> codec) {

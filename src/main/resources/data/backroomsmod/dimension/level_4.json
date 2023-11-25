@@ -3,7 +3,7 @@
   "generator": {
     "type": "minecraft:noise",
     "seed": 7295479283,
-    "settings": "backroomsmod:blank",
+    "settings": "backroomsmod:level_4",
     "biome_source": {
       "type": "minecraft:fixed",
       "biome": "backroomsmod:level_4"

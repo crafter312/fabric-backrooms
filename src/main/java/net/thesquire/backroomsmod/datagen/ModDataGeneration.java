@@ -6,8 +6,8 @@ import net.minecraft.registry.RegistryBuilder;
 import net.minecraft.registry.RegistryKeys;
 import net.thesquire.backroomsmod.world.ModBiomes;
 import net.thesquire.backroomsmod.world.feature.ModConfiguredFeatures;
-import net.thesquire.backroomsmod.world.feature.ModFeatures;
 import net.thesquire.backroomsmod.world.feature.ModPlacedFeatures;
+import net.thesquire.backroomsmod.world.gen.ModDensityFunctions;
 
 public class ModDataGeneration implements DataGeneratorEntrypoint {
 
@@ -20,7 +20,7 @@ public class ModDataGeneration implements DataGeneratorEntrypoint {
 
     @Override
     public void buildRegistry(RegistryBuilder registryBuilder) {
-        //registryBuilder.addRegistry(RegistryKeys.FEATURE, ModFeatures::bootstrap);
+        registryBuilder.addRegistry(RegistryKeys.DENSITY_FUNCTION, ModDensityFunctions::bootstrap);
         registryBuilder.addRegistry(RegistryKeys.CONFIGURED_FEATURE, ModConfiguredFeatures::bootstrap);
         registryBuilder.addRegistry(RegistryKeys.PLACED_FEATURE, ModPlacedFeatures::bootstrap);
         registryBuilder.addRegistry(RegistryKeys.BIOME, ModBiomes::bootstrap);

@@ -54,30 +54,8 @@
           "input": "minecraft:y",
           "min_inclusive": 21,
           "max_exclusive": 24,
-          "when_in_range": {
-            "type": "backroomsmod:grid_walls",
-            "input": "minecraft:overworld/base_3d_noise",
-            "xz_scale": 120,
-            "size_params": {
-              "x_spacing": 26,
-              "x_wall_thickness": 2,
-              "z_spacing": 26,
-              "z_wall_thickness": 2,
-              "has_doors": true,
-              "door_width": 3
-            }
-          },
-          "when_out_of_range": {
-            "type": "backroomsmod:grid_walls",
-            "input": "minecraft:overworld/base_3d_noise",
-            "xz_scale": 120,
-            "size_params": {
-              "x_spacing": 26,
-              "x_wall_thickness": 2,
-              "z_spacing": 26,
-              "z_wall_thickness": 2
-            }
-          }
+          "when_in_range": "backroomsmod:level_1/grid_walls_doors",
+          "when_out_of_range": "backroomsmod:level_1/grid_walls"
         }
       },
       "when_out_of_range": 1
