@@ -14,7 +14,9 @@ import net.minecraft.world.gen.feature.PlacedFeature;
 import net.minecraft.world.gen.placementmodifier.*;
 import net.thesquire.backroomsmod.BackroomsMod;
 import net.thesquire.backroomsmod.block.ModBlocks;
+import net.thesquire.backroomsmod.world.feature.placement.NoiseThresholdPlacementModifier;
 import net.thesquire.backroomsmod.world.feature.placement.WallAdjacentPlacementModifier;
+import net.thesquire.backroomsmod.world.gen.ModDensityFunctions;
 
 import java.util.List;
 
@@ -45,15 +47,23 @@ public class ModPlacedFeatures {
     public static RegistryKey<PlacedFeature> LEVEL_2_PIPE_NETWORK_PLACED_KEY = registerKey("level_2_pipe_network_placed");
     public static RegistryKey<PlacedFeature> LEVEL_2_WALL_LIGHTS_PLACED_KEY = registerKey("level_2_wall_lights_placed");
 
+    // level 4 features
+    public static RegistryKey<PlacedFeature> LEVEL_4_THIN_STRAIGHT_WALL_PLACED_KEY = registerKey("level_4_thin_straight_wall_placed");
+    public static RegistryKey<PlacedFeature> LEVEL_4_THIN_CROOKED_WALL_PLACED_KEY = registerKey("level_4_thin_crooked_wall_placed");
+
 
     public static void bootstrap(Registerable<PlacedFeature> context) {
         var configuredFeatureRegistryEntryLookup = context.getRegistryLookup(RegistryKeys.CONFIGURED_FEATURE);
+        var densityFunctionRegistryEntryLookup = context.getRegistryLookup(RegistryKeys.DENSITY_FUNCTION);
 
         PlacementModifier lightBlockModifier = BlockFilterPlacementModifier.of(
                 BlockPredicate.matchingBlocks(Direction.DOWN.getVector(), List.of(Blocks.AIR)));
         PlacementModifier findAdjacentWall = WallAdjacentPlacementModifier.of(makeAdjacentWallBlockPredicate(ModBlocks.PAINTED_WAREHOUSE_CONCRETE), 16);
         PlacementModifier findAdjacentWall2 = WallAdjacentPlacementModifier.of(Direction.NORTH, makeAdjacentWallBlockPredicate(ModBlocks.WAREHOUSE_CONCRETE),
                 BlockPredicate.not(BlockPredicate.matchingBlocks(ModBlocks.PIPE_BLOCK)),16);
+        PlacementModifier level4NoiseThreshold = new NoiseThresholdPlacementModifier(
+                densityFunctionRegistryEntryLookup.getOrThrow(ModDensityFunctions.BASE_3D_NOISE_LEVEL_4_KEY),
+                densityFunctionRegistryEntryLookup.getOrThrow(ModDensityFunctions.GRID_WALLS_LEVEL_4_KEY));
 
         // fixed y values
         PlacementModifier y20 = HeightRangePlacementModifier.uniform(YOffset.fixed(20), YOffset.fixed(20));
@@ -109,14 +119,21 @@ public class ModPlacedFeatures {
                 modifiersWithCount(2, y25));
         register(context, LEVEL_1_LOOT_CHEST_PLACED_KEY,
                 configuredFeatureRegistryEntryLookup.getOrThrow(ModConfiguredFeatures.LEVEL_1_LOOT_CHEST_KEY),
-                List.of(RarityFilterPlacementModifier.of(8), SquarePlacementModifier.of(), y21, findAdjacentWall, BiomePlacementModifier.of()));
+                modifiersWithRarity(8, y21, findAdjacentWall));
 
         register(context, LEVEL_2_PIPE_NETWORK_PLACED_KEY,
                 configuredFeatureRegistryEntryLookup.getOrThrow(ModConfiguredFeatures.LEVEL_2_PIPE_NETWORK_KEY),
-                List.of(CountPlacementModifier.of(14), SquarePlacementModifier.of(), y23, findAdjacentWall2, BiomePlacementModifier.of()));
+                modifiersWithCount(14, y23, findAdjacentWall2));
         register(context, LEVEL_2_WALL_LIGHTS_PLACED_KEY,
                 configuredFeatureRegistryEntryLookup.getOrThrow(ModConfiguredFeatures.WALL_LIGHTS_KEY),
                 modifiersWithCount(14, y22));
+
+        register(context, LEVEL_4_THIN_STRAIGHT_WALL_PLACED_KEY,
+                configuredFeatureRegistryEntryLookup.getOrThrow(ModConfiguredFeatures.LEVEL_4_THIN_STRAIGHT_WALL_KEY),
+                modifiersWithCount(3, y21, level4NoiseThreshold));
+        register(context, LEVEL_4_THIN_CROOKED_WALL_PLACED_KEY,
+                configuredFeatureRegistryEntryLookup.getOrThrow(ModConfiguredFeatures.LEVEL_4_THIN_CROOKED_WALL_KEY),
+                modifiersWithCount(3, y21, level4NoiseThreshold));
     }
 
     public static RegistryKey<PlacedFeature> registerKey(String name) {

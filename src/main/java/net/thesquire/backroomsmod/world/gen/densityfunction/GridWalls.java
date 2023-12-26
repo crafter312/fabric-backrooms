@@ -8,7 +8,6 @@ import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.util.dynamic.CodecHolder;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.noise.InterpolatedNoiseSampler;
-import net.minecraft.util.math.random.Random;
 import net.minecraft.world.gen.densityfunction.DensityFunction;
 import net.thesquire.backroomsmod.util.ModUtils;
 
@@ -116,10 +115,7 @@ public class GridWalls implements DensityFunction.Base {
         boolean z_result = ((1L << z_mod) & this.z_mask) != 0;
         if(!(x_result || z_result)) return -1;
 
-        int x_wall_coord = (x / this.x_total) - x_is_neg;
-        int z_wall_coord = (z / this.z_total) - z_is_neg;
-
-        double sample = this.noise.value().sample(new UnblendedNoisePos(x_wall_coord, 0, z_wall_coord));
+        double sample = this.noise.value().sample(new UnblendedNoisePos((x / this.x_total) - x_is_neg, 0, (z / this.z_total) - z_is_neg));
         double is_wall = Math.signum(sample);
         if(!this.has_doors || (x_result && z_result) || is_wall < 0) return is_wall;
 
@@ -131,8 +127,7 @@ public class GridWalls implements DensityFunction.Base {
     }
 
     private long makeDoorMask(double sample, int spacing) {
-        long mask = ((1L << this.door_width) - 1) << ((int) (sample * (spacing - this.door_width - 1))) + 1;
-        return mask;
+        return ((1L << this.door_width) - 1) << ((int) (sample * (spacing - this.door_width - 1))) + 1;
     }
 
     @Override

@@ -46,6 +46,10 @@ public class ModConfiguredFeatures {
     // level 2 features
     public static final RegistryKey<ConfiguredFeature<?, ?>> LEVEL_2_PIPE_NETWORK_KEY = registerKey("level_2_pipe_network");
 
+    // level 4 features
+    public static final RegistryKey<ConfiguredFeature<?, ?>> LEVEL_4_THIN_STRAIGHT_WALL_KEY = registerKey("level_4_thin_straight_wall");
+    public static final RegistryKey<ConfiguredFeature<?, ?>> LEVEL_4_THIN_CROOKED_WALL_KEY = registerKey("level_4_thin_crooked_wall");
+
     public static void bootstrap(Registerable<ConfiguredFeature<?,?>> context) {
         var placedFeatureRegistryEntryLookup = context.getRegistryLookup(RegistryKeys.PLACED_FEATURE);
 
@@ -68,13 +72,14 @@ public class ModConfiguredFeatures {
                         ModBlocks.PAINTED_WAREHOUSE_CONCRETE.getDefaultState().with(Properties.DOWN, true)
                                 .with(ModBlockProperties.DRIPPING, true)));
         List<OreFeatureConfig.Target> Level1RebarConcreteTarget = List.of(
-                OreFeatureConfig.createTarget(new BlockStateMatchRuleTest(ModBlocks.PAINTED_WAREHOUSE_CONCRETE.getDefaultState()
-                                .with(ModBlockProperties.DRIPPING, false)),
+                OreFeatureConfig.createTarget(new BlockStateMatchRuleTest(ModBlocks.PAINTED_WAREHOUSE_CONCRETE.getDefaultState()),
                         ModBlocks.PAINTED_WAREHOUSE_CONCRETE.getDefaultState().with(Properties.DOWN, true)),
                 OreFeatureConfig.createTarget(new BlockStateMatchRuleTest(ModBlocks.PAINTED_WAREHOUSE_CONCRETE.getDefaultState()
                                 .with(ModBlockProperties.DRIPPING, true)),
                         ModBlocks.PAINTED_WAREHOUSE_CONCRETE.getDefaultState().with(ModBlockProperties.DRIPPING, true)
                                 .with(Properties.DOWN, true)));
+        List<OreFeatureConfig.Target> level4WallTarget = List.of(
+                OreFeatureConfig.createTarget(new BlockMatchRuleTest(Blocks.AIR), ModBlocks.PAINTED_WAREHOUSE_CONCRETE.getDefaultState()));
 
         register(context, BISMUTHINITE_ORE_KEY, Feature.ORE, new OreFeatureConfig(overworldBismuthiniteOres, 8, 0.2f));
         register(context, FLUORESCENT_LIGHT_KEY, ModFeatures.BLOCK_GRID, new ModBlockGridFeatureConfig(fluorescentLightTarget,
@@ -108,6 +113,11 @@ public class ModConfiguredFeatures {
 
         register(context, LEVEL_2_PIPE_NETWORK_KEY, ModFeatures.PIPE_NETWORK,
                 ModPipeNetworkFeatureConfig.of(ModBlocks.PIPE_BLOCK.getDefaultState(), 1.0f, ConstantIntProvider.create(3), BlockPredicate.replaceable()));
+
+        register(context, LEVEL_4_THIN_STRAIGHT_WALL_KEY, ModFeatures.THIN_WALL, new ModThinWallFeatureConfig(level4WallTarget,
+                ConstantIntProvider.create(1), UniformIntProvider.create(10, 16),ConstantIntProvider.create(4), true));
+        register(context, LEVEL_4_THIN_CROOKED_WALL_KEY, ModFeatures.THIN_WALL, new ModThinWallFeatureConfig(level4WallTarget,
+                UniformIntProvider.create(2, 3), UniformIntProvider.create(8, 14), ConstantIntProvider.create(4), false));
     }
 
     public static RegistryKey<ConfiguredFeature<?, ?>> registerKey(String name) {
