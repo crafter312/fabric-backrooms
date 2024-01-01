@@ -9,6 +9,7 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtHelper;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.state.property.DirectionProperty;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.math.*;
 import net.minecraft.world.World;
@@ -185,9 +186,10 @@ public class PortalPlacerBlockEntity extends BlockEntity {
 
         int angle;
         try {
-            angle = (int) PortalUtils.getAngle(state.getBlock().getDefaultState().get(Properties.FACING), state.get(Properties.FACING));
+            DirectionProperty facingProperty = state.contains(Properties.FACING) ? Properties.FACING : Properties.HORIZONTAL_FACING;
+            angle = (int) PortalUtils.getAngle(state.getBlock().getDefaultState().get(facingProperty), state.get(facingProperty));
         }
-        catch (IllegalStateException illegalStateException) {
+        catch (IllegalStateException|IllegalArgumentException exception) {
             angle = 0;
         }
 

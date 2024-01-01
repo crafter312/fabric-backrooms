@@ -10,6 +10,7 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 import net.thesquire.backroomsmod.block.ModBlockEntities;
 import net.thesquire.backroomsmod.block.entity.ElevatorButtonBlockEntity;
@@ -21,6 +22,7 @@ public class ElevatorButton extends ButtonBlock implements BlockEntityProvider {
 
     public ElevatorButton(Settings settings, BlockSetType blockSetType, int pressTicks, boolean wooden) {
         super(settings, blockSetType, pressTicks, wooden);
+        this.setDefaultState(this.getDefaultState().with(HorizontalFacingBlock.FACING, Direction.WEST));
     }
 
     @Nullable

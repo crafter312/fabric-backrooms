@@ -1,0 +1,35 @@
+{
+  "type": "backroomsmod:thin_wall",
+  "config": {
+    "height": 4,
+    "lengths": {
+      "type": "minecraft:uniform",
+      "value": {
+        "max_inclusive": 16,
+        "min_inclusive": 10
+      }
+    },
+    "segments": 1,
+    "straight": true,
+    "targets": [
+      {
+        "state": {
+          "Name": "backroomsmod:painted_warehouse_concrete",
+          "Properties": {
+            "down": "false",
+            "dripping": "false",
+            "east": "false",
+            "north": "false",
+            "south": "false",
+            "up": "false",
+            "west": "false"
+          }
+        },
+        "target": {
+          "block": "minecraft:air",
+          "predicate_type": "minecraft:block_match"
+        }
+      }
+    ]
+  }
+}
