@@ -24,7 +24,8 @@
     [],
     [
       "backroomsmod:level_4_thin_straight_wall_placed",
-      "backroomsmod:level_4_thin_crooked_wall_placed"
+      "backroomsmod:level_4_thin_crooked_wall_placed",
+      "backroomsmod:level_4_fluorescent_light_placed"
     ]
   ],
   "has_precipitation": false,

@@ -50,6 +50,7 @@ public class ModPlacedFeatures {
     // level 4 features
     public static RegistryKey<PlacedFeature> LEVEL_4_THIN_STRAIGHT_WALL_PLACED_KEY = registerKey("level_4_thin_straight_wall_placed");
     public static RegistryKey<PlacedFeature> LEVEL_4_THIN_CROOKED_WALL_PLACED_KEY = registerKey("level_4_thin_crooked_wall_placed");
+    public static RegistryKey<PlacedFeature> LEVEL_4_FLUORESCENT_LIGHT_PLACED_KEY = registerKey("level_4_fluorescent_light_placed");
 
 
     public static void bootstrap(Registerable<PlacedFeature> context) {
@@ -134,6 +135,9 @@ public class ModPlacedFeatures {
         register(context, LEVEL_4_THIN_CROOKED_WALL_PLACED_KEY,
                 configuredFeatureRegistryEntryLookup.getOrThrow(ModConfiguredFeatures.LEVEL_4_THIN_CROOKED_WALL_KEY),
                 modifiersWithCount(3, y21, level4NoiseThreshold));
+        register(context, LEVEL_4_FLUORESCENT_LIGHT_PLACED_KEY,
+                configuredFeatureRegistryEntryLookup.getOrThrow(ModConfiguredFeatures.FLUORESCENT_LIGHT_KEY),
+                modifiersWithCount(4, y25, lightBlockModifier));
     }
 
     public static RegistryKey<PlacedFeature> registerKey(String name) {

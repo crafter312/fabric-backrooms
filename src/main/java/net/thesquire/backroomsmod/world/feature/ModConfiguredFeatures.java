@@ -79,7 +79,7 @@ public class ModConfiguredFeatures {
                         ModBlocks.PAINTED_WAREHOUSE_CONCRETE.getDefaultState().with(ModBlockProperties.DRIPPING, true)
                                 .with(Properties.DOWN, true)));
         List<OreFeatureConfig.Target> level4WallTarget = List.of(
-                OreFeatureConfig.createTarget(new BlockMatchRuleTest(Blocks.AIR), ModBlocks.PAINTED_WAREHOUSE_CONCRETE.getDefaultState()));
+                OreFeatureConfig.createTarget(new BlockMatchRuleTest(Blocks.AIR), Blocks.WHITE_CONCRETE.getDefaultState()));
 
         register(context, BISMUTHINITE_ORE_KEY, Feature.ORE, new OreFeatureConfig(overworldBismuthiniteOres, 8, 0.2f));
         register(context, FLUORESCENT_LIGHT_KEY, ModFeatures.BLOCK_GRID, new ModBlockGridFeatureConfig(fluorescentLightTarget,

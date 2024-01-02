@@ -20,16 +20,7 @@
     "targets": [
       {
         "state": {
-          "Name": "backroomsmod:painted_warehouse_concrete",
-          "Properties": {
-            "down": "false",
-            "dripping": "false",
-            "east": "false",
-            "north": "false",
-            "south": "false",
-            "up": "false",
-            "west": "false"
-          }
+          "Name": "minecraft:white_concrete"
         },
         "target": {
           "block": "minecraft:air",

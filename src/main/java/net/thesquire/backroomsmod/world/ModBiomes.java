@@ -111,6 +111,8 @@ public class ModBiomes {
                 placedFeatureRegistryEntryLookup.getOrThrow(ModPlacedFeatures.LEVEL_4_THIN_STRAIGHT_WALL_PLACED_KEY));
         level4BiomeBuilder.feature(GenerationStep.Feature.LOCAL_MODIFICATIONS,
                 placedFeatureRegistryEntryLookup.getOrThrow(ModPlacedFeatures.LEVEL_4_THIN_CROOKED_WALL_PLACED_KEY));
+        level4BiomeBuilder.feature(GenerationStep.Feature.LOCAL_MODIFICATIONS,
+                placedFeatureRegistryEntryLookup.getOrThrow(ModPlacedFeatures.LEVEL_4_FLUORESCENT_LIGHT_PLACED_KEY));
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
