@@ -126,7 +126,7 @@
                 "then_run": {
                   "type": "minecraft:block",
                   "result_state": {
-                    "Name": "backroomsmod:painted_warehouse_concrete"
+                    "Name": "minecraft:white_concrete"
                   }
                 }
               },
