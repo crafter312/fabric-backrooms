@@ -39,6 +39,7 @@
   "depends": {
     "fabricloader": ">=0.14.22",
     "fabric": ">=0.87.0",
+    "immersive_portals": ">=3.2.5",
     "minecraft": "~1.20.1",
     "techreborn": ">=5.7.0",
     "java": ">=17"
