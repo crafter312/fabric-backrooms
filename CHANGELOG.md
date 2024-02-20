@@ -21,3 +21,5 @@
     - renders smooth door open/close animation
   - double door behavior
     - opening/closing one side of a double door opens/closes both sides
+- added level 4 dimension and portal
+  - makes use of new NoiseThresholdPlacementModifier to place walls where there are no rooms
