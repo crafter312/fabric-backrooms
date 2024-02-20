@@ -1,4 +1,4 @@
-# fabric-backrooms-1.19.4
+# fabric-backrooms-1.20.1
 My take on a Backrooms mod for minecraft fabric!
 
 CURRENT FEATURES
@@ -60,6 +60,13 @@ Backrooms level 2 dimension:
 - decorative pipe feature with custom pipe block
 - long hallways with wall-mounted fluorescent lights
 - dark biomes with no fluorescent lights
+- accessed via staircase & portal in level 1
+- office-style elevator portal leading to level 4
+
+Backrooms level 4 dimension:
+- bare infinite office space with alternating rooms and random hallways
+- fluorescent light feature in ceiling
+- accessed via office-style elevator found in level 2
 
 Other features:
   - "no-clipping" (teleporting) into Backrooms Level 0 when taking suffocation or void damage; this currently happens 1% of the time (might change in the future)
@@ -99,8 +106,14 @@ The following are some features I've thought of which I hope to implement in the
 FAQ
 ---
 
-Q: How many levels do you currently have?
-A: So far I only have level 0, but the details aren't entirely finished yet.
+Q: How many levels do you currently have?  
+A: So far levels 0, 1, 2, and 4, but the details aren't finished yet.
 
-Q: How can I get to level 0?
+Q: How can I get to level 0?  
 A: You can get there by constructing the KV31 multiblock structure, by taking suffocation or void damage, or by using the following command: /execute in backrooms:level_0 run tp ~ 20 ~. The 20 y value is important because that is the y value Level 0 is located at.
+
+Q: What about other levels?  
+A: You can get to subsequent levels by finding portals in previous levels, or by using a similar command to the one listed above.
+
+Q: What is there to explore in all of these dimensions?  
+A: Not a whole lot, currently. There are many details I want to add going forward, but of course other people are welcome to contribute if there are specific structures or features they want to add themselves. I think it is a little much for me to be able to add everything in the backrooms all by myself.
