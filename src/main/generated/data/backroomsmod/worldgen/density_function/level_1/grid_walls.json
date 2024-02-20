@@ -1,0 +1,10 @@
+{
+  "type": "backroomsmod:grid_walls",
+  "noise": "backroomsmod:level_1/base_3d_noise",
+  "size_params": {
+    "x_spacing": 26,
+    "x_wall_thickness": 2,
+    "z_spacing": 26,
+    "z_wall_thickness": 2
+  }
+}

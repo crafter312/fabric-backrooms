@@ -2,7 +2,7 @@ Before building this mod, REMEMBER TO DO THE FOLLOWING:
 
 1. Add the following dependency to "fabric.mod.json," which MUST be removed after the .jar file is built:
 
-    "immersive_portals": ">=2.7.3",
+    "immersive_portals": ">=3.2.5",
 
 2. Change the mod's version number if necessary
 3. Remove unnecessary library imports from modified class files

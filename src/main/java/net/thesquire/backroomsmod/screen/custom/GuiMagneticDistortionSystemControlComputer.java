@@ -1,23 +1,16 @@
 package net.thesquire.backroomsmod.screen.custom;
 
-import com.mojang.blaze3d.systems.RenderSystem;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.font.TextRenderer;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.client.gui.widget.ClickableWidget;
-import net.minecraft.client.render.GameRenderer;
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.thesquire.backroomsmod.block.entity.MagneticDistortionSystemControlComputerBlockEntity;
 import net.thesquire.backroomsmod.util.ModServerboundPackets;
 import reborncore.client.ClientNetworkManager;
-import reborncore.client.gui.builder.GuiBase;
-import reborncore.client.gui.builder.widget.GuiButtonExtended;
+import reborncore.client.gui.GuiBase;
+import reborncore.client.gui.widget.GuiButtonExtended;
 import reborncore.common.screen.BuiltScreenHandler;
-
-import java.awt.*;
 
 public class GuiMagneticDistortionSystemControlComputer extends GuiBase<BuiltScreenHandler> {
 
@@ -41,15 +34,14 @@ public class GuiMagneticDistortionSystemControlComputer extends GuiBase<BuiltScr
     }
 
     @Override
-    protected void drawBackground(MatrixStack matrixStack, float lastFrameDuration, int mouseX, int mouseY) {
-        super.drawBackground(matrixStack, lastFrameDuration, mouseX, mouseY);
+    protected void drawBackground(DrawContext drawContext, float lastFrameDuration, int mouseX, int mouseY) {
+        super.drawBackground(drawContext, lastFrameDuration, mouseX, mouseY);
         final GuiBase.Layer layer = Layer.BACKGROUND;
 
-        drawSlot(matrixStack, 8, 72, layer);
+        drawSlot(drawContext, 8, 72, layer);
 
-        builder.drawJEIButton(matrixStack, this, 158, 5, layer);
         if (blockEntity.isMultiblockValid()) {
-            builder.drawHologramButton(matrixStack, this, 6, 4, mouseX, mouseY, layer);
+            builder.drawHologramButton(drawContext, this, 6, 4, mouseX, mouseY, layer);
 
             if (!children().contains(ACTIVATE_BUTTON)) addDrawableChild(ACTIVATE_BUTTON);
             ACTIVATE_BUTTON.setX(x + activeX);
@@ -59,19 +51,19 @@ public class GuiMagneticDistortionSystemControlComputer extends GuiBase<BuiltScr
     }
 
     @Override
-    protected void drawForeground(MatrixStack matrixStack, int mouseX, int mouseY) {
-        super.drawForeground(matrixStack, mouseX, mouseY);
+    protected void drawForeground(DrawContext drawContext, int mouseX, int mouseY) {
+        super.drawForeground(drawContext, mouseX, mouseY);
         final GuiBase.Layer layer = GuiBase.Layer.FOREGROUND;
 
         if(blockEntity.isMultiblockValid()) {
             addHologramButton(6, 4, 212, layer).clickHandler(this::hologramToggle);
         } else {
-            builder.drawMultiblockMissingBar(matrixStack, this, layer);
+            builder.drawMultiblockMissingBar(drawContext, this, layer);
             addHologramButton(76, 56, 212, layer).clickHandler(this::hologramToggle);
-            builder.drawHologramButton(matrixStack, this, 76, 56, mouseX, mouseY, layer);
+            builder.drawHologramButton(drawContext, this, 76, 56, mouseX, mouseY, layer);
         }
 
-        builder.drawMultiEnergyBar(matrixStack, this, 9, 19, this.blockEntity.getEnergy(), this.blockEntity.getMaxStoredPower(), mouseX, mouseY, 0, layer);
+        builder.drawMultiEnergyBar(drawContext, this, 9, 19, this.blockEntity.getEnergy(), this.blockEntity.getMaxStoredPower(), mouseX, mouseY, 0, layer);
     }
 
     public void hologramToggle(GuiButtonExtended button, double x, double y) {

@@ -1,0 +1,32 @@
+{
+  "type": "backroomsmod:thin_wall",
+  "config": {
+    "height": 4,
+    "lengths": {
+      "type": "minecraft:uniform",
+      "value": {
+        "max_inclusive": 14,
+        "min_inclusive": 8
+      }
+    },
+    "segments": {
+      "type": "minecraft:uniform",
+      "value": {
+        "max_inclusive": 3,
+        "min_inclusive": 2
+      }
+    },
+    "straight": false,
+    "targets": [
+      {
+        "state": {
+          "Name": "minecraft:white_concrete"
+        },
+        "target": {
+          "block": "minecraft:air",
+          "predicate_type": "minecraft:block_match"
+        }
+      }
+    ]
+  }
+}

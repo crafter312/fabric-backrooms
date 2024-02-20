@@ -1,0 +1,12 @@
+{
+  "type": "backroomsmod:grid_walls",
+  "noise": "backroomsmod:level_4/base_3d_noise",
+  "size_params": {
+    "door_width": 2,
+    "has_doors": true,
+    "x_spacing": 15,
+    "x_wall_thickness": 1,
+    "z_spacing": 15,
+    "z_wall_thickness": 1
+  }
+}

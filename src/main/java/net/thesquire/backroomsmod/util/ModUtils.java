@@ -153,13 +153,13 @@ public class ModUtils {
         return Optional.of(pair.getFirst());
     }
 
-    public static void placeStructure(ServerWorld world, String name, BlockPos pos, int angle) {
+    public static boolean placeStructure(ServerWorld world, String name, BlockPos pos, int angle) {
         Optional<StructureTemplate> optional;
         StructureTemplateManager structureTemplateManager = world.getStructureTemplateManager();
         Identifier templateName = StringHelper.isEmpty(name) ? null : Identifier.tryParse(name);
         if(templateName == null) {
             BackroomsMod.LOGGER.warn("Invalid structure name: " + name);
-            return;
+            return false;
         }
 
         // get StructureTemplate from supplied name
@@ -167,10 +167,10 @@ public class ModUtils {
             optional = structureTemplateManager.getTemplate(templateName);
         }
         catch (InvalidIdentifierException invalidIdentifierException) {
-            return;
+            return false;
         }
         if (optional.isEmpty()) {
-            return;
+            return false;
         }
         StructureTemplate template = optional.get();
 
@@ -189,7 +189,11 @@ public class ModUtils {
                 .setMirror(BlockMirror.NONE)
                 .setIgnoreEntities(false);
 
-        template.place(world, pos, pos, structurePlacementData, StructureBlockBlockEntity.createRandom(0L), Block.NOTIFY_LISTENERS);
+        return template.place(world, pos, pos, structurePlacementData, StructureBlockBlockEntity.createRandom(0L), Block.NOTIFY_LISTENERS);
+    }
+
+    public static double log(double base, double logNumber) {
+        return Math.log(logNumber) / Math.log(base);
     }
 
 }

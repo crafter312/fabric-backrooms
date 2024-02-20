@@ -7,7 +7,7 @@
   ],
   "placement": {
     "type": "minecraft:random_spread",
-    "salt": 29584905,
+    "salt": 295849051,
     "exclusion_zone": {
       "other_set": "backroomsmod:threshold_chamber",
       "chunk_count": 4

@@ -1,18 +1,17 @@
 package net.thesquire.backroomsmod.block.custom;
 
-import net.minecraft.block.*;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.BlockWithEntity;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
-import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.DirectionProperty;
 import net.minecraft.state.property.Properties;
-import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.BlockMirror;
 import net.minecraft.util.BlockRotation;
@@ -38,9 +37,6 @@ public class PortalPlacerBlock extends BlockWithEntity {
         setDefaultState(getDefaultState().with(FACING, Direction.SOUTH));
     }
 
-    @Override
-    public BlockRenderType getRenderType(BlockState state) { return BlockRenderType.INVISIBLE; }
-
     @Nullable
     @Override
     public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
@@ -61,7 +57,7 @@ public class PortalPlacerBlock extends BlockWithEntity {
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-        return !world.isClient() ? checkType(type, ModBlockEntities.PORTAL_PLACER,
+        return !world.isClient() ? ModBlockWithEntity.checkType(type, ModBlockEntities.PORTAL_PLACER,
                 (world1, pos, state1, blockEntity) -> blockEntity.tick(world1, state1)) : null;
     }
 
@@ -83,8 +79,12 @@ public class PortalPlacerBlock extends BlockWithEntity {
         Optional<PortalPlacerBlockEntity> optional = world.getBlockEntity(pos, ModBlockEntities.PORTAL_PLACER);
         if(world.isClient() || hand == Hand.OFF_HAND || optional.isEmpty()) return ActionResult.PASS;
 
-        optional.get().initPortal((ServerWorld) world, world.getBlockState(pos));
-        return ActionResult.SUCCESS;
+        PortalPlacerBlockEntity portalPlacer = optional.get();
+        if(portalPlacer.hasPortal()) return ActionResult.PASS;
+
+        portalPlacer.updatePortalOrigin(state);
+        portalPlacer.initPortal((ServerWorld) world, state);
+        return ActionResult.success(world.isClient);
     }
 
 }

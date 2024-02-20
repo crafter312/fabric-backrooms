@@ -67,7 +67,7 @@ public class ModItems {
     }
 
     private static Item registerItem(String name, Item item) {
-        ItemGroupEvents.modifyEntriesEvent(ModItemGroup.BACKROOMS).register(entries -> entries.add(item));
+        ItemGroupEvents.modifyEntriesEvent(ModItemGroup.BACKROOMS_ITEM_GROUP).register(entries -> entries.add(item));
         return Registry.register(Registries.ITEM, BackroomsMod.makeId(name), item);
     }
 

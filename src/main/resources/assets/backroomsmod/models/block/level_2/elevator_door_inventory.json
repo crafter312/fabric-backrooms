@@ -1,0 +1,126 @@
+{
+	"credit": "Made with Blockbench",
+	"textures": {
+		"0": "backroomsmod:block/level_2/inventory/elevator_door",
+		"1": "backroomsmod:block/level_2/inventory/elevator_door_frame_side",
+		"2": "backroomsmod:block/level_2/inventory/elevator_door_frame_top",
+		"particle": "backroomsmod:block/level_2/inventory/elevator_door"
+	},
+	"elements": [
+		{
+			"name": "door",
+			"from": [1, 0, 2],
+			"to": [5, 16, 16],
+			"faces": {
+				"east": {"uv": [0, 0, 7, 8], "texture": "#0"},
+				"south": {"uv": [2.5, 8, 4.5, 16], "texture": "#0", "cullface": "south"},
+				"west": {"uv": [7, 0, 14, 8], "texture": "#0"},
+				"down": {"uv": [9, 8, 7, 15], "texture": "#0", "cullface": "down"}
+			}
+		},
+		{
+			"name": "frame",
+			"from": [0, 0, 0],
+			"to": [6, 16, 2],
+			"faces": {
+				"north": {"uv": [0, 0, 6, 16], "texture": "#1", "cullface": "north"},
+				"east": {"uv": [6, 0, 8, 16], "texture": "#1"},
+				"south": {"uv": [2, 8, 5, 16], "texture": "#0"},
+				"west": {"uv": [6, 0, 8, 16], "texture": "#1", "cullface": "west"},
+				"down": {"uv": [14, 0, 8, 2], "texture": "#1", "cullface": "down"}
+			}
+		},
+		{
+			"name": "door",
+			"from": [1, 16, 2],
+			"to": [5, 30, 16],
+			"faces": {
+				"east": {"uv": [0, 1, 7, 8], "texture": "#0"},
+				"south": {"uv": [2.5, 9, 4.5, 16], "texture": "#0", "cullface": "south"},
+				"west": {"uv": [7, 1, 14, 8], "texture": "#0"}
+			}
+		},
+		{
+			"name": "side",
+			"from": [0, 16, 0],
+			"to": [6, 32, 2],
+			"faces": {
+				"north": {"uv": [0, 0, 6, 16], "texture": "#1", "cullface": "north"},
+				"east": {"uv": [6, 0, 8, 16], "texture": "#1"},
+				"south": {"uv": [2, 8, 5, 16], "texture": "#1"},
+				"west": {"uv": [6, 0, 8, 16], "texture": "#1", "cullface": "west"},
+				"up": {"uv": [14, 2, 8, 0], "texture": "#1", "cullface": "up"}
+			}
+		},
+		{
+			"name": "top",
+			"from": [0, 30, 2],
+			"to": [6, 32, 16],
+			"faces": {
+				"east": {"uv": [0, 0, 14, 2], "texture": "#2"},
+				"south": {"uv": [6, 2, 12, 4], "texture": "#2", "cullface": "south"},
+				"west": {"uv": [0, 0, 14, 2], "texture": "#2", "cullface": "west"},
+				"up": {"uv": [6, 16, 0, 2], "texture": "#2", "cullface": "up"},
+				"down": {"uv": [6, 2, 0, 16], "texture": "#2"}
+			}
+		}
+	],
+	"display": {
+		"thirdperson_righthand": {
+			"translation": [1.5, -1.25, 0],
+			"scale": [0.29, 0.29, 0.29]
+		},
+		"thirdperson_lefthand": {
+			"translation": [-1.5, -1.25, 0],
+			"scale": [0.29, 0.29, 0.29]
+		},
+		"firstperson_righthand": {
+			"translation": [1.5, -1.25, 0],
+			"scale": [0.29, 0.29, 0.29]
+		},
+		"firstperson_lefthand": {
+			"translation": [-1.5, -1.25, 0],
+			"scale": [0.29, 0.29, 0.29]
+		},
+		"ground": {
+			"translation": [1.5, -1.25, 0],
+			"scale": [0.29, 0.29, 0.29]
+		},
+		"gui": {
+			"rotation": [27, 44, -51],
+			"translation": [-1, -4.25, 1.9],
+			"scale": [0.45, 0.45, 0.45]
+		},
+		"head": {
+			"translation": [2.5, 10.4, 0],
+			"scale": [0.5, 0.5, 0.5]
+		},
+		"fixed": {
+			"rotation": [0, -90, 0],
+			"translation": [0, -3.25, 1.9],
+			"scale": [0.4, 0.4, 0.4]
+		}
+	},
+	"groups": [
+		{
+			"name": "bottom",
+			"origin": [0, 0, 0],
+			"color": 0,
+			"children": [0, 1]
+		},
+		{
+			"name": "top",
+			"origin": [8, 8, 8],
+			"color": 0,
+			"children": [
+				2,
+				{
+					"name": "frame",
+					"origin": [0, 0, 0],
+					"color": 0,
+					"children": [3, 4]
+				}
+			]
+		}
+	]
+}

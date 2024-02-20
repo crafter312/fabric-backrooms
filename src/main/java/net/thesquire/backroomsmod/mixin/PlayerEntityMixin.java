@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class PlayerEntityMixin {
 
     @Inject(method = "damage", at = @At("HEAD"))
-    public void onDamage(DamageSource source, float amount, CallbackInfoReturnable ci) {
+    public void onDamage(DamageSource source, float amount, CallbackInfoReturnable<Boolean> ci) {
         IPlayerDamageCallback.EVENT.invoker().interact(source, (PlayerEntity) (Object) this);
     }
 

@@ -2,6 +2,10 @@
   "replace": false,
   "values": [
     "backroomsmod:custom_door",
-    "backroomsmod:pipe"
+    "backroomsmod:pipe",
+    "backroomsmod:iron_button",
+    "backroomsmod:elevator_button",
+    "backroomsmod:elevator_door",
+    "backroomsmod:dummie_button"
   ]
 }

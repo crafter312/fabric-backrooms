@@ -1,0 +1,32 @@
+{
+  "feature": "backroomsmod:level_4_thin_crooked_wall",
+  "placement": [
+    {
+      "type": "minecraft:count",
+      "count": 3
+    },
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "type": "minecraft:height_range",
+      "height": {
+        "type": "minecraft:uniform",
+        "max_inclusive": {
+          "absolute": 21
+        },
+        "min_inclusive": {
+          "absolute": 21
+        }
+      }
+    },
+    {
+      "type": "minecraft:noise_threshold",
+      "grid_walls": "backroomsmod:level_4/grid_walls",
+      "input": "backroomsmod:level_4/base_3d_noise"
+    },
+    {
+      "type": "minecraft:biome"
+    }
+  ]
+}

@@ -1,10 +1,10 @@
 package net.thesquire.backroomsmod.screen.custom;
 
-import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.entity.player.PlayerEntity;
 import net.thesquire.backroomsmod.block.entity.IndustrialAlloySmelterBlockEntity;
-import reborncore.client.gui.builder.GuiBase;
-import reborncore.client.gui.guibuilder.GuiBuilder;
+import reborncore.client.gui.GuiBase;
+import reborncore.client.gui.GuiBuilder;
 import reborncore.common.screen.BuiltScreenHandler;
 
 public class GuiIndustrialAlloySmelter extends GuiBase<BuiltScreenHandler> {
@@ -17,31 +17,30 @@ public class GuiIndustrialAlloySmelter extends GuiBase<BuiltScreenHandler> {
     }
 
     @Override
-    protected void drawBackground(MatrixStack matrixStack, final float f, final int mouseX, final int mouseY) {
-        super.drawBackground(matrixStack, f, mouseX, mouseY);
+    protected void drawBackground(DrawContext drawContext, final float f, final int mouseX, final int mouseY) {
+        super.drawBackground(drawContext, f, mouseX, mouseY);
         final GuiBase.Layer layer = GuiBase.Layer.BACKGROUND;
 
         //Battery slot
-        drawSlot(matrixStack, 8, 72, layer);
+        drawSlot(drawContext, 8, 72, layer);
 
         //Input slots
-        drawSlot(matrixStack, 51, 72, layer);
-        drawSlot(matrixStack, 71, 72, layer);
-        drawSlot(matrixStack, 91, 72, layer);
-        drawSlot(matrixStack, 111, 72, layer);
+        drawSlot(drawContext, 51, 72, layer);
+        drawSlot(drawContext, 71, 72, layer);
+        drawSlot(drawContext, 91, 72, layer);
+        drawSlot(drawContext, 111, 72, layer);
 
         //Output slots
-        drawOutputSlot(matrixStack, 81, 24, layer);
-        builder.drawJEIButton(matrixStack, this, 158, 5, layer);
+        drawOutputSlot(drawContext, 81, 24, layer);
     }
 
     @Override
-    protected void drawForeground(MatrixStack matrixStack, final int mouseX, final int mouseY) {
-        super.drawForeground(matrixStack, mouseX, mouseY);
+    protected void drawForeground(DrawContext drawContext, final int mouseX, final int mouseY) {
+        super.drawForeground(drawContext, mouseX, mouseY);
         final GuiBase.Layer layer = GuiBase.Layer.FOREGROUND;
 
-        builder.drawProgressBar(matrixStack, this, blockEntity.getProgressScaled(100), 100, 84, 50, mouseX, mouseY, GuiBuilder.ProgressDirection.UP, layer);
-        builder.drawMultiEnergyBar(matrixStack, this, 9, 19, (int) blockEntity.getEnergy(), (int) blockEntity.getMaxStoredPower(), mouseX, mouseY, 0, layer);
+        builder.drawProgressBar(drawContext, this, blockEntity.getProgressScaled(100), 100, 84, 50, mouseX, mouseY, GuiBuilder.ProgressDirection.UP, layer);
+        builder.drawMultiEnergyBar(drawContext, this, 9, 19, (int) blockEntity.getEnergy(), (int) blockEntity.getMaxStoredPower(), mouseX, mouseY, 0, layer);
     }
 
 }
