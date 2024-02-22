@@ -1,5 +1,6 @@
 package net.thesquire.backroomsmod.block.custom;
 
+import com.mojang.serialization.MapCodec;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
@@ -17,8 +18,11 @@ import net.thesquire.backroomsmod.block.ModBlockProperties;
 import net.thesquire.backroomsmod.block.entity.flickering.FluorescentLightBlockEntity;
 import org.jetbrains.annotations.Nullable;
 
+import static net.thesquire.backroomsmod.block.custom.ModBlockWithEntity.checkType;
+
 public class FluorescentLightBlock extends BlockWithEntity {
 
+    public static final MapCodec<FluorescentLightBlock> CODEC = createCodec(FluorescentLightBlock::new);
     public static final BooleanProperty FLICKERING = ModBlockProperties.FLICKERING;
     public static final IntProperty LUMINANCE = ModBlockProperties.LUMINANCE;
 
@@ -27,6 +31,11 @@ public class FluorescentLightBlock extends BlockWithEntity {
     public FluorescentLightBlock(Settings settings) {
         super(settings);
         this.setDefaultState(this.getDefaultState().with(FLICKERING, false).with(LUMINANCE, FluorescentLightBlockEntity.defaultLuminance));
+    }
+
+    @Override
+    protected MapCodec<? extends BlockWithEntity> getCodec() {
+        return CODEC;
     }
 
     @Override

@@ -1,5 +1,5 @@
 plugins {
-	id 'fabric-loom' version '1.3-SNAPSHOT'
+	id 'fabric-loom' version '1.5-SNAPSHOT'
 	id 'maven-publish'
 }
 
@@ -23,6 +23,7 @@ repositories {
 	maven { url = "https://maven.architectury.dev/" }
 	maven { url = "https://maven.shedaniel.me" }
 	maven { url = "https://jitpack.io" }
+	maven {	url = "https://api.modrinth.com/maven" }
 }
 
 dependencies {
@@ -40,19 +41,18 @@ dependencies {
 	//modImplementation "TechReborn:TechReborn-unknown:5.5.0+local"
 
 	// MixinExtras API for Immersive Portals
-	api("com.github.LlamaLad7:MixinExtras:${project.mixinextras_version}")
-	annotationProcessor("com.github.LlamaLad7:MixinExtras:${project.mixinextras_version}")
+	api("io.github.llamalad7:mixinextras-fabric:${project.mixinextras_version}")
+	annotationProcessor("io.github.llamalad7:mixinextras-fabric:${project.mixinextras_version}")
 
-	// Dependency of Immersive Portals Core:
-	modImplementation ("com.github.iPortalTeam.ImmersivePortalsMod:imm_ptl_core:${immersiveportals_version}"){
+	// Dependency of Immersive Portals Mod:
+	modImplementation ("com.github.iPortalTeam:ImmersivePortalsMod:${project.immersiveportals_version}"){
 		exclude(group: "net.fabricmc.fabric-api")
 		transitive(false)
 	}
 
-	// Dependency of the Miscellaneous Utility Library from qouteall
-	modImplementation ("com.github.iPortalTeam.ImmersivePortalsMod:q_misc_util:${immersiveportals_version}"){
+	// Dimension API for Immersive Portals:
+	modApi("com.github.iPortalTeam:DimLib:${project.dimlib_version}") {
 		exclude(group: "net.fabricmc.fabric-api")
-		transitive(false)
 	}
 
 	// Optional REI dependency

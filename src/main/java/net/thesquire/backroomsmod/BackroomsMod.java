@@ -2,8 +2,8 @@ package net.thesquire.backroomsmod;
 
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
-import net.minecraft.world.PersistentStateManager;
 import net.thesquire.backroomsmod.block.ModBlockEntities;
 import net.thesquire.backroomsmod.block.ModBlocks;
 import net.thesquire.backroomsmod.dimension.ModDimensionKeys;
@@ -22,8 +22,6 @@ import net.thesquire.backroomsmod.world.feature.placement.ModPlacementModifierTy
 import net.thesquire.backroomsmod.world.gen.ModDensityFunctions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.Objects;
 
 //TODO fix level 2 portal generating close to level 1 portal destination
 
@@ -44,8 +42,9 @@ public class BackroomsMod implements ModInitializer {
 		// Proceed with mild caution.
 
 		ServerLifecycleEvents.SERVER_STARTED.register(server -> {
-			PersistentStateManager persistentStateManager = Objects.requireNonNull(server.getWorld(ModDimensionKeys.LEVEL_0)).getPersistentStateManager();
-			portalStorage = persistentStateManager.getOrCreate(PortalStorage::createFromNBT, PortalStorage::new, MOD_ID);
+			ServerWorld serverWorld = server.getWorld(ModDimensionKeys.LEVEL_0);
+			if(serverWorld == null) LOGGER.error("Failed to initialize level 0 portal storage", new NullPointerException());
+			portalStorage = PortalStorage.get(serverWorld);
 			portalStorage.markDirty();
 		});
 

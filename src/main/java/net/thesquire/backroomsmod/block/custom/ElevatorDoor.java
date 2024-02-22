@@ -236,7 +236,7 @@ public class ElevatorDoor extends DoorBlock implements BlockEntityProvider {
     private final VoxelShape[] connectionsToShape;
 
     public ElevatorDoor(Settings settings, BlockSetType blockSetType) {
-        super(settings, blockSetType);
+        super(blockSetType, settings);
         this.connectionsToShape = generateStateToShapeMap();
     }
 

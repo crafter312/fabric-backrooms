@@ -20,8 +20,8 @@ import java.util.Optional;
 
 public class ElevatorButton extends ButtonBlock implements BlockEntityProvider {
 
-    public ElevatorButton(Settings settings, BlockSetType blockSetType, int pressTicks, boolean wooden) {
-        super(settings, blockSetType, pressTicks, wooden);
+    public ElevatorButton(Settings settings, BlockSetType blockSetType, int pressTicks) {
+        super(blockSetType, pressTicks, settings);
         this.setDefaultState(this.getDefaultState().with(HorizontalFacingBlock.FACING, Direction.WEST));
     }
 
@@ -75,10 +75,10 @@ public class ElevatorButton extends ButtonBlock implements BlockEntityProvider {
     }
 
     @Override
-    public void onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
+    public BlockState onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
         Optional<ElevatorButtonBlockEntity> optional = world.getBlockEntity(pos, ModBlockEntities.ELEVATOR_BUTTON);
         optional.ifPresent(ElevatorButtonBlockEntity::onBreak);
 
-        super.onBreak(world, pos, state, player);
+        return super.onBreak(world, pos, state, player);
     }
 }
