@@ -35,7 +35,7 @@ public class LockedDoorBlock extends DoorBlock {
      * @param blockSetType sound group for block materials, used to get door close and open sounds
      */
     public LockedDoorBlock(Settings settings, BlockSetType blockSetType) {
-        super(settings, blockSetType);
+        super(blockSetType, settings);
         this.setDefaultState(this.getDefaultState().with(LOCKED, false));
         this.closeSound = blockSetType.doorClose();
         this.openSound = blockSetType.doorOpen();

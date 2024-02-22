@@ -44,7 +44,7 @@ public class ElevatorButtonBlockEntity extends PortalPlacerBlockEntity {
 
     @Override
     public void initPortal(ServerWorld serverWorld, BlockState state) {
-        if((this.portal = Portal.entityType.create(serverWorld)) == null) return;
+        if((this.portal = Portal.ENTITY_TYPE.create(serverWorld)) == null) return;
 
         this.portal.setOriginPos(this.origin.add(this.offset == null ? Vec3d.ZERO : this.offset));
         this.portal.setDestinationDimension(this.dimensionTo != null ? this.dimensionTo : serverWorld.getRegistryKey());
@@ -66,7 +66,7 @@ public class ElevatorButtonBlockEntity extends PortalPlacerBlockEntity {
             return;
         }
 
-        PortalManipulation.completeBiFacedPortal(this.portal, Portal.entityType);
+        PortalManipulation.completeBiFacedPortal(this.portal, Portal.ENTITY_TYPE);
         this.portalUUID = this.portal.getUuid();
     }
 

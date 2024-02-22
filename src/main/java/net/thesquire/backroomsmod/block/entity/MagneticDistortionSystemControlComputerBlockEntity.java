@@ -70,7 +70,7 @@ public class MagneticDistortionSystemControlComputerBlockEntity extends GenericM
     }
 
     private void initPortal(ServerWorld serverWorld, Direction dir) {
-        portal = Portal.entityType.create(serverWorld);
+        portal = Portal.ENTITY_TYPE.create(serverWorld);
         if(portal == null) return;
 
         portal.setOriginPos(getPortalOrigin(dir));
@@ -159,7 +159,7 @@ public class MagneticDistortionSystemControlComputerBlockEntity extends GenericM
                     initPortalCounter -= 1;
                     return;
                 }
-                else if(entity.getType().equals(Portal.entityType)) {
+                else if(entity.getType().equals(Portal.ENTITY_TYPE)) {
                     portal = (Portal) entity;
                     initPortalCounter = -1;
                     findDestPortalCounter = initTries;
@@ -255,7 +255,7 @@ public class MagneticDistortionSystemControlComputerBlockEntity extends GenericM
             if(destPortal.isRemoved()) destPortal.myUnsetRemoved();
             destPortal.getWorld().spawnEntity(destPortal);
         }
-        else destPortal = PortalManipulation.completeBiWayPortal(portal, Portal.entityType);
+        else destPortal = PortalManipulation.completeBiWayPortal(portal, Portal.ENTITY_TYPE);
 
         portalUUID = portal.getUuid();
         destPortalUUID = destPortal.getUuid();
@@ -284,7 +284,7 @@ public class MagneticDistortionSystemControlComputerBlockEntity extends GenericM
             destPortalUUID = destPortal.getUuid();
         }
         else if(destPortal == null)
-            destPortal = PortalManipulation.completeBiWayPortal(portal, Portal.entityType);
+            destPortal = PortalManipulation.completeBiWayPortal(portal, Portal.ENTITY_TYPE);
     }
 
     private Direction getSideDir(boolean side) {

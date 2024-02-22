@@ -20,7 +20,6 @@ import net.thesquire.backroomsmod.util.ModUtils;
 import qouteall.imm_ptl.core.portal.Portal;
 import qouteall.imm_ptl.core.portal.PortalManipulation;
 import qouteall.q_misc_util.Helper;
-import qouteall.q_misc_util.dimension.DimId;
 
 import java.util.UUID;
 
@@ -98,7 +97,7 @@ public class PortalPlacerBlockEntity extends BlockEntity {
     @Override
     protected void writeNbt(NbtCompound nbt) {
         if(this.dimensionTo != null)
-            DimId.putWorldId(nbt, "dimensionTo", this.dimensionTo);
+            Helper.putWorldId(nbt, "dimensionTo", this.dimensionTo);
         nbt.putInt("width", this.width);
         nbt.putInt("height", this.height);
         nbt.putBoolean("isMiddlePortal", this.isMiddlePortal);
@@ -121,7 +120,7 @@ public class PortalPlacerBlockEntity extends BlockEntity {
     @Override
     public void readNbt(NbtCompound nbt) {
         if(nbt.contains("dimensionTo"))
-            this.dimensionTo = DimId.idToKey(nbt.getString("dimensionTo"));
+            this.dimensionTo = Helper.getWorldId(nbt, "dimensionTo");
         if(nbt.contains("width"))
             this.width = nbt.getInt("width");
         if(nbt.contains("height"))
@@ -148,7 +147,7 @@ public class PortalPlacerBlockEntity extends BlockEntity {
     }
 
     public void initPortal(ServerWorld serverWorld, BlockState state) {
-        this.portal = Portal.entityType.create(serverWorld);
+        this.portal = Portal.ENTITY_TYPE.create(serverWorld);
         if(this.portal == null)
             return;
 
@@ -176,7 +175,7 @@ public class PortalPlacerBlockEntity extends BlockEntity {
                 this.portal,
                 (p) -> BackroomsMod.LOGGER.info("Removed " + p),
                 (p) -> {},
-                Portal.entityType
+                Portal.ENTITY_TYPE
         );
         this.portalUUID = this.portal.getUuid();
     }
@@ -203,7 +202,7 @@ public class PortalPlacerBlockEntity extends BlockEntity {
 
     private void getPortalEntity(World world) {
         Entity entity = ((ServerWorld) world).getEntity(this.portalUUID);
-        if(entity == null || !entity.getType().equals(Portal.entityType)) return;
+        if(entity == null || !entity.getType().equals(Portal.ENTITY_TYPE)) return;
 
         this.portal = (Portal) entity;
     }

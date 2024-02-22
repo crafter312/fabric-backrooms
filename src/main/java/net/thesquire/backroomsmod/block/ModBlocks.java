@@ -75,10 +75,10 @@ public class ModBlocks {
             new PipeBlock(FabricBlockSettings.copy(Blocks.IRON_BLOCK)));
 
     public static final Block IRON_BUTTON = registerBlock("iron_button",
-            new ButtonBlock(FabricBlockSettings.create().noCollision().strength(0.5f).requiresTool().pistonBehavior(PistonBehavior.DESTROY), BlockSetType.IRON, 20, false));
+            new ButtonBlock(BlockSetType.IRON, 20, FabricBlockSettings.create().noCollision().strength(0.5f).requiresTool().pistonBehavior(PistonBehavior.DESTROY)));
 
     public static final Block DUMMIE_BUTTON = registerBlockWithoutBlockItem("dummie_button",
-            new ButtonBlock(FabricBlockSettings.create().noCollision().strength(0.5f).requiresTool().pistonBehavior(PistonBehavior.DESTROY), BlockSetType.IRON, 20, false));
+            new ButtonBlock(BlockSetType.IRON, 20, FabricBlockSettings.create().noCollision().strength(0.5f).requiresTool().pistonBehavior(PistonBehavior.DESTROY)));
 
     // Blocks with a GUI or BlockEntity have to be registered in the method below to ensure proper register order!
     public static Block INDUSTRIAL_ALLOY_SMELTER;
@@ -109,7 +109,7 @@ public class ModBlocks {
                 new PortalPlacerBlock(FabricBlockSettings.create().noCollision().dropsNothing().noBlockBreakParticles()));
 
         ELEVATOR_BUTTON = registerBlockWithoutBlockItem("elevator_button",
-                new ElevatorButton(FabricBlockSettings.copy(IRON_BUTTON), BlockSetType.IRON, 20, false));
+                new ElevatorButton(FabricBlockSettings.copy(IRON_BUTTON), BlockSetType.IRON, 20));
 
         ELEVATOR_DOOR = registerBlock("elevator_door",
                 new ElevatorDoor(FabricBlockSettings.copy(Blocks.IRON_DOOR), ModBlockSetTypes.ELEVATOR));

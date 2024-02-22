@@ -4,7 +4,7 @@ import com.mojang.serialization.Codec;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.block.entity.LootableContainerBlockEntity;
+import net.minecraft.inventory.LootableInventory;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
@@ -27,7 +27,7 @@ public class ModLootChestFeature extends Feature<ModLootChestFeatureConfig> {
         Identifier lootTableKey = context.getConfig().lootTableKey();
         BlockState lootContainer = Blocks.BARREL.getDefaultState().with(Properties.FACING, Direction.UP);
         boolean b1 = world.setBlockState(origin, lootContainer, Block.NOTIFY_ALL);
-        LootableContainerBlockEntity.setLootTable(world, random, origin, lootTableKey);
+        LootableInventory.setLootTable(world, random, origin, lootTableKey);
 
         return b1;
     }

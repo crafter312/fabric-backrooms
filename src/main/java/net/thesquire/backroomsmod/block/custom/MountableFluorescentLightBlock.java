@@ -1,10 +1,11 @@
 package net.thesquire.backroomsmod.block.custom;
 
+import com.mojang.serialization.MapCodec;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.block.enums.WallMountLocation;
+import net.minecraft.block.enums.BlockFace;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.StateManager;
@@ -30,7 +31,8 @@ import org.jetbrains.annotations.Nullable;
 
 public class MountableFluorescentLightBlock extends HorizontalFacingBlock implements BlockEntityProvider {
 
-    public static final EnumProperty<WallMountLocation> WALL_MOUNT_LOCATION = Properties.WALL_MOUNT_LOCATION;
+    public static final MapCodec<MountableFluorescentLightBlock> CODEC = createCodec(MountableFluorescentLightBlock::new);
+    public static final EnumProperty<BlockFace> WALL_MOUNT_LOCATION = Properties.BLOCK_FACE;
     public static final BooleanProperty FLICKERING = ModBlockProperties.FLICKERING;
     public static final IntProperty LUMINANCE = ModBlockProperties.LUMINANCE;
 
@@ -90,9 +92,14 @@ public class MountableFluorescentLightBlock extends HorizontalFacingBlock implem
 
     public MountableFluorescentLightBlock(Settings settings) {
         super(settings);
-        setDefaultState(getDefaultState().with(WALL_MOUNT_LOCATION, WallMountLocation.WALL)
+        setDefaultState(getDefaultState().with(WALL_MOUNT_LOCATION, BlockFace.WALL)
                 .with(FACING, Direction.NORTH).with(FLICKERING, false)
                 .with(LUMINANCE, FluorescentLightBlockEntity.defaultLuminance));
+    }
+
+    @Override
+    protected MapCodec<? extends HorizontalFacingBlock> getCodec() {
+        return CODEC;
     }
 
     @SuppressWarnings("deprecation")
@@ -116,9 +123,9 @@ public class MountableFluorescentLightBlock extends HorizontalFacingBlock implem
         BlockState facingState = getDefaultState().with(FACING, ctx.getHorizontalPlayerFacing().getOpposite());
         Direction blockFace = ctx.getSide();
         return switch (blockFace) {
-            case DOWN -> facingState.with(WALL_MOUNT_LOCATION, WallMountLocation.CEILING);
-            case UP -> facingState.with(WALL_MOUNT_LOCATION, WallMountLocation.FLOOR);
-            default -> getDefaultState().with(FACING, blockFace).with(WALL_MOUNT_LOCATION, WallMountLocation.WALL);
+            case DOWN -> facingState.with(WALL_MOUNT_LOCATION, BlockFace.CEILING);
+            case UP -> facingState.with(WALL_MOUNT_LOCATION, BlockFace.FLOOR);
+            default -> getDefaultState().with(FACING, blockFace).with(WALL_MOUNT_LOCATION, BlockFace.WALL);
         };
     }
 

@@ -11,6 +11,7 @@ import me.shedaniel.rei.api.common.display.Display;
 import me.shedaniel.rei.api.common.entry.EntryStack;
 import me.shedaniel.rei.api.common.util.EntryStacks;
 import net.minecraft.item.ItemConvertible;
+import net.minecraft.recipe.RecipeEntry;
 import net.minecraft.util.Identifier;
 import net.thesquire.backroomsmod.BackroomsMod;
 import net.thesquire.backroomsmod.block.ModBlocks;
@@ -78,13 +79,9 @@ public class ReiPlugin implements REIClientPlugin {
     }
 
     private <R extends RebornRecipe> void registerMachineRecipe(DisplayRegistry registry, RebornRecipeType<R> recipeType) {
-        Function<R, Display> recipeDisplay = r -> new MachineRecipeDisplay<>((RebornRecipe) r);
-        registry.registerFiller(RebornRecipe.class, recipe -> {
-            if (recipe != null) {
-                return recipe.getRebornRecipeType() == recipeType;
-            }
-            return false;
-        }, recipeDisplay);
+        Function<RecipeEntry<RebornRecipe>, Display> recipeDisplay = MachineRecipeDisplay::new;
+        registry.registerRecipeFiller(RebornRecipe.class, (recipeType1) -> true,
+                (recipeEntry) -> recipeEntry.value().getRebornRecipeType() == recipeType, recipeDisplay);
     }
 
 }
