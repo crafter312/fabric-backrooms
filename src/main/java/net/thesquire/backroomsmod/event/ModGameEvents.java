@@ -17,7 +17,7 @@ public class ModGameEvents {
     }
 
     private static GameEvent register(String name, int range) {
-        return Registry.register(Registries.GAME_EVENT, BackroomsMod.makeId(name), new GameEvent(name, range));
+        return Registry.register(Registries.GAME_EVENT, BackroomsMod.makeId(name), new GameEvent(range));
     }
 
 }

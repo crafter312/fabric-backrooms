@@ -1,5 +1,6 @@
 package net.thesquire.backroomsmod.block.custom;
 
+import com.mojang.serialization.MapCodec;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.BlockWithEntity;
@@ -28,6 +29,7 @@ import java.util.Optional;
 
 public class PortalPlacerBlock extends BlockWithEntity {
 
+    public static final MapCodec<PortalPlacerBlock> CODEC = createCodec(PortalPlacerBlock::new);
     public static final DirectionProperty FACING = Properties.FACING;
 
     ////////////////////////////////////////////////////////////////////////
@@ -35,6 +37,11 @@ public class PortalPlacerBlock extends BlockWithEntity {
     public PortalPlacerBlock(Settings settings) {
         super(settings);
         setDefaultState(getDefaultState().with(FACING, Direction.SOUTH));
+    }
+
+    @Override
+    protected MapCodec<? extends BlockWithEntity> getCodec() {
+        return CODEC;
     }
 
     @Nullable

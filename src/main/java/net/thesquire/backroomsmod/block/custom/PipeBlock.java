@@ -1,5 +1,6 @@
 package net.thesquire.backroomsmod.block.custom;
 
+import com.mojang.serialization.MapCodec;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ConnectingBlock;
@@ -17,6 +18,8 @@ import net.minecraft.world.WorldAccess;
 import java.util.stream.Stream;
 
 public class PipeBlock extends ConnectingBlock {
+
+    public static final MapCodec<PipeBlock> CODEC = createCodec(PipeBlock::new);
 
     private static final VoxelShape RING_SHAPE_NS = Stream.of(
             Block.createCuboidShape(4, 0, 7, 12, 1, 9),
@@ -65,9 +68,9 @@ public class PipeBlock extends ConnectingBlock {
         int mask_ns = this.getConnectionMask(getDefaultState().with(NORTH, true).with(SOUTH, true));
         int mask_ew = this.getConnectionMask(getDefaultState().with(EAST, true).with(WEST, true));
         int mask_ud = this.getConnectionMask(getDefaultState().with(UP, true).with(DOWN, true));
-        this.connectionsToShape[mask_ns] = VoxelShapes.combineAndSimplify(RING_SHAPE_NS, this.connectionsToShape[mask_ns], BooleanBiFunction.OR);
-        this.connectionsToShape[mask_ew] = VoxelShapes.combineAndSimplify(RING_SHAPE_EW, this.connectionsToShape[mask_ew], BooleanBiFunction.OR);
-        this.connectionsToShape[mask_ud] = VoxelShapes.combineAndSimplify(RING_SHAPE_UD, this.connectionsToShape[mask_ud], BooleanBiFunction.OR);
+        this.facingsToShape[mask_ns] = VoxelShapes.combineAndSimplify(RING_SHAPE_NS, this.facingsToShape[mask_ns], BooleanBiFunction.OR);
+        this.facingsToShape[mask_ew] = VoxelShapes.combineAndSimplify(RING_SHAPE_EW, this.facingsToShape[mask_ew], BooleanBiFunction.OR);
+        this.facingsToShape[mask_ud] = VoxelShapes.combineAndSimplify(RING_SHAPE_UD, this.facingsToShape[mask_ud], BooleanBiFunction.OR);
     }
 
     @Override
@@ -106,6 +109,11 @@ public class PipeBlock extends ConnectingBlock {
     @Override
     public boolean canPathfindThrough(BlockState state, BlockView world, BlockPos pos, NavigationType type) {
         return false;
+    }
+
+    @Override
+    protected MapCodec<? extends ConnectingBlock> getCodec() {
+        return CODEC;
     }
 
 }

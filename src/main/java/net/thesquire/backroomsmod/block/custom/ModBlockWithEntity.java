@@ -1,5 +1,6 @@
 package net.thesquire.backroomsmod.block.custom;
 
+import com.mojang.serialization.MapCodec;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.BlockWithEntity;
 import net.minecraft.block.entity.BlockEntity;
@@ -16,12 +17,17 @@ public class ModBlockWithEntity extends BlockWithEntity {
      */
     @Nullable
     public static <E extends BlockEntity, A extends BlockEntity> BlockEntityTicker<A> checkType(BlockEntityType<A> givenType, BlockEntityType<E> expectedType, BlockEntityTicker<? super E> ticker) {
-        return BlockWithEntity.checkType(givenType, expectedType, ticker);
+        return BlockWithEntity.validateTicker(givenType, expectedType, ticker);
     }
 
     ///////////////////////////////////////////////////////////////////////
 
     protected ModBlockWithEntity(Settings settings) { super(settings); }
+
+    @Override
+    protected MapCodec<? extends BlockWithEntity> getCodec() {
+        return null;
+    }
 
     @Nullable
     @Override
