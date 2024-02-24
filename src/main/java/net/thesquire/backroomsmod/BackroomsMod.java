@@ -41,6 +41,14 @@ public class BackroomsMod implements ModInitializer {
 		// However, some things (like resources) may still be uninitialized.
 		// Proceed with mild caution.
 
+		// I ended up using a mixin to disable the custom worlds warning, but I'll keep the DimLib
+		// code here in case I want to use this method again.
+		//List<EntrypointContainer<DimLibEntry>> entryPoints = FabricLoader.getInstance().getEntrypointContainers("main", DimLibEntry.class);
+		//entryPoints.forEach(entry -> LOGGER.info(entry.getEntrypoint().toString()));
+		//MidnightConfig.init(DimLibEntry.MODID, DimLibConfig.class);
+		//DimLibConfig.suppressExperimentalWarning = true;
+		//MidnightConfig.write(DimLibEntry.MODID);
+
 		ServerLifecycleEvents.SERVER_STARTED.register(server -> {
 			ServerWorld serverWorld = server.getWorld(ModDimensionKeys.LEVEL_0);
 			if(serverWorld == null) LOGGER.error("Failed to initialize level 0 portal storage", new NullPointerException());
@@ -48,6 +56,7 @@ public class BackroomsMod implements ModInitializer {
 			portalStorage.markDirty();
 		});
 
+		ModDimensionKeys.registerDimensionKeys();
 		ModServerboundPackets.registerServerboundPackets();
 		ModDensityFunctions.registerModDensityFunctions();
 		ModPlacementModifierTypes.registerPlacementModifierTypes();

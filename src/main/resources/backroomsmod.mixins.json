@@ -10,7 +10,8 @@
     "WallMountedBlockMixin"
   ],
   "client": [
-    "WaterDripMixin"
+    "WaterDripMixin",
+    "IntegratedServerLoaderMixin"
   ],
   "injectors": {
     "defaultRequire": 1
