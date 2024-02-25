@@ -1,2 +1,6 @@
 - incremented version number
 - updated to Minecraft 1.20.4
+- fixed https://bugs.mojang.com/browse/MC-186626 with hacky mixin
+- added JSON output file for config options
+- added level 11 dimension with random weather
+  - currently just a copy of the overworld for testing purposes

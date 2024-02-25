@@ -40,10 +40,6 @@ dependencies {
 	modImplementation "TechReborn:TechReborn-${project.techreborn_version}"
 	//modImplementation "TechReborn:TechReborn-unknown:5.5.0+local"
 
-	// MixinExtras API for Immersive Portals
-	api("io.github.llamalad7:mixinextras-fabric:${project.mixinextras_version}")
-	annotationProcessor("io.github.llamalad7:mixinextras-fabric:${project.mixinextras_version}")
-
 	// Dependency of Immersive Portals Mod:
 	modImplementation ("com.github.iPortalTeam:ImmersivePortalsMod:${project.immersiveportals_version}"){
 		exclude(group: "net.fabricmc.fabric-api")
@@ -54,6 +50,10 @@ dependencies {
 	modApi("com.github.iPortalTeam:DimLib:${project.dimlib_version}") {
 		exclude(group: "net.fabricmc.fabric-api")
 	}
+
+	// MidnightLib dependency for ImmersivePortals config
+	//modImplementation "maven.modrinth:midnightlib:${project.midnightlib_version}"
+	//include "maven.modrinth:midnightlib:${project.midnightlib_version}"
 
 	// Optional REI dependency
 	optionalClientDependency("me.shedaniel:RoughlyEnoughItems-fabric:${project.rei_version}", true)

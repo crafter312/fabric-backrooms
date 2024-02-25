@@ -23,6 +23,7 @@ import net.minecraft.state.StateManager;
 import net.minecraft.structure.StructurePlacementData;
 import net.minecraft.structure.StructureTemplate;
 import net.minecraft.structure.StructureTemplateManager;
+import net.minecraft.text.Text;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -32,6 +33,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.Structure;
 import net.thesquire.backroomsmod.BackroomsMod;
 import net.thesquire.backroomsmod.config.ModConfig;
+import net.thesquire.backroomsmod.dimension.ModDimensionKeys;
 
 import java.util.Optional;
 
@@ -194,6 +196,13 @@ public class ModUtils {
 
     public static double log(double base, double logNumber) {
         return Math.log(logNumber) / Math.log(base);
+    }
+
+    public static void messagePlayersInDim(ServerWorld serverWorld, RegistryKey<World> dim, String message) {
+        serverWorld.getPlayers().forEach(serverPlayerEntity -> {
+            if(serverPlayerEntity.getWorld().getRegistryKey().equals(dim))
+                serverPlayerEntity.sendMessage(Text.literal(message));
+        });
     }
 
 }

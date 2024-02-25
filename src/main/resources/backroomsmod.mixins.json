@@ -7,10 +7,12 @@
     "PlayerEntityMixin",
     "PickaxeItemMixin",
     "DoorBlockMixin",
-    "WallMountedBlockMixin"
+    "WallMountedBlockMixin",
+    "DimensionWeatherMixin"
   ],
   "client": [
-    "WaterDripMixin"
+    "WaterDripMixin",
+    "IntegratedServerLoaderMixin"
   ],
   "injectors": {
     "defaultRequire": 1
