@@ -4,3 +4,4 @@
 - added JSON output file for config options
 - added level 11 dimension with random weather
   - currently just a copy of the overworld for testing purposes
+- Russian translation added by mpustovoi on GitHub

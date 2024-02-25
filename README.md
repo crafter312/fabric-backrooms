@@ -76,6 +76,7 @@ Other features:
     - intended to be used as 1-way interdimensional "elevator"
   - fixed https://bugs.mojang.com/browse/MC-186626 with hacky mixin
   - JSON config files using TechReborn config architecture
+  - Russian translation courtesy of mpustovoi on GitHub
 
 
 IN PROGRESS FEATURES
