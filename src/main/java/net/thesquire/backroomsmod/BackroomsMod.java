@@ -1,11 +1,16 @@
 package net.thesquire.backroomsmod;
 
+import dev.architectury.event.events.client.ClientTickEvent;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
+import net.fabricmc.fabric.api.event.EventFactory;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
 import net.thesquire.backroomsmod.block.ModBlockEntities;
 import net.thesquire.backroomsmod.block.ModBlocks;
+import net.thesquire.backroomsmod.dimension.Level11Weather;
 import net.thesquire.backroomsmod.dimension.ModDimensionKeys;
 import net.thesquire.backroomsmod.event.ModGameEvents;
 import net.thesquire.backroomsmod.item.ModItemGroup;
@@ -55,6 +60,8 @@ public class BackroomsMod implements ModInitializer {
 			portalStorage = PortalStorage.get(serverWorld);
 			portalStorage.markDirty();
 		});
+
+		ServerTickEvents.START_WORLD_TICK.register(Level11Weather::handleWeather);
 
 		ModDimensionKeys.registerDimensionKeys();
 		ModServerboundPackets.registerServerboundPackets();
