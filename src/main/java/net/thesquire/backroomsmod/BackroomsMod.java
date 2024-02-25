@@ -1,15 +1,13 @@
 package net.thesquire.backroomsmod;
 
-import dev.architectury.event.events.client.ClientTickEvent;
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
-import net.fabricmc.fabric.api.event.EventFactory;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
 import net.thesquire.backroomsmod.block.ModBlockEntities;
 import net.thesquire.backroomsmod.block.ModBlocks;
+import net.thesquire.backroomsmod.config.ModConfig;
 import net.thesquire.backroomsmod.dimension.Level11Weather;
 import net.thesquire.backroomsmod.dimension.ModDimensionKeys;
 import net.thesquire.backroomsmod.event.ModGameEvents;
@@ -27,6 +25,7 @@ import net.thesquire.backroomsmod.world.feature.placement.ModPlacementModifierTy
 import net.thesquire.backroomsmod.world.gen.ModDensityFunctions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import reborncore.common.config.Configuration;
 
 //TODO fix level 2 portal generating close to level 1 portal destination
 
@@ -46,13 +45,7 @@ public class BackroomsMod implements ModInitializer {
 		// However, some things (like resources) may still be uninitialized.
 		// Proceed with mild caution.
 
-		// I ended up using a mixin to disable the custom worlds warning, but I'll keep the DimLib
-		// code here in case I want to use this method again.
-		//List<EntrypointContainer<DimLibEntry>> entryPoints = FabricLoader.getInstance().getEntrypointContainers("main", DimLibEntry.class);
-		//entryPoints.forEach(entry -> LOGGER.info(entry.getEntrypoint().toString()));
-		//MidnightConfig.init(DimLibEntry.MODID, DimLibConfig.class);
-		//DimLibConfig.suppressExperimentalWarning = true;
-		//MidnightConfig.write(DimLibEntry.MODID);
+		new Configuration(ModConfig.class, BackroomsMod.MOD_ID);
 
 		ServerLifecycleEvents.SERVER_STARTED.register(server -> {
 			ServerWorld serverWorld = server.getWorld(ModDimensionKeys.LEVEL_0);

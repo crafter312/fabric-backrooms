@@ -12,8 +12,7 @@
   ],
   "client": [
     "WaterDripMixin",
-    "IntegratedServerLoaderMixin",
-    "ClientPlayNetworkHandlerMixin"
+    "IntegratedServerLoaderMixin"
   ],
   "injectors": {
     "defaultRequire": 1

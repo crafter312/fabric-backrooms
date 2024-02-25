@@ -74,6 +74,8 @@ Other features:
   - elevator button
     - extends the portal placer block features with basic portal animation functions
     - intended to be used as 1-way interdimensional "elevator"
+  - fixed https://bugs.mojang.com/browse/MC-186626 with hacky mixin
+  - JSON config files using TechReborn config architecture
 
 
 IN PROGRESS FEATURES

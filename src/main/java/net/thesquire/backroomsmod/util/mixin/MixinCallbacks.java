@@ -4,11 +4,9 @@ import net.fabricmc.fabric.api.dimension.v1.FabricDimensions;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.DoorBlock;
 import net.minecraft.block.enums.DoorHinge;
-import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.entity.damage.DamageTypes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.network.packet.s2c.play.GameStateChangeS2CPacket;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
@@ -116,9 +114,6 @@ public class MixinCallbacks {
                 optional.ifPresent(ElevatorButtonBlockEntity::onBreak);
             }
         });
-
-        // this (hopefully) removes any rain dependence for custom dimensions on the overworld dimension weather
-        IUnmodifiableLevelPropertiesCallback.EVENT.register(ci -> ci.setReturnValue(false));
     }
 
     public static void registerClientCallbacks() {
@@ -128,15 +123,6 @@ public class MixinCallbacks {
         IAddParticleCallback.EVENT.register((world, particle, x, y, z) -> {
             if (!world.getRegistryKey().equals(ModDimensionKeys.LEVEL_1) || !particle.equals(ParticleTypes.SPLASH)) return;
             world.playSound(x, y, z, ModSounds.LEVEL_1_DRIP, SoundCategory.AMBIENT, 0.8f, 1f, true);
-        });
-
-        // reacts to receiving weather-based S2C packets for debugging
-        IOnGameStateChangeCallback.EVENT.register(packet -> {
-            GameStateChangeS2CPacket.Reason reason = packet.getReason();
-            if(reason == GameStateChangeS2CPacket.RAIN_STARTED)
-                BackroomsMod.LOGGER.info("Received rain start packet");
-            else if(reason == GameStateChangeS2CPacket.RAIN_STOPPED)
-                BackroomsMod.LOGGER.info("Received rain stop packet");
         });
     }
 

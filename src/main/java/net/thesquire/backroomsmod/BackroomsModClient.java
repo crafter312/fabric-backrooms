@@ -8,7 +8,6 @@ import net.minecraft.client.render.block.entity.BlockEntityRendererFactories;
 import net.thesquire.backroomsmod.block.ModBlockEntities;
 import net.thesquire.backroomsmod.block.ModBlocks;
 import net.thesquire.backroomsmod.client.render.block.entity.ElevatorDoorBlockEntityRenderer;
-import net.thesquire.backroomsmod.client.render.dimension.ModDimensionRendering;
 import net.thesquire.backroomsmod.client.render.entity.model.ModEntityModelLayers;
 import net.thesquire.backroomsmod.item.ModItemColorProviders;
 import net.thesquire.backroomsmod.screen.ModClientGuis;
@@ -23,7 +22,6 @@ public class BackroomsModClient implements ClientModInitializer {
         ModClientGuis.registerClientGuis();
         ModItemColorProviders.registerModItemColorProviders();
         ModEntityModelLayers.registerModEntityModelLayers();
-        ModDimensionRendering.registerDimensionRenderers();
 
         EntityModelLayerRegistry.registerModelLayer(ModEntityModelLayers.ELEVATOR_DOOR_BOTTOM_LEFT, ElevatorDoorBlockEntityRenderer::getBottomLeftTexturedModelData);
         EntityModelLayerRegistry.registerModelLayer(ModEntityModelLayers.ELEVATOR_DOOR_BOTTOM_RIGHT, ElevatorDoorBlockEntityRenderer::getBottomRightTexturedModelData);
