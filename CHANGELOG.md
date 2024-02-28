@@ -5,3 +5,4 @@
 - added level 11 dimension with random weather
   - currently just a copy of the overworld for testing purposes
 - Russian translation added by mpustovoi on GitHub
+- fixed weather change packets being sent to all players

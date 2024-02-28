@@ -1,11 +1,30 @@
 {
   "type": "minecraft:overworld",
   "generator": {
-    "type": "minecraft:noise",
-    "settings": "minecraft:overworld",
-    "biome_source": {
-      "type": "minecraft:multi_noise",
-      "preset": "minecraft:overworld"
+    "type": "minecraft:flat",
+    "settings": {
+      "biome": "backroomsmod:level_11",
+      "lakes": false,
+      "features": true,
+      "layers": [
+        {
+          "block": "minecraft:bedrock",
+          "height": 1
+        },
+        {
+          "block": "minecraft:stone",
+          "height": 40
+        },
+        {
+          "block": "minecraft:dirt",
+          "height": 4
+        },
+        {
+          "block": "minecraft:grass_block",
+          "height": 1
+        }
+      ],
+      "structure_overrides": "backroomsmod:level_11_test"
     }
   }
 }

@@ -15,6 +15,7 @@ import net.minecraft.world.biome.GenerationSettings;
 import net.minecraft.world.biome.SpawnSettings;
 import net.minecraft.world.gen.GenerationStep;
 import net.minecraft.world.gen.feature.DefaultBiomeFeatures;
+import net.minecraft.world.gen.feature.VegetationPlacedFeatures;
 import net.thesquire.backroomsmod.BackroomsMod;
 import net.thesquire.backroomsmod.sound.ModSounds;
 import net.thesquire.backroomsmod.world.feature.ModPlacedFeatures;
@@ -27,7 +28,8 @@ public class ModBiomes {
     public static final RegistryKey<Biome> LEVEL_1 = registerKey("level_1");
     public static final RegistryKey<Biome> LEVEL_2 = registerKey("level_2");
     public static final RegistryKey<Biome> LEVEL_2_DARK = registerKey("level_2_dark");
-    public static final RegistryKey<Biome> LEVEL_4= registerKey("level_4");
+    public static final RegistryKey<Biome> LEVEL_4 = registerKey("level_4");
+    public static final RegistryKey<Biome> LEVEL_11 = registerKey("level_11");
 
     // biome music
     public static final MusicSound NORMAL_MUSIC = null;
@@ -114,6 +116,17 @@ public class ModBiomes {
         level4BiomeBuilder.feature(GenerationStep.Feature.LOCAL_MODIFICATIONS,
                 placedFeatureRegistryEntryLookup.getOrThrow(ModPlacedFeatures.LEVEL_4_FLUORESCENT_LIGHT_PLACED_KEY));
 
+        // level 11 biome settings
+        SpawnSettings.Builder level11SpawnBuilder = new SpawnSettings.Builder();
+
+        GenerationSettings.Builder level11BiomeBuilder = new GenerationSettings.Builder();
+        level11BiomeBuilder.feature(GenerationStep.Feature.VEGETAL_DECORATION,
+                placedFeatureRegistryEntryLookup.getOrThrow(VegetationPlacedFeatures.TREES_PLAINS));
+        level11BiomeBuilder.feature(GenerationStep.Feature.VEGETAL_DECORATION,
+                placedFeatureRegistryEntryLookup.getOrThrow(VegetationPlacedFeatures.FLOWER_PLAIN));
+        level11BiomeBuilder.feature(GenerationStep.Feature.VEGETAL_DECORATION,
+                placedFeatureRegistryEntryLookup.getOrThrow(VegetationPlacedFeatures.PATCH_GRASS_PLAIN));
+
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         register(context, LEVEL_0,
@@ -151,6 +164,18 @@ public class ModBiomes {
                         .effects(defaultBiomeEffects().music(MusicType.GAME).build())
                         .spawnSettings(level4SpawnBuilder.build())
                         .generationSettings(level4BiomeBuilder.build())
+                        .build());
+        register(context, LEVEL_11,
+                defaultBiomeSettings()
+                        .precipitation(true)
+                        .downfall(0.4f)
+                        .effects(defaultBiomeEffects()
+                                .fogColor(12638463)
+                                .waterColor(4159204)
+                                .waterFogColor(329011)
+                                .music(MusicType.GAME).build())
+                        .spawnSettings(level11SpawnBuilder.build())
+                        .generationSettings(level11BiomeBuilder.build())
                         .build());
     }
 

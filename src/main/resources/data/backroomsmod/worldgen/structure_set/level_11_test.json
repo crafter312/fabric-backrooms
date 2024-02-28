@@ -1,0 +1,14 @@
+{
+  "structures": [
+    {
+      "structure": "backroomsmod:level_11_test",
+      "weight": 1
+    }
+  ],
+  "placement": {
+    "type": "minecraft:random_spread",
+    "salt": 920396495,
+    "spacing": 4,
+    "separation": 2
+  }
+}

@@ -75,6 +75,7 @@ Other features:
     - extends the portal placer block features with basic portal animation functions
     - intended to be used as 1-way interdimensional "elevator"
   - fixed https://bugs.mojang.com/browse/MC-186626 with hacky mixin
+    - this required me to fix an additional issue in which weather change packets were being sent to all players, regardless of dimension
   - JSON config files using TechReborn config architecture
   - Russian translation courtesy of mpustovoi on GitHub
 

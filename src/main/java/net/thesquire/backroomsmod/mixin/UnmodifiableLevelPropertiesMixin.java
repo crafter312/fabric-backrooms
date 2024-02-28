@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(UnmodifiableLevelProperties.class)
-public abstract class DimensionWeatherMixin {
+public abstract class UnmodifiableLevelPropertiesMixin {
 
     private int clearWeatherTime;
     private int rainTime;

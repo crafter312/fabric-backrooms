@@ -8,7 +8,8 @@
     "PickaxeItemMixin",
     "DoorBlockMixin",
     "WallMountedBlockMixin",
-    "DimensionWeatherMixin"
+    "UnmodifiableLevelPropertiesMixin",
+    "ServerWorldMixin"
   ],
   "client": [
     "WaterDripMixin",
