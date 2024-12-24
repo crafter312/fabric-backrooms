@@ -1,0 +1,188 @@
+package net.thesquire.backroomsmod.block.custom;
+
+import net.minecraft.block.*;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.fluid.Fluids;
+import net.minecraft.state.property.Properties;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.Hand;
+import net.minecraft.util.function.BooleanBiFunction;
+import net.minecraft.util.hit.BlockHitResult;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
+import net.minecraft.util.shape.VoxelShape;
+import net.minecraft.util.shape.VoxelShapes;
+import net.minecraft.world.BlockView;
+import net.minecraft.world.World;
+import net.thesquire.backroomsmod.util.ModUtils;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.stream.Stream;
+
+public class WindowBlock extends TrapdoorBlock implements Waterloggable {
+
+    private static final VoxelShape NORTH_CLOSED = VoxelShapes.combineAndSimplify(Stream.of(
+            Block.createCuboidShape(0, 0, 11, 16, 2, 13),
+            Block.createCuboidShape(0, 14, 11, 16, 16, 13),
+            Block.createCuboidShape(14, 2, 11, 16, 14, 13),
+            Block.createCuboidShape(0, 2, 11, 2, 14, 13)
+    ).reduce((v1, v2) -> VoxelShapes.combineAndSimplify(v1, v2, BooleanBiFunction.OR)).get(), Block.createCuboidShape(2, 2, 12, 14, 14, 12), BooleanBiFunction.OR);
+
+    private static final VoxelShape EAST_CLOSED = VoxelShapes.combineAndSimplify(Stream.of(
+            Block.createCuboidShape(3, 0, 0, 5, 2, 16),
+            Block.createCuboidShape(3, 14, 0, 5, 16, 16),
+            Block.createCuboidShape(3, 2, 14, 5, 14, 16),
+            Block.createCuboidShape(3, 2, 0, 5, 14, 2)
+    ).reduce((v1, v2) -> VoxelShapes.combineAndSimplify(v1, v2, BooleanBiFunction.OR)).get(), Block.createCuboidShape(4, 2, 2, 4, 14, 14), BooleanBiFunction.OR);
+
+    private static final VoxelShape SOUTH_CLOSED = VoxelShapes.combineAndSimplify(Stream.of(
+            Block.createCuboidShape(0, 0, 3, 16, 2, 5),
+            Block.createCuboidShape(0, 14, 3, 16, 16, 5),
+            Block.createCuboidShape(0, 2, 3, 2, 14, 5),
+            Block.createCuboidShape(14, 2, 3, 16, 14, 5)
+    ).reduce((v1, v2) -> VoxelShapes.combineAndSimplify(v1, v2, BooleanBiFunction.OR)).get(), Block.createCuboidShape(2, 2, 4, 14, 14, 4), BooleanBiFunction.OR);
+
+    private static final VoxelShape WEST_CLOSED = VoxelShapes.combineAndSimplify(Stream.of(
+            Block.createCuboidShape(11, 0, 0, 13, 2, 16),
+            Block.createCuboidShape(11, 14, 0, 13, 16, 16),
+            Block.createCuboidShape(11, 2, 0, 13, 14, 2),
+            Block.createCuboidShape(11, 2, 14, 13, 14, 16)
+    ).reduce((v1, v2) -> VoxelShapes.combineAndSimplify(v1, v2, BooleanBiFunction.OR)).get(), Block.createCuboidShape(12, 2, 2, 12, 14, 14), BooleanBiFunction.OR);
+
+    private static final VoxelShape NORTH_OPEN = Stream.of(
+            Stream.of(
+                    Block.createCuboidShape(0, 0, 11, 16, 1, 13),
+                    Block.createCuboidShape(0, 15, 11, 16, 16, 13),
+                    Block.createCuboidShape(15, 1, 11, 16, 15, 13),
+                    Block.createCuboidShape(0, 1, 11, 1, 15, 13)
+            ).reduce((v1, v2) -> VoxelShapes.combineAndSimplify(v1, v2, BooleanBiFunction.OR)).get(),
+            Stream.of(
+                    Block.createCuboidShape(12, 1, 1, 14, 2, 15),
+                    Block.createCuboidShape(12, 14, 1, 14, 15, 15),
+                    Block.createCuboidShape(12, 2, 14, 14, 14, 15),
+                    Block.createCuboidShape(12, 2, 1, 14, 14, 2)
+            ).reduce((v1, v2) -> VoxelShapes.combineAndSimplify(v1, v2, BooleanBiFunction.OR)).get(),
+            Block.createCuboidShape(13, 2, 2, 13, 14, 14)
+    ).reduce((v1, v2) -> VoxelShapes.combineAndSimplify(v1, v2, BooleanBiFunction.OR)).get();
+
+    private static final VoxelShape WEST_OPEN = Stream.of(
+            Stream.of(
+                    Block.createCuboidShape(11, 0, 0, 13, 1, 16),
+                    Block.createCuboidShape(11, 15, 0, 13, 16, 16),
+                    Block.createCuboidShape(11, 1, 0, 13, 15, 1),
+                    Block.createCuboidShape(11, 1, 15, 13, 15, 16)
+            ).reduce((v1, v2) -> VoxelShapes.combineAndSimplify(v1, v2, BooleanBiFunction.OR)).get(),
+            Stream.of(
+                    Block.createCuboidShape(1, 1, 2, 15, 2, 4),
+                    Block.createCuboidShape(1, 14, 2, 15, 15, 4),
+                    Block.createCuboidShape(14, 2, 2, 15, 14, 4),
+                    Block.createCuboidShape(1, 2, 2, 2, 14, 4)
+            ).reduce((v1, v2) -> VoxelShapes.combineAndSimplify(v1, v2, BooleanBiFunction.OR)).get(),
+            Block.createCuboidShape(2, 2, 3, 14, 14, 3)
+    ).reduce((v1, v2) -> VoxelShapes.combineAndSimplify(v1, v2, BooleanBiFunction.OR)).get();
+
+    private static final VoxelShape EAST_OPEN = Stream.of(
+            Stream.of(
+                    Block.createCuboidShape(3, 0, 0, 5, 1, 16),
+                    Block.createCuboidShape(3, 15, 0, 5, 16, 16),
+                    Block.createCuboidShape(3, 1, 15, 5, 15, 16),
+                    Block.createCuboidShape(3, 1, 0, 5, 15, 1)
+            ).reduce((v1, v2) -> VoxelShapes.combineAndSimplify(v1, v2, BooleanBiFunction.OR)).get(),
+            Stream.of(
+                    Block.createCuboidShape(1, 1, 12, 15, 2, 14),
+                    Block.createCuboidShape(1, 14, 12, 15, 15, 14),
+                    Block.createCuboidShape(1, 2, 12, 2, 14, 14),
+                    Block.createCuboidShape(14, 2, 12, 15, 14, 14)
+            ).reduce((v1, v2) -> VoxelShapes.combineAndSimplify(v1, v2, BooleanBiFunction.OR)).get(),
+            Block.createCuboidShape(2, 2, 13, 14, 14, 13)
+    ).reduce((v1, v2) -> VoxelShapes.combineAndSimplify(v1, v2, BooleanBiFunction.OR)).get();
+
+    private static final VoxelShape SOUTH_OPEN = Stream.of(
+            Stream.of(
+                    Block.createCuboidShape(0, 0, 3, 16, 1, 5),
+                    Block.createCuboidShape(0, 15, 3, 16, 16, 5),
+                    Block.createCuboidShape(0, 1, 3, 1, 15, 5),
+                    Block.createCuboidShape(15, 1, 3, 16, 15, 5)
+            ).reduce((v1, v2) -> VoxelShapes.combineAndSimplify(v1, v2, BooleanBiFunction.OR)).get(),
+            Stream.of(
+                    Block.createCuboidShape(2, 1, 1, 4, 2, 15),
+                    Block.createCuboidShape(2, 14, 1, 4, 15, 15),
+                    Block.createCuboidShape(2, 2, 1, 4, 14, 2),
+                    Block.createCuboidShape(2, 2, 14, 4, 14, 15)
+            ).reduce((v1, v2) -> VoxelShapes.combineAndSimplify(v1, v2, BooleanBiFunction.OR)).get(),
+            Block.createCuboidShape(3, 2, 2, 3, 14, 14)
+    ).reduce((v1, v2) -> VoxelShapes.combineAndSimplify(v1, v2, BooleanBiFunction.OR)).get();
+
+    /////////////////////////////////////////////////////////////////////////////////////
+
+    private final VoxelShape[] connectionsToShape;
+
+    public WindowBlock(BlockSetType type, Settings settings) {
+        super(type, settings);
+        this.connectionsToShape = generateStateToShapeMap();
+        this.setDefaultState(this.getDefaultState()
+                .with(TrapdoorBlock.FACING, Direction.NORTH)
+                .with(TrapdoorBlock.OPEN, false)
+                .with(TrapdoorBlock.POWERED, false)
+                .with(TrapdoorBlock.WATERLOGGED, false));
+    }
+
+    @Override
+    public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
+        this.flip(state, world, pos, player);
+        return ActionResult.success(world.isClient);
+    }
+
+    private void flip(BlockState state, World world, BlockPos pos, @Nullable PlayerEntity player) {
+        BlockState blockState = state.cycle(TrapdoorBlock.OPEN);
+        world.setBlockState(pos, blockState, Block.NOTIFY_LISTENERS);
+        if (blockState.get(TrapdoorBlock.WATERLOGGED))
+            world.scheduleFluidTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(world));
+        this.playToggleSound(player, world, pos, blockState.get(TrapdoorBlock.OPEN));
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public VoxelShape getCollisionShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
+        return state.get(Properties.OPEN) ? VoxelShapes.empty() : this.connectionsToShape[this.getConnectionMask(state)];
+    }
+
+    @Override
+    public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
+        return this.connectionsToShape[this.getConnectionMask(state)];
+    }
+
+    private VoxelShape[] generateStateToShapeMap() {
+        BlockState defaultState = this.getDefaultState();
+        BlockState northState = defaultState.with(FACING, Direction.NORTH);
+        BlockState eastState = defaultState.with(FACING, Direction.EAST);
+        BlockState southState = defaultState.with(FACING, Direction.SOUTH);
+        BlockState westState = defaultState.with(FACING, Direction.WEST);
+
+        VoxelShape[] voxelShapes = new VoxelShape[8];
+        voxelShapes[this.getConnectionMask(northState.with(TrapdoorBlock.OPEN, false))] = NORTH_CLOSED;
+        voxelShapes[this.getConnectionMask(eastState.with(TrapdoorBlock.OPEN, false))] = EAST_CLOSED;
+        voxelShapes[this.getConnectionMask(southState.with(TrapdoorBlock.OPEN, false))] = SOUTH_CLOSED;
+        voxelShapes[this.getConnectionMask(westState.with(TrapdoorBlock.OPEN, false))] = WEST_CLOSED;
+        voxelShapes[this.getConnectionMask(northState.with(TrapdoorBlock.OPEN, true))] = NORTH_OPEN;
+        voxelShapes[this.getConnectionMask(eastState.with(TrapdoorBlock.OPEN, true))] = EAST_OPEN;
+        voxelShapes[this.getConnectionMask(southState.with(TrapdoorBlock.OPEN, true))] = SOUTH_OPEN;
+        voxelShapes[this.getConnectionMask(westState.with(TrapdoorBlock.OPEN, true))] = WEST_OPEN;
+        return voxelShapes;
+    }
+
+    private int getConnectionMask(BlockState state) {
+        int i = 0;
+
+        // horizontal facing property
+        i |= state.get(FACING).getHorizontal();
+        int facingSize = (int) Math.ceil(ModUtils.log(2.0, (double) Direction.Type.HORIZONTAL.stream().count()));
+
+        // door open property
+        if (state.get(DoorBlock.OPEN))
+            i |= 1 << facingSize;
+
+        return i;
+    }
+
+}

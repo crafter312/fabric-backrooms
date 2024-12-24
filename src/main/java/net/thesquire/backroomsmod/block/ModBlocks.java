@@ -80,6 +80,9 @@ public class ModBlocks {
     public static final Block DUMMIE_BUTTON = registerBlockWithoutBlockItem("dummie_button",
             new ButtonBlock(BlockSetType.IRON, 20, FabricBlockSettings.create().noCollision().strength(0.5f).requiresTool().pistonBehavior(PistonBehavior.DESTROY)));
 
+    public static final Block OFFICE_WINDOW = registerBlock("office_window",
+            new WindowBlock(BlockSetType.IRON, FabricBlockSettings.copy(Blocks.IRON_TRAPDOOR)));
+
     // Blocks with a GUI or BlockEntity have to be registered in the method below to ensure proper register order!
     public static Block INDUSTRIAL_ALLOY_SMELTER;
     public static Block MAGNETIC_DISTORTION_SYSTEM_CONTROL_COMPUTER;

@@ -36,7 +36,8 @@ public class BackroomsModClient implements ClientModInitializer {
                 ModBlocks.CUSTOM_DOOR,
                 ModBlocks.PIPE_BLOCK,
                 ModBlocks.ELEVATOR_BUTTON,
-                ModBlocks.ELEVATOR_DOOR);
+                ModBlocks.ELEVATOR_DOOR,
+                ModBlocks.OFFICE_WINDOW);
 
         BackroomsMod.LOGGER.info("Client initialization finished for " + BackroomsMod.MOD_ID);
     }
