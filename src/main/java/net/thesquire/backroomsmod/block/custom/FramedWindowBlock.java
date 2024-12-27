@@ -1,10 +1,18 @@
 package net.thesquire.backroomsmod.block.custom;
 
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.block.*;
+import net.minecraft.entity.ai.pathing.NavigationType;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
+import net.minecraft.item.ItemPlacementContext;
+import net.minecraft.item.ItemStack;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.sound.SoundCategory;
+import net.minecraft.state.StateManager;
+import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
@@ -16,12 +24,33 @@ import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldAccess;
+import net.minecraft.world.event.GameEvent;
+import net.minecraft.world.explosion.Explosion;
 import net.thesquire.backroomsmod.util.ModUtils;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.function.BiConsumer;
 import java.util.stream.Stream;
 
-public class FramedWindowBlock extends TrapdoorBlock implements Waterloggable {
+//TODO: add dedicated item texture to remove dark tint issue
+//TODO: add OfficeWindow class (extension of FramedWindowBlock) to contain portal functionality
+
+/**
+ * This class borrows extensively from {@link net.minecraft.block.TrapdoorBlock}. However, a few differences
+ * make the direct extension of said class impractical.
+ */
+public class FramedWindowBlock extends HorizontalFacingBlock implements Waterloggable {
+
+    public static final MapCodec<FramedWindowBlock> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+            BlockSetType.CODEC.fieldOf("block_set_type").forGetter(block -> block.blockSetType),
+            FramedWindowBlock.createSettingsCodec()
+    ).apply(instance, FramedWindowBlock::new));
+
+    // Block properties
+    public static final BooleanProperty OPEN = Properties.OPEN;
+    public static final BooleanProperty POWERED = Properties.POWERED;
+    public static final BooleanProperty WATERLOGGED = Properties.WATERLOGGED;
 
     private static final VoxelShape NORTH_CLOSED = VoxelShapes.combineAndSimplify(Stream.of(
             Block.createCuboidShape(0, 0, 11, 16, 2, 13),
@@ -119,10 +148,12 @@ public class FramedWindowBlock extends TrapdoorBlock implements Waterloggable {
 
     private final BlockSoundGroup glassSoundGroup = BlockSoundGroup.GLASS;
 
+    private final BlockSetType blockSetType;
     private final VoxelShape[] connectionsToShape;
 
     public FramedWindowBlock(BlockSetType type, Settings settings) {
-        super(type, settings);
+        super(settings.sounds(type.soundType()));
+        this.blockSetType = type;
         this.connectionsToShape = generateStateToShapeMap();
         this.setDefaultState(this.getDefaultState()
                 .with(TrapdoorBlock.FACING, Direction.NORTH)
@@ -131,16 +162,44 @@ public class FramedWindowBlock extends TrapdoorBlock implements Waterloggable {
                 .with(TrapdoorBlock.WATERLOGGED, false));
     }
 
+    public MapCodec<? extends FramedWindowBlock> getCodec() {
+        return CODEC;
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
+        return this.connectionsToShape[this.getConnectionMask(state)];
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public boolean canPathfindThrough(BlockState state, BlockView world, BlockPos pos, NavigationType type) {
+        switch (type) {
+            case LAND, AIR -> {
+                return state.get(OPEN);
+            }
+            case WATER -> {
+                return state.get(WATERLOGGED);
+            }
+        }
+        return false;
+    }
+
+    @SuppressWarnings("deprecation")
     @Override
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
         this.flip(state, world, pos, player);
         return ActionResult.success(world.isClient);
     }
 
+    @SuppressWarnings("deprecation")
     @Override
-    public BlockState onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
-        world.playSound((double)pos.getX() + 0.5, (double)pos.getY() + 0.5, (double)pos.getZ() + 0.5, glassSoundGroup.getBreakSound(), SoundCategory.BLOCKS, (glassSoundGroup.getVolume() + 1.0f) / 2.0f, glassSoundGroup.getPitch() * 0.8f, false);
-        return super.onBreak(world, pos, state, player);
+    public void onExploded(BlockState state, World world, BlockPos pos, Explosion explosion, BiConsumer<ItemStack, BlockPos> stackMerger) {
+        if (explosion.getDestructionType() == Explosion.DestructionType.TRIGGER_BLOCK && !world.isClient() && this.blockSetType.canOpenByWindCharge() && !state.get(POWERED)) {
+            this.flip(state, world, pos, null);
+        }
+        super.onExploded(state, world, pos, explosion, stackMerger);
     }
 
     private void flip(BlockState state, World world, BlockPos pos, @Nullable PlayerEntity player) {
@@ -151,15 +210,75 @@ public class FramedWindowBlock extends TrapdoorBlock implements Waterloggable {
         this.playToggleSound(player, world, pos, blockState.get(TrapdoorBlock.OPEN));
     }
 
+    protected void playToggleSound(@Nullable PlayerEntity player, World world, BlockPos pos, boolean open) {
+        world.playSound(player, pos, open ? this.blockSetType.trapdoorOpen() : this.blockSetType.trapdoorClose(), SoundCategory.BLOCKS, 1.0f, world.getRandom().nextFloat() * 0.1f + 0.9f);
+        world.emitGameEvent(player, open ? GameEvent.BLOCK_OPEN : GameEvent.BLOCK_CLOSE, pos);
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public void neighborUpdate(BlockState state, World world, BlockPos pos, Block sourceBlock, BlockPos sourcePos, boolean notify) {
+        if (world.isClient)
+            return;
+        boolean bl = world.isReceivingRedstonePower(pos);
+        if (bl != state.get(POWERED)) {
+            if (state.get(OPEN) != bl) {
+                state = state.with(OPEN, bl);
+                this.playToggleSound(null, world, pos, bl);
+            }
+            world.setBlockState(pos, state.with(POWERED, bl), Block.NOTIFY_LISTENERS);
+            if (state.get(WATERLOGGED)) {
+                world.scheduleFluidTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(world));
+            }
+        }
+    }
+
+    @Override
+    public BlockState getPlacementState(ItemPlacementContext ctx) {
+        BlockState blockState = this.getDefaultState();
+        FluidState fluidState = ctx.getWorld().getFluidState(ctx.getBlockPos());
+        Direction direction = ctx.getSide();
+        blockState = ctx.canReplaceExisting() || !direction.getAxis().isHorizontal() ? blockState.with(FACING, ctx.getHorizontalPlayerFacing().getOpposite()) : blockState.with(FACING, direction);
+        if (ctx.getWorld().isReceivingRedstonePower(ctx.getBlockPos()))
+            blockState = blockState.with(OPEN, true).with(POWERED, true);
+        return blockState.with(WATERLOGGED, fluidState.getFluid() == Fluids.WATER);
+    }
+
+    @Override
+    protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
+        builder.add(FACING, OPEN, POWERED, WATERLOGGED);
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public FluidState getFluidState(BlockState state) {
+        if (state.get(WATERLOGGED))
+            return Fluids.WATER.getStill(false);
+        return super.getFluidState(state);
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public BlockState getStateForNeighborUpdate(BlockState state, Direction direction, BlockState neighborState, WorldAccess world, BlockPos pos, BlockPos neighborPos) {
+        if (state.get(WATERLOGGED))
+            world.scheduleFluidTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(world));
+        return super.getStateForNeighborUpdate(state, direction, neighborState, world, pos, neighborPos);
+    }
+
+    protected BlockSetType getBlockSetType() {
+        return this.blockSetType;
+    }
+
+    @Override
+    public BlockState onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
+        world.playSound((double)pos.getX() + 0.5, (double)pos.getY() + 0.5, (double)pos.getZ() + 0.5, glassSoundGroup.getBreakSound(), SoundCategory.BLOCKS, (glassSoundGroup.getVolume() + 1.0f) / 2.0f, glassSoundGroup.getPitch() * 0.8f, false);
+        return super.onBreak(world, pos, state, player);
+    }
+
     @SuppressWarnings("deprecation")
     @Override
     public VoxelShape getCollisionShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
         return state.get(Properties.OPEN) ? VoxelShapes.empty() : this.connectionsToShape[this.getConnectionMask(state)];
-    }
-
-    @Override
-    public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-        return this.connectionsToShape[this.getConnectionMask(state)];
     }
 
     private VoxelShape[] generateStateToShapeMap() {

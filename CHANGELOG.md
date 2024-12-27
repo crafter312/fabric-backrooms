@@ -1,9 +1,9 @@
 - incremented version number
 - updated to Minecraft 1.20.4
 - fixed https://bugs.mojang.com/browse/MC-186626 with hacky mixin
-- added JSON output file for config options
-- added level 11 dimension with random weather
-  - currently just a copy of the overworld for testing purposes
-- Russian translation added by mpustovoi on GitHub
 - fixed weather change packets being sent to all players
-- added office window block
+- added JSON output file for config options
+- added void dimension with random weather
+- Russian translation added by mpustovoi on GitHub
+- added `FramedWindowBlock`
+  - mostly same functionality as `TrapdoorBlock`
