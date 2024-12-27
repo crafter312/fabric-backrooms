@@ -11,7 +11,7 @@ public class ModDimensionKeys {
     public static RegistryKey<World> LEVEL_1;
     public static RegistryKey<World> LEVEL_2;
     public static RegistryKey<World> LEVEL_4;
-    public static RegistryKey<World> LEVEL_11;
+    public static RegistryKey<World> VOID;
 
     public static void registerDimensionKeys() {
         BackroomsMod.LOGGER.info("Registering dimension keys for " + BackroomsMod.MOD_ID);
@@ -20,7 +20,7 @@ public class ModDimensionKeys {
         LEVEL_1 = RegistryKey.of(RegistryKeys.WORLD, BackroomsMod.makeId("level_1"));
         LEVEL_2 = RegistryKey.of(RegistryKeys.WORLD, BackroomsMod.makeId("level_2"));
         LEVEL_4 = RegistryKey.of(RegistryKeys.WORLD, BackroomsMod.makeId("level_4"));
-        LEVEL_11 = RegistryKey.of(RegistryKeys.WORLD, BackroomsMod.makeId("level_11"));
+        VOID = RegistryKey.of(RegistryKeys.WORLD, BackroomsMod.makeId("void"));
     }
 
 }

@@ -7,7 +7,7 @@ import net.minecraft.world.level.LevelProperties;
 /**
  * See {@link net.minecraft.server.command.WeatherCommand} for examples on how to set the weather
 * */
-public class Level11Weather {
+public class VoidWeather {
 
     /**
      * Turns out one of the reasons why weather doesn't work in custom dimensions is because the {@code worldProperties}
@@ -23,7 +23,7 @@ public class Level11Weather {
 
     //TODO add config option for weather change time
     public static void handleWeather(ServerWorld serverWorld) {
-        if((serverWorld.getTime() % 200 != 0) || !serverWorld.getRegistryKey().equals(ModDimensionKeys.LEVEL_11)) return;
+        if((serverWorld.getTime() % 200 != 0) || !serverWorld.getRegistryKey().equals(ModDimensionKeys.VOID)) return;
 
         // set random rain
         Random random = serverWorld.getRandom();

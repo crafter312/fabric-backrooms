@@ -8,7 +8,7 @@ import net.minecraft.util.Identifier;
 import net.thesquire.backroomsmod.block.ModBlockEntities;
 import net.thesquire.backroomsmod.block.ModBlocks;
 import net.thesquire.backroomsmod.config.ModConfig;
-import net.thesquire.backroomsmod.dimension.Level11Weather;
+import net.thesquire.backroomsmod.dimension.VoidWeather;
 import net.thesquire.backroomsmod.dimension.ModDimensionKeys;
 import net.thesquire.backroomsmod.event.ModGameEvents;
 import net.thesquire.backroomsmod.item.ModItemGroup;
@@ -54,7 +54,7 @@ public class BackroomsMod implements ModInitializer {
 			portalStorage.markDirty();
 		});
 
-		ServerTickEvents.START_WORLD_TICK.register(Level11Weather::handleWeather);
+		ServerTickEvents.START_WORLD_TICK.register(VoidWeather::handleWeather);
 
 		ModDimensionKeys.registerDimensionKeys();
 		ModServerboundPackets.registerServerboundPackets();

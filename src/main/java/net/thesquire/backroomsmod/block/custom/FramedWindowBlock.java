@@ -3,6 +3,8 @@ package net.thesquire.backroomsmod.block.custom;
 import net.minecraft.block.*;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.Fluids;
+import net.minecraft.sound.BlockSoundGroup;
+import net.minecraft.sound.SoundCategory;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
@@ -19,35 +21,35 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.stream.Stream;
 
-public class WindowBlock extends TrapdoorBlock implements Waterloggable {
+public class FramedWindowBlock extends TrapdoorBlock implements Waterloggable {
 
     private static final VoxelShape NORTH_CLOSED = VoxelShapes.combineAndSimplify(Stream.of(
             Block.createCuboidShape(0, 0, 11, 16, 2, 13),
             Block.createCuboidShape(0, 14, 11, 16, 16, 13),
             Block.createCuboidShape(14, 2, 11, 16, 14, 13),
             Block.createCuboidShape(0, 2, 11, 2, 14, 13)
-    ).reduce((v1, v2) -> VoxelShapes.combineAndSimplify(v1, v2, BooleanBiFunction.OR)).get(), Block.createCuboidShape(2, 2, 12, 14, 14, 12), BooleanBiFunction.OR);
+    ).reduce((v1, v2) -> VoxelShapes.combineAndSimplify(v1, v2, BooleanBiFunction.OR)).get(), Block.createCuboidShape(2, 2, 11, 14, 14, 13), BooleanBiFunction.OR);
 
     private static final VoxelShape EAST_CLOSED = VoxelShapes.combineAndSimplify(Stream.of(
             Block.createCuboidShape(3, 0, 0, 5, 2, 16),
             Block.createCuboidShape(3, 14, 0, 5, 16, 16),
             Block.createCuboidShape(3, 2, 14, 5, 14, 16),
             Block.createCuboidShape(3, 2, 0, 5, 14, 2)
-    ).reduce((v1, v2) -> VoxelShapes.combineAndSimplify(v1, v2, BooleanBiFunction.OR)).get(), Block.createCuboidShape(4, 2, 2, 4, 14, 14), BooleanBiFunction.OR);
+    ).reduce((v1, v2) -> VoxelShapes.combineAndSimplify(v1, v2, BooleanBiFunction.OR)).get(), Block.createCuboidShape(3, 2, 2, 5, 14, 14), BooleanBiFunction.OR);
 
     private static final VoxelShape SOUTH_CLOSED = VoxelShapes.combineAndSimplify(Stream.of(
             Block.createCuboidShape(0, 0, 3, 16, 2, 5),
             Block.createCuboidShape(0, 14, 3, 16, 16, 5),
             Block.createCuboidShape(0, 2, 3, 2, 14, 5),
             Block.createCuboidShape(14, 2, 3, 16, 14, 5)
-    ).reduce((v1, v2) -> VoxelShapes.combineAndSimplify(v1, v2, BooleanBiFunction.OR)).get(), Block.createCuboidShape(2, 2, 4, 14, 14, 4), BooleanBiFunction.OR);
+    ).reduce((v1, v2) -> VoxelShapes.combineAndSimplify(v1, v2, BooleanBiFunction.OR)).get(), Block.createCuboidShape(2, 2, 3, 14, 14, 5), BooleanBiFunction.OR);
 
     private static final VoxelShape WEST_CLOSED = VoxelShapes.combineAndSimplify(Stream.of(
             Block.createCuboidShape(11, 0, 0, 13, 2, 16),
             Block.createCuboidShape(11, 14, 0, 13, 16, 16),
             Block.createCuboidShape(11, 2, 0, 13, 14, 2),
             Block.createCuboidShape(11, 2, 14, 13, 14, 16)
-    ).reduce((v1, v2) -> VoxelShapes.combineAndSimplify(v1, v2, BooleanBiFunction.OR)).get(), Block.createCuboidShape(12, 2, 2, 12, 14, 14), BooleanBiFunction.OR);
+    ).reduce((v1, v2) -> VoxelShapes.combineAndSimplify(v1, v2, BooleanBiFunction.OR)).get(), Block.createCuboidShape(11, 2, 2, 13, 14, 14), BooleanBiFunction.OR);
 
     private static final VoxelShape NORTH_OPEN = Stream.of(
             Stream.of(
@@ -62,7 +64,7 @@ public class WindowBlock extends TrapdoorBlock implements Waterloggable {
                     Block.createCuboidShape(12, 2, 14, 14, 14, 15),
                     Block.createCuboidShape(12, 2, 1, 14, 14, 2)
             ).reduce((v1, v2) -> VoxelShapes.combineAndSimplify(v1, v2, BooleanBiFunction.OR)).get(),
-            Block.createCuboidShape(13, 2, 2, 13, 14, 14)
+            Block.createCuboidShape(12, 2, 2, 14, 14, 14)
     ).reduce((v1, v2) -> VoxelShapes.combineAndSimplify(v1, v2, BooleanBiFunction.OR)).get();
 
     private static final VoxelShape WEST_OPEN = Stream.of(
@@ -78,7 +80,7 @@ public class WindowBlock extends TrapdoorBlock implements Waterloggable {
                     Block.createCuboidShape(14, 2, 2, 15, 14, 4),
                     Block.createCuboidShape(1, 2, 2, 2, 14, 4)
             ).reduce((v1, v2) -> VoxelShapes.combineAndSimplify(v1, v2, BooleanBiFunction.OR)).get(),
-            Block.createCuboidShape(2, 2, 3, 14, 14, 3)
+            Block.createCuboidShape(2, 2, 2, 14, 14, 4)
     ).reduce((v1, v2) -> VoxelShapes.combineAndSimplify(v1, v2, BooleanBiFunction.OR)).get();
 
     private static final VoxelShape EAST_OPEN = Stream.of(
@@ -94,7 +96,7 @@ public class WindowBlock extends TrapdoorBlock implements Waterloggable {
                     Block.createCuboidShape(1, 2, 12, 2, 14, 14),
                     Block.createCuboidShape(14, 2, 12, 15, 14, 14)
             ).reduce((v1, v2) -> VoxelShapes.combineAndSimplify(v1, v2, BooleanBiFunction.OR)).get(),
-            Block.createCuboidShape(2, 2, 13, 14, 14, 13)
+            Block.createCuboidShape(2, 2, 12, 14, 14, 14)
     ).reduce((v1, v2) -> VoxelShapes.combineAndSimplify(v1, v2, BooleanBiFunction.OR)).get();
 
     private static final VoxelShape SOUTH_OPEN = Stream.of(
@@ -110,14 +112,16 @@ public class WindowBlock extends TrapdoorBlock implements Waterloggable {
                     Block.createCuboidShape(2, 2, 1, 4, 14, 2),
                     Block.createCuboidShape(2, 2, 14, 4, 14, 15)
             ).reduce((v1, v2) -> VoxelShapes.combineAndSimplify(v1, v2, BooleanBiFunction.OR)).get(),
-            Block.createCuboidShape(3, 2, 2, 3, 14, 14)
+            Block.createCuboidShape(2, 2, 2, 4, 14, 14)
     ).reduce((v1, v2) -> VoxelShapes.combineAndSimplify(v1, v2, BooleanBiFunction.OR)).get();
 
     /////////////////////////////////////////////////////////////////////////////////////
 
+    private final BlockSoundGroup glassSoundGroup = BlockSoundGroup.GLASS;
+
     private final VoxelShape[] connectionsToShape;
 
-    public WindowBlock(BlockSetType type, Settings settings) {
+    public FramedWindowBlock(BlockSetType type, Settings settings) {
         super(type, settings);
         this.connectionsToShape = generateStateToShapeMap();
         this.setDefaultState(this.getDefaultState()
@@ -131,6 +135,12 @@ public class WindowBlock extends TrapdoorBlock implements Waterloggable {
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
         this.flip(state, world, pos, player);
         return ActionResult.success(world.isClient);
+    }
+
+    @Override
+    public BlockState onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
+        world.playSound((double)pos.getX() + 0.5, (double)pos.getY() + 0.5, (double)pos.getZ() + 0.5, glassSoundGroup.getBreakSound(), SoundCategory.BLOCKS, (glassSoundGroup.getVolume() + 1.0f) / 2.0f, glassSoundGroup.getPitch() * 0.8f, false);
+        return super.onBreak(world, pos, state, player);
     }
 
     private void flip(BlockState state, World world, BlockPos pos, @Nullable PlayerEntity player) {
