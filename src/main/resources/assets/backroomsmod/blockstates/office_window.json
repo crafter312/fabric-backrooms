@@ -4,31 +4,46 @@
       "model": "backroomsmod:block/level_3/office_window_closed",
       "y": 180
     },
-	"facing=north,open=true": {
-      "model": "backroomsmod:block/level_3/office_window_open",
+	"facing=north,open=true,hinge=left": {
+      "model": "backroomsmod:block/level_3/office_window_open_left",
+      "y": 180
+    },
+    "facing=north,open=true,hinge=right": {
+      "model": "backroomsmod:block/level_3/office_window_open_right",
       "y": 180
     },
 	"facing=east,open=false": {
       "model": "backroomsmod:block/level_3/office_window_closed",
 	  "y": 270
     },
-	"facing=east,open=true": {
-      "model": "backroomsmod:block/level_3/office_window_open",
+	"facing=east,open=true,hinge=left": {
+      "model": "backroomsmod:block/level_3/office_window_open_left",
 	  "y": 270
+    },
+    "facing=east,open=true,hinge=right": {
+      "model": "backroomsmod:block/level_3/office_window_open_right",
+      "y": 270
     },
 	"facing=south,open=false": {
       "model": "backroomsmod:block/level_3/office_window_closed"
     },
-	"facing=south,open=true": {
-      "model": "backroomsmod:block/level_3/office_window_open"
+	"facing=south,open=true,hinge=left": {
+      "model": "backroomsmod:block/level_3/office_window_open_left"
+    },
+    "facing=south,open=true,hinge=right": {
+      "model": "backroomsmod:block/level_3/office_window_open_right"
     },
 	"facing=west,open=false": {
       "model": "backroomsmod:block/level_3/office_window_closed",
 	  "y": 90
     },
-	"facing=west,open=true": {
-      "model": "backroomsmod:block/level_3/office_window_open",
+	"facing=west,open=true,hinge=left": {
+      "model": "backroomsmod:block/level_3/office_window_open_left",
 	  "y": 90
+    },
+    "facing=west,open=true,hinge=right": {
+      "model": "backroomsmod:block/level_3/office_window_open_right",
+      "y": 90
     }
   }
 }

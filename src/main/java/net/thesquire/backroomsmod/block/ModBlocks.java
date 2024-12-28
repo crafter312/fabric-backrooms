@@ -29,6 +29,7 @@ import techreborn.blocks.GenericMachineBlock;
 
 import java.util.List;
 
+//TODO: move all blocks to registerModBlocks function to fix missing from creative menu
 public class ModBlocks {
 
     private static final FabricBlockSettings STONE = FabricBlockSettings.create()
