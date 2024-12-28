@@ -2,8 +2,9 @@
 - updated to Minecraft 1.20.4
 - fixed https://bugs.mojang.com/browse/MC-186626 with hacky mixin
 - fixed weather change packets being sent to all players
-- added JSON output file for config options
+- added JSON output files for config options
 - added void dimension with random weather
 - Russian translation added by mpustovoi on GitHub
 - added `FramedWindowBlock`
   - mostly same functionality as `TrapdoorBlock`
+- fixed items missing from creative inventory tabs

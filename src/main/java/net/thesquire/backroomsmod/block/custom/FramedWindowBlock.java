@@ -36,7 +36,6 @@ import org.jetbrains.annotations.Nullable;
 import java.util.function.BiConsumer;
 import java.util.stream.Stream;
 
-//TODO: add dedicated item texture to remove dark tint issue
 //TODO: add OfficeWindow class (extension of FramedWindowBlock) to contain portal functionality
 
 /**
