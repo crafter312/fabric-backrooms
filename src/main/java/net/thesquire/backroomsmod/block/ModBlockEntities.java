@@ -24,6 +24,7 @@ public class ModBlockEntities {
     public static BlockEntityType<PortalPlacerBlockEntity> PORTAL_PLACER;
     public static BlockEntityType<ElevatorButtonBlockEntity> ELEVATOR_BUTTON;
     public static BlockEntityType<ElevatorDoorBlockEntity> ELEVATOR_DOOR;
+    public static BlockEntityType<OfficeWindowBlockEntity> OFFICE_WINDOW;
 
     public static void registerBlockEntities() {
         BackroomsMod.LOGGER.info("Registering block entities for " + BackroomsMod.MOD_ID);
@@ -42,6 +43,8 @@ public class ModBlockEntities {
                 ElevatorButtonBlockEntity::new, ModBlocks.ELEVATOR_BUTTON);
         ELEVATOR_DOOR = register("elevator_door",
                 ElevatorDoorBlockEntity::new, ModBlocks.ELEVATOR_DOOR);
+        OFFICE_WINDOW = register("office_window",
+                OfficeWindowBlockEntity::new, ModBlocks.OFFICE_WINDOW);
     }
 
     public static <T extends BlockEntity> BlockEntityType<T> register(String name, BiFunction<BlockPos, BlockState, T> supplier, Block... blocks) {

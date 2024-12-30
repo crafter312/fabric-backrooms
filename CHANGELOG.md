@@ -8,3 +8,5 @@
 - added `FramedWindowBlock`
   - mostly same functionality as `TrapdoorBlock`
 - fixed items missing from creative inventory tabs
+- added `OfficeWindowBlock` and `OfficeWindowBlockEntity`
+  - places portal behind window with view of void dimension to display weather

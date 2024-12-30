@@ -36,8 +36,6 @@ import org.jetbrains.annotations.Nullable;
 import java.util.function.BiConsumer;
 import java.util.stream.Stream;
 
-//TODO: add OfficeWindow class (extension of FramedWindowBlock) to contain portal functionality
-
 /**
  * This class borrows extensively from {@link net.minecraft.block.TrapdoorBlock}. However, a few differences
  * make the direct extension of said class impractical.

@@ -59,7 +59,6 @@ public class ModBlocks {
     public static Block PIPE_BLOCK;
     public static Block IRON_BUTTON;
     public static Block DUMMIE_BUTTON;
-    public static Block OFFICE_WINDOW;
 
     // Blocks with a GUI or BlockEntity
     public static Block INDUSTRIAL_ALLOY_SMELTER;
@@ -69,6 +68,7 @@ public class ModBlocks {
     public static Block PORTAL_PLACER;
     public static Block ELEVATOR_BUTTON;
     public static Block ELEVATOR_DOOR;
+    public static Block OFFICE_WINDOW;
 
     public static void registerModBlocks() {
         BackroomsMod.LOGGER.info("Registering mod blocks for " + BackroomsMod.MOD_ID);
@@ -96,8 +96,6 @@ public class ModBlocks {
                 new ButtonBlock(BlockSetType.IRON, 20, FabricBlockSettings.create().noCollision().strength(0.5f).requiresTool().pistonBehavior(PistonBehavior.DESTROY)));
         DUMMIE_BUTTON = registerBlockWithoutBlockItem("dummie_button",
                 new ButtonBlock(BlockSetType.IRON, 20, FabricBlockSettings.create().noCollision().strength(0.5f).requiresTool().pistonBehavior(PistonBehavior.DESTROY)));
-        OFFICE_WINDOW = registerBlock("office_window",
-                new FramedWindowBlock(BlockSetType.IRON, FabricBlockSettings.copy(Blocks.GLASS_PANE)));
 
         //////// REGISTER BLOCKS WITH GUI OR BLOCK ENTITY ////////
 
@@ -116,6 +114,8 @@ public class ModBlocks {
                 new ElevatorButton(FabricBlockSettings.copy(IRON_BUTTON), BlockSetType.IRON, 20));
         ELEVATOR_DOOR = registerBlock("elevator_door",
                 new ElevatorDoor(FabricBlockSettings.copy(Blocks.IRON_DOOR), ModBlockSetTypes.ELEVATOR));
+        OFFICE_WINDOW = registerBlock("office_window",
+                new OfficeWindowBlock(BlockSetType.IRON, FabricBlockSettings.copy(Blocks.GLASS_PANE)));
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////

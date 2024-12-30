@@ -23,6 +23,8 @@ import qouteall.q_misc_util.Helper;
 
 import java.util.UUID;
 
+//TODO: rewrite to include and simplify features from child classes (i.e. offset, biportal type, etc.)
+
 /**
  * For the time being, this block entity assumes that there is no scale transformation between the two dimensions.
  * Additionally, if creating a vertical portal, please don't change the facing direction of the block when placing
@@ -147,9 +149,7 @@ public class PortalPlacerBlockEntity extends BlockEntity {
     }
 
     public void initPortal(ServerWorld serverWorld, BlockState state) {
-        this.portal = Portal.ENTITY_TYPE.create(serverWorld);
-        if(this.portal == null)
-            return;
+        if((this.portal = Portal.ENTITY_TYPE.create(serverWorld)) == null) return;
 
         this.portal.setOriginPos(this.origin);
         this.portal.setDestinationDimension(this.dimensionTo != null ? this.dimensionTo : serverWorld.getRegistryKey());
@@ -166,8 +166,7 @@ public class PortalPlacerBlockEntity extends BlockEntity {
                 this.height
         );
 
-        boolean spawned = this.portal.getWorld().spawnEntity(this.portal);
-        if(!spawned) {
+        if(!this.portal.getWorld().spawnEntity(this.portal)) {
             BackroomsMod.LOGGER.warn("Failed to spawn portal at " + this.origin);
             return;
         }
@@ -207,7 +206,7 @@ public class PortalPlacerBlockEntity extends BlockEntity {
         this.portal = (Portal) entity;
     }
 
-    private Vec3d getPortalOrigin(BlockState state) {
+    protected Vec3d getPortalOrigin(BlockState state) {
         return getPos().toCenterPos()
                 .add(getPortalUpVec(state).multiply((((float) this.height) / 2) - 0.5))
                 .add(getPortalHorizontalVec(state).multiply((1 - (this.width % 2)) * 0.5))
