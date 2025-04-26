@@ -3,10 +3,11 @@
   "generator": {
     "type": "minecraft:flat",
     "settings": {
-      "biome": "minecraft:plains",
+      "biome": "backroomsmod:backrooms_void",
       "lakes": false,
       "features": false,
-      "layers": []
+      "layers": [],
+      "structure_overrides": []
     }
   }
 }
