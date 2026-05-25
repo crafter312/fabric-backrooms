@@ -51,7 +51,7 @@ public class WallAdjacentPlacementModifier extends PlacementModifier {
         Direction direction = this.initialDirection;
         StructureWorldAccess structureWorldAccess = context.getWorld();
         if (!this.allowedSearchPredicate.test(structureWorldAccess, mutable)) {
-            return Stream.of(new BlockPos[0]);
+            return Stream.empty();
         }
         for (int j = 0; j < 4; j++) {
             for (int i = 0; i < this.maxSteps; ++i) {
@@ -60,7 +60,7 @@ public class WallAdjacentPlacementModifier extends PlacementModifier {
                 }
                 mutable.move(direction);
                 if (structureWorldAccess.isOutOfHeightLimit(mutable.getY())) {
-                    return Stream.of(new BlockPos[0]);
+                    return Stream.empty();
                 }
                 if (!this.allowedSearchPredicate.test(structureWorldAccess, mutable)) break;
             }
@@ -72,7 +72,7 @@ public class WallAdjacentPlacementModifier extends PlacementModifier {
         if (this.targetPredicate.test(structureWorldAccess, mutable)) {
             return Stream.of(mutable);
         }
-        return Stream.of(new BlockPos[0]);
+        return Stream.empty();
     }
 
     @Override
