@@ -67,6 +67,7 @@ Backrooms level 4 dimension:
 - bare infinite office space with alternating rooms and random hallways
 - fluorescent light feature in ceiling
 - accessed via office-style elevator found in level 2
+- windows provide view of void dimension with alternating weather pattern
 
 Other features:
   - "no-clipping" (teleporting) into Backrooms Level 0 when taking suffocation or void damage; this currently happens 1% of the time (might change in the future)
@@ -74,16 +75,21 @@ Other features:
   - elevator button
     - extends the portal placer block features with basic portal animation functions
     - intended to be used as 1-way interdimensional "elevator"
+  - fixed https://bugs.mojang.com/browse/MC-186626 with hacky mixin
+    - this required me to fix an additional issue in which weather change packets were being sent to all players, regardless of dimension
+  - JSON config files using TechReborn config architecture
+  - Russian translation courtesy of mpustovoi on GitHub
 
 
 IN PROGRESS FEATURES
 --------------------
 
 The following features are currently in progress or next on the list of things to implement:
-  - Backrooms Level 0 dimension
-    - other less common features, like grids of wall pillars in large open spaces or something like that (to make things more interesting)
-  - Backrooms Level 2 dimension
-    - any other features to fill the currently empty hallways
+  - level 4 dimension
+    - Office window block to teleport to level 11
+  - level 11 dimension
+    - random weather
+    - office building structures with windows (teleport destination from level 4)
 
 
 PLANNED FEATURES
@@ -101,6 +107,10 @@ The following are some features I've thought of which I hope to implement in the
       - 0, 1, 2, 4, 6, 8, 9, 11, 3999
       - this route depends partially on implementing dimension-wide lights out feature in level 4
     - additionally, one could also visit level 5 in between 4 and 6 by entering a specific door, but level 5 sounds complicated to generate and is not necessary in the near future
+  -  Backrooms Level 0 dimension
+     - other less common features, like grids of wall pillars in large open spaces or something like that (to make things more interesting)
+  - Backrooms Level 2 dimension
+     - any other features to fill the currently empty hallways
 
 
 FAQ

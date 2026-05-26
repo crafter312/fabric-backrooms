@@ -15,11 +15,15 @@ import net.minecraft.world.biome.GenerationSettings;
 import net.minecraft.world.biome.SpawnSettings;
 import net.minecraft.world.gen.GenerationStep;
 import net.minecraft.world.gen.feature.DefaultBiomeFeatures;
+import net.minecraft.world.gen.feature.VegetationPlacedFeatures;
 import net.thesquire.backroomsmod.BackroomsMod;
 import net.thesquire.backroomsmod.sound.ModSounds;
 import net.thesquire.backroomsmod.world.feature.ModPlacedFeatures;
 
 public class ModBiomes {
+
+    // special biomes
+    public static final RegistryKey<Biome> VOID = registerKey("backrooms_void");
 
     // biomes in level order
     public static final RegistryKey<Biome> LEVEL_0 = registerKey("level_0");
@@ -27,7 +31,8 @@ public class ModBiomes {
     public static final RegistryKey<Biome> LEVEL_1 = registerKey("level_1");
     public static final RegistryKey<Biome> LEVEL_2 = registerKey("level_2");
     public static final RegistryKey<Biome> LEVEL_2_DARK = registerKey("level_2_dark");
-    public static final RegistryKey<Biome> LEVEL_4= registerKey("level_4");
+    public static final RegistryKey<Biome> LEVEL_4 = registerKey("level_4");
+    public static final RegistryKey<Biome> LEVEL_11 = registerKey("level_11");
 
     // biome music
     public static final MusicSound NORMAL_MUSIC = null;
@@ -43,6 +48,16 @@ public class ModBiomes {
 
     public static void bootstrap(Registerable<Biome> context) {
         var placedFeatureRegistryEntryLookup = context.getRegistryLookup(RegistryKeys.PLACED_FEATURE);
+
+        // void biome settings
+        final float voidTemp = 0.5f;
+        BiomeEffects.Builder voidBiomeEffects = (new BiomeEffects.Builder())
+                .waterColor(4159204)
+                .waterFogColor(329011)
+                .fogColor(12638463)
+                .skyColor(calculateSkyColor(voidTemp))
+                .moodSound(BiomeMoodSound.CAVE)
+                .music(NO_MUSIC);
 
         // level 0 biome settings
         GenerationSettings.Builder level0BiomeBuilder = new GenerationSettings.Builder();
@@ -88,8 +103,6 @@ public class ModBiomes {
                 placedFeatureRegistryEntryLookup.getOrThrow(ModPlacedFeatures.LEVEL_1_LOOT_CHEST_PLACED_KEY));
 
         // level 2 biome settings
-        SpawnSettings.Builder level2SpawnBuilder = new SpawnSettings.Builder();
-
         GenerationSettings.Builder level2BiomeBuilder = new GenerationSettings.Builder();
         level2BiomeBuilder.feature(GenerationStep.Feature.LOCAL_MODIFICATIONS,
                 placedFeatureRegistryEntryLookup.getOrThrow(ModPlacedFeatures.LEVEL_2_PIPE_NETWORK_PLACED_KEY));
@@ -97,15 +110,11 @@ public class ModBiomes {
                 placedFeatureRegistryEntryLookup.getOrThrow(ModPlacedFeatures.LEVEL_2_WALL_LIGHTS_PLACED_KEY));
 
         // level 2 dark biome settings
-        SpawnSettings.Builder level2DarkSpawnBuilder = new SpawnSettings.Builder();
-
         GenerationSettings.Builder level2DarkBiomeBuilder = new GenerationSettings.Builder();
         level2DarkBiomeBuilder.feature(GenerationStep.Feature.LOCAL_MODIFICATIONS,
                 placedFeatureRegistryEntryLookup.getOrThrow(ModPlacedFeatures.LEVEL_2_PIPE_NETWORK_PLACED_KEY));
 
         // level 4 biome settings
-        SpawnSettings.Builder level4SpawnBuilder = new SpawnSettings.Builder();
-
         GenerationSettings.Builder level4BiomeBuilder = new GenerationSettings.Builder();
         level4BiomeBuilder.feature(GenerationStep.Feature.LOCAL_MODIFICATIONS,
                 placedFeatureRegistryEntryLookup.getOrThrow(ModPlacedFeatures.LEVEL_4_THIN_STRAIGHT_WALL_PLACED_KEY));
@@ -113,8 +122,29 @@ public class ModBiomes {
                 placedFeatureRegistryEntryLookup.getOrThrow(ModPlacedFeatures.LEVEL_4_THIN_CROOKED_WALL_PLACED_KEY));
         level4BiomeBuilder.feature(GenerationStep.Feature.LOCAL_MODIFICATIONS,
                 placedFeatureRegistryEntryLookup.getOrThrow(ModPlacedFeatures.LEVEL_4_FLUORESCENT_LIGHT_PLACED_KEY));
+        level4BiomeBuilder.feature(GenerationStep.Feature.LOCAL_MODIFICATIONS,
+                placedFeatureRegistryEntryLookup.getOrThrow(ModPlacedFeatures.LEVEL_4_WINDOWS_PLACED_KEY));
+
+        // level 11 biome settings
+        GenerationSettings.Builder level11BiomeBuilder = new GenerationSettings.Builder();
+        level11BiomeBuilder.feature(GenerationStep.Feature.VEGETAL_DECORATION,
+                placedFeatureRegistryEntryLookup.getOrThrow(VegetationPlacedFeatures.TREES_PLAINS));
+        level11BiomeBuilder.feature(GenerationStep.Feature.VEGETAL_DECORATION,
+                placedFeatureRegistryEntryLookup.getOrThrow(VegetationPlacedFeatures.FLOWER_PLAIN));
+        level11BiomeBuilder.feature(GenerationStep.Feature.VEGETAL_DECORATION,
+                placedFeatureRegistryEntryLookup.getOrThrow(VegetationPlacedFeatures.PATCH_GRASS_PLAIN));
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        register(context, VOID,
+                defaultBiomeSettings()
+                        .precipitation(true)
+                        .temperature(voidTemp)
+                        .downfall(0.5f)
+                        .effects(voidBiomeEffects.build())
+                        .spawnSettings((new SpawnSettings.Builder()).build())
+                        .generationSettings((new GenerationSettings.Builder()).build())
+                        .build());
 
         register(context, LEVEL_0,
                 defaultBiomeSettings()
@@ -137,20 +167,32 @@ public class ModBiomes {
         register(context, LEVEL_2,
                 defaultBiomeSettings()
                         .effects(defaultBiomeEffects().fogColor(darkFogColor).build())
-                        .spawnSettings(level2SpawnBuilder.build())
+                        .spawnSettings((new SpawnSettings.Builder()).build())
                         .generationSettings(level2BiomeBuilder.build())
                         .build());
         register(context, LEVEL_2_DARK,
                 defaultBiomeSettings()
                         .effects(defaultBiomeEffects().fogColor(darkFogColor).build())
-                        .spawnSettings(level2DarkSpawnBuilder.build())
+                        .spawnSettings((new SpawnSettings.Builder()).build())
                         .generationSettings(level2DarkBiomeBuilder.build())
                         .build());
         register(context, LEVEL_4,
                 defaultBiomeSettings()
                         .effects(defaultBiomeEffects().music(MusicType.GAME).build())
-                        .spawnSettings(level4SpawnBuilder.build())
+                        .spawnSettings((new SpawnSettings.Builder()).build())
                         .generationSettings(level4BiomeBuilder.build())
+                        .build());
+        register(context, LEVEL_11,
+                defaultBiomeSettings()
+                        .precipitation(true)
+                        .downfall(0.4f)
+                        .effects(defaultBiomeEffects()
+                                .fogColor(12638463)
+                                .waterColor(4159204)
+                                .waterFogColor(329011)
+                                .music(MusicType.GAME).build())
+                        .spawnSettings((new SpawnSettings.Builder()).build())
+                        .generationSettings(level11BiomeBuilder.build())
                         .build());
     }
 

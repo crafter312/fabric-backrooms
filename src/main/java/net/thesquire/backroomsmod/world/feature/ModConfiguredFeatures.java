@@ -49,6 +49,7 @@ public class ModConfiguredFeatures {
     // level 4 features
     public static final RegistryKey<ConfiguredFeature<?, ?>> LEVEL_4_THIN_STRAIGHT_WALL_KEY = registerKey("level_4_thin_straight_wall");
     public static final RegistryKey<ConfiguredFeature<?, ?>> LEVEL_4_THIN_CROOKED_WALL_KEY = registerKey("level_4_thin_crooked_wall");
+    public static final RegistryKey<ConfiguredFeature<?, ?>> LEVEL_4_WINDOWS_KEY = registerKey("level_4_windows");
 
     public static void bootstrap(Registerable<ConfiguredFeature<?,?>> context) {
         var placedFeatureRegistryEntryLookup = context.getRegistryLookup(RegistryKeys.PLACED_FEATURE);
@@ -80,6 +81,7 @@ public class ModConfiguredFeatures {
                                 .with(Properties.DOWN, true)));
         List<OreFeatureConfig.Target> level4WallTarget = List.of(
                 OreFeatureConfig.createTarget(new BlockMatchRuleTest(Blocks.AIR), Blocks.WHITE_CONCRETE.getDefaultState()));
+
 
         register(context, BISMUTHINITE_ORE_KEY, Feature.ORE, new OreFeatureConfig(overworldBismuthiniteOres, 8, 0.2f));
         register(context, FLUORESCENT_LIGHT_KEY, ModFeatures.BLOCK_GRID, new ModBlockGridFeatureConfig(fluorescentLightTarget,
@@ -118,6 +120,8 @@ public class ModConfiguredFeatures {
                 ConstantIntProvider.create(1), UniformIntProvider.create(10, 16),ConstantIntProvider.create(4), true));
         register(context, LEVEL_4_THIN_CROOKED_WALL_KEY, ModFeatures.THIN_WALL, new ModThinWallFeatureConfig(level4WallTarget,
                 UniformIntProvider.create(2, 3), UniformIntProvider.create(8, 14), ConstantIntProvider.create(4), false));
+        register(context, LEVEL_4_WINDOWS_KEY, ModFeatures.WINDOW, new ModWindowFeatureConfig(
+                ModBlocks.OFFICE_WINDOW.getDefaultState(), UniformIntProvider.create(1, 6), UniformIntProvider.create(1, 2)));
     }
 
     public static RegistryKey<ConfiguredFeature<?, ?>> registerKey(String name) {

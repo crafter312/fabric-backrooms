@@ -1,2 +1,13 @@
 - incremented version number
 - updated to Minecraft 1.20.4
+- fixed https://bugs.mojang.com/browse/MC-186626 with hacky mixin
+- fixed weather change packets being sent to all players
+- added JSON output files for config options
+- added void dimension with random weather
+- Russian translation added by mpustovoi on GitHub
+- added `FramedWindowBlock`
+  - mostly same functionality as `TrapdoorBlock`
+- fixed items missing from creative inventory tabs
+- added `OfficeWindowBlock` and `OfficeWindowBlockEntity`
+  - places portal behind window with view of void dimension to display weather
+- added feature to Level 4 dimension which places rows of `OfficeWindowBlock` in the wall providing views of void dimension

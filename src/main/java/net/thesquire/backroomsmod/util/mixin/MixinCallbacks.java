@@ -124,7 +124,6 @@ public class MixinCallbacks {
             if (!world.getRegistryKey().equals(ModDimensionKeys.LEVEL_1) || !particle.equals(ParticleTypes.SPLASH)) return;
             world.playSound(x, y, z, ModSounds.LEVEL_1_DRIP, SoundCategory.AMBIENT, 0.8f, 1f, true);
         });
-
     }
 
 }

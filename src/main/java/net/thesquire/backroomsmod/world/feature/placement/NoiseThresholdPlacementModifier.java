@@ -35,7 +35,7 @@ public class NoiseThresholdPlacementModifier extends PlacementModifier {
     public Stream<BlockPos> getPositions(FeaturePlacementContext context, Random random, BlockPos pos) {
         // check types
         if (!(this.input.value() instanceof InterpolatedNoiseSampler) || !(this.grid_walls.value() instanceof GridWalls))
-            return Stream.of(new BlockPos[0]);
+            return Stream.empty();
         GridWalls gridWalls = (GridWalls) this.grid_walls.value();
 
         int x = pos.getX();
@@ -44,7 +44,7 @@ public class NoiseThresholdPlacementModifier extends PlacementModifier {
         int z_wall_coord = (z / gridWalls.getZ_total()) + ((-1 + Integer.signum(z)) / 2);
         double sample = this.input.value().sample(new DensityFunction.UnblendedNoisePos(x_wall_coord, 0, z_wall_coord));
 
-        return sample < 0 ? Stream.of(pos) : Stream.of(new BlockPos[0]);
+        return sample < 0 ? Stream.of(pos) : Stream.empty();
     }
 
     @Override

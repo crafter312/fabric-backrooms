@@ -16,6 +16,7 @@ import net.thesquire.backroomsmod.BackroomsMod;
 import net.thesquire.backroomsmod.block.ModBlocks;
 import net.thesquire.backroomsmod.world.feature.placement.NoiseThresholdPlacementModifier;
 import net.thesquire.backroomsmod.world.feature.placement.WallAdjacentPlacementModifier;
+import net.thesquire.backroomsmod.world.feature.placement.WallSearchPlacementModifier;
 import net.thesquire.backroomsmod.world.gen.ModDensityFunctions;
 
 import java.util.List;
@@ -51,7 +52,7 @@ public class ModPlacedFeatures {
     public static RegistryKey<PlacedFeature> LEVEL_4_THIN_STRAIGHT_WALL_PLACED_KEY = registerKey("level_4_thin_straight_wall_placed");
     public static RegistryKey<PlacedFeature> LEVEL_4_THIN_CROOKED_WALL_PLACED_KEY = registerKey("level_4_thin_crooked_wall_placed");
     public static RegistryKey<PlacedFeature> LEVEL_4_FLUORESCENT_LIGHT_PLACED_KEY = registerKey("level_4_fluorescent_light_placed");
-
+    public static RegistryKey<PlacedFeature> LEVEL_4_WINDOWS_PLACED_KEY = registerKey("level_4_windows_placed");
 
     public static void bootstrap(Registerable<PlacedFeature> context) {
         var configuredFeatureRegistryEntryLookup = context.getRegistryLookup(RegistryKeys.CONFIGURED_FEATURE);
@@ -65,6 +66,7 @@ public class ModPlacedFeatures {
         PlacementModifier level4NoiseThreshold = new NoiseThresholdPlacementModifier(
                 densityFunctionRegistryEntryLookup.getOrThrow(ModDensityFunctions.BASE_3D_NOISE_LEVEL_4_KEY),
                 densityFunctionRegistryEntryLookup.getOrThrow(ModDensityFunctions.GRID_WALLS_LEVEL_4_KEY));
+        PlacementModifier level4WallWindowsTest = new WallSearchPlacementModifier(3, 3, BlockPredicate.matchingBlocks(Blocks.WHITE_CONCRETE));
 
         // fixed y values
         PlacementModifier y20 = HeightRangePlacementModifier.uniform(YOffset.fixed(20), YOffset.fixed(20));
@@ -138,6 +140,9 @@ public class ModPlacedFeatures {
         register(context, LEVEL_4_FLUORESCENT_LIGHT_PLACED_KEY,
                 configuredFeatureRegistryEntryLookup.getOrThrow(ModConfiguredFeatures.FLUORESCENT_LIGHT_KEY),
                 modifiersWithCount(4, y25, lightBlockModifier));
+        register(context, LEVEL_4_WINDOWS_PLACED_KEY,
+                configuredFeatureRegistryEntryLookup.getOrThrow(ModConfiguredFeatures.LEVEL_4_WINDOWS_KEY),
+                modifiersWithCount(2, y22, level4WallWindowsTest));
     }
 
     public static RegistryKey<PlacedFeature> registerKey(String name) {

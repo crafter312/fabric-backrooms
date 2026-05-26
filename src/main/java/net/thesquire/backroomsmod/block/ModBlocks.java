@@ -31,6 +31,7 @@ import java.util.List;
 
 public class ModBlocks {
 
+    // Setting presets
     private static final FabricBlockSettings STONE = FabricBlockSettings.create()
             .mapColor(MapColor.STONE_GRAY)
             .instrument(Instrument.BASEDRUM);
@@ -46,41 +47,21 @@ public class ModBlocks {
             .luminance((state) -> 15)
             .solidBlock(Blocks::never);
 
-    public static final Block BISMUTHINITE_ORE = registerBlock("bismuthinite_ore",
-            new Block(STONE.strength(4.5f).requiresTool()));
+    // "Simple" blocks
+    public static Block BISMUTHINITE_ORE;
+    public static Block CEILING_TILE;
+    public static Block YELLOW_WALLPAPER;
+    public static Block TFMC_MAGNET;
+    public static Block WAREHOUSE_CONCRETE;
+    public static Block PAINTED_WAREHOUSE_CONCRETE;
+    public static Block CUSTOM_DOOR;
+    public static Block WAREHOUSE_CONCRETE_STAIRS;
+    public static Block PIPE_BLOCK;
+    public static Block IRON_BUTTON;
+    public static Block DUMMIE_BUTTON;
+    public static Block FRAMED_WINDOW;
 
-    public static final Block CEILING_TILE = registerBlock("ceiling_tile",
-            new CeilingTileBlock(STONE.strength(1.6f).requiresTool()));
-
-    public static final Block YELLOW_WALLPAPER = registerBlock("yellow_wallpaper",
-            new Block(STONE.strength(1.6f).requiresTool()));
-
-    public static final Block TFMC_MAGNET = registerBlock("tfmc_magnet",
-            new TFMCMagnetBlock(METAL.strength(4f).requiresTool()),
-            "block.backroomsmod.tfmc_magnet.tooltip_1", "block.backroomsmod.tfmc_magnet.tooltip_2");
-
-    public static final Block WAREHOUSE_CONCRETE = registerBlock("warehouse_concrete",
-            new WarehouseConcreteBlock(STONE.strength(1.8f).requiresTool()));
-
-    public static final Block PAINTED_WAREHOUSE_CONCRETE = registerBlock("painted_warehouse_concrete",
-            new PaintedWarehouseConcreteBlock(FabricBlockSettings.copy(WAREHOUSE_CONCRETE)));
-
-    public static final Block CUSTOM_DOOR = registerBlock("custom_door",
-            new LockedDoorBlock(FabricBlockSettings.copy(Blocks.IRON_DOOR), BlockSetType.IRON));
-
-    public static final Block WAREHOUSE_CONCRETE_STAIRS = registerBlock("warehouse_concrete_stairs",
-            new WarehouseConcreteStairsBlock(ModBlocks.WAREHOUSE_CONCRETE.getDefaultState(), FabricBlockSettings.copy(ModBlocks.WAREHOUSE_CONCRETE)));
-
-    public static final Block PIPE_BLOCK = registerBlock("pipe",
-            new PipeBlock(FabricBlockSettings.copy(Blocks.IRON_BLOCK)));
-
-    public static final Block IRON_BUTTON = registerBlock("iron_button",
-            new ButtonBlock(BlockSetType.IRON, 20, FabricBlockSettings.create().noCollision().strength(0.5f).requiresTool().pistonBehavior(PistonBehavior.DESTROY)));
-
-    public static final Block DUMMIE_BUTTON = registerBlockWithoutBlockItem("dummie_button",
-            new ButtonBlock(BlockSetType.IRON, 20, FabricBlockSettings.create().noCollision().strength(0.5f).requiresTool().pistonBehavior(PistonBehavior.DESTROY)));
-
-    // Blocks with a GUI or BlockEntity have to be registered in the method below to ensure proper register order!
+    // Blocks with a GUI or BlockEntity
     public static Block INDUSTRIAL_ALLOY_SMELTER;
     public static Block MAGNETIC_DISTORTION_SYSTEM_CONTROL_COMPUTER;
     public static Block FLUORESCENT_LIGHT;
@@ -88,31 +69,56 @@ public class ModBlocks {
     public static Block PORTAL_PLACER;
     public static Block ELEVATOR_BUTTON;
     public static Block ELEVATOR_DOOR;
+    public static Block OFFICE_WINDOW;
 
     public static void registerModBlocks() {
         BackroomsMod.LOGGER.info("Registering mod blocks for " + BackroomsMod.MOD_ID);
 
+        BISMUTHINITE_ORE = registerBlock("bismuthinite_ore",
+                new Block(STONE.strength(4.5f).requiresTool()));
+        CEILING_TILE = registerBlock("ceiling_tile",
+                new CeilingTileBlock(STONE.strength(1.6f).requiresTool()));
+        YELLOW_WALLPAPER = registerBlock("yellow_wallpaper",
+                new Block(STONE.strength(1.6f).requiresTool()));
+        TFMC_MAGNET = registerBlock("tfmc_magnet",
+                new TFMCMagnetBlock(METAL.strength(4f).requiresTool()),
+                "block.backroomsmod.tfmc_magnet.tooltip_1", "block.backroomsmod.tfmc_magnet.tooltip_2");
+        WAREHOUSE_CONCRETE = registerBlock("warehouse_concrete",
+                new WarehouseConcreteBlock(STONE.strength(1.8f).requiresTool()));
+        PAINTED_WAREHOUSE_CONCRETE = registerBlock("painted_warehouse_concrete",
+                new PaintedWarehouseConcreteBlock(FabricBlockSettings.copy(WAREHOUSE_CONCRETE)));
+        CUSTOM_DOOR = registerBlock("custom_door",
+                new LockedDoorBlock(FabricBlockSettings.copy(Blocks.IRON_DOOR), BlockSetType.IRON));
+        WAREHOUSE_CONCRETE_STAIRS = registerBlock("warehouse_concrete_stairs",
+                new WarehouseConcreteStairsBlock(ModBlocks.WAREHOUSE_CONCRETE.getDefaultState(), FabricBlockSettings.copy(ModBlocks.WAREHOUSE_CONCRETE)));
+        PIPE_BLOCK = registerBlock("pipe",
+                new PipeBlock(FabricBlockSettings.copy(Blocks.IRON_BLOCK)));
+        IRON_BUTTON = registerBlock("iron_button",
+                new ButtonBlock(BlockSetType.IRON, 20, FabricBlockSettings.create().noCollision().strength(0.5f).requiresTool().pistonBehavior(PistonBehavior.DESTROY)));
+        DUMMIE_BUTTON = registerBlockWithoutBlockItem("dummie_button",
+                new ButtonBlock(BlockSetType.IRON, 20, FabricBlockSettings.create().noCollision().strength(0.5f).requiresTool().pistonBehavior(PistonBehavior.DESTROY)));
+        FRAMED_WINDOW = registerBlock("framed_window",
+                new FramedWindowBlock(BlockSetType.IRON, FabricBlockSettings.copy(Blocks.GLASS_PANE)));
+
+        //////// REGISTER BLOCKS WITH GUI OR BLOCK ENTITY ////////
+
         INDUSTRIAL_ALLOY_SMELTER = registerBlock("industrial_alloy_smelter",
                 new GenericMachineBlock(ModGuis.INDUSTRIAL_ALLOY_SMELTER, IndustrialAlloySmelterBlockEntity::new));
-
         MAGNETIC_DISTORTION_SYSTEM_CONTROL_COMPUTER = registerBlock("magnetic_distortion_system_control_computer",
                 new GenericMachineBlock(ModGuis.MAGNETIC_DISTORTION_SYSTEM_CONTROL_COMPUTER, MagneticDistortionSystemControlComputerBlockEntity::new));
-
         FLUORESCENT_LIGHT = registerBlock("fluorescent_light",
                 new FluorescentLightBlock(GLOWSTONE.requiresTool().luminance(FluorescentLightBlock::getLuminance)));
-
         MOUNTABLE_FLUORESCENT_LIGHT = registerBlock("mountable_fluorescent_light",
                 new MountableFluorescentLightBlock(GLOWSTONE.requiresTool().nonOpaque().suffocates(ModBlocks::never)
                         .blockVision(ModBlocks::never).luminance(MountableFluorescentLightBlock::getLuminance)), 16);
-
         PORTAL_PLACER = registerBlockWithoutBlockItem("portal_placer",
                 new PortalPlacerBlock(FabricBlockSettings.create().noCollision().dropsNothing().noBlockBreakParticles()));
-
         ELEVATOR_BUTTON = registerBlockWithoutBlockItem("elevator_button",
                 new ElevatorButton(FabricBlockSettings.copy(IRON_BUTTON), BlockSetType.IRON, 20));
-
         ELEVATOR_DOOR = registerBlock("elevator_door",
                 new ElevatorDoor(FabricBlockSettings.copy(Blocks.IRON_DOOR), ModBlockSetTypes.ELEVATOR));
+        OFFICE_WINDOW = registerBlock("office_window",
+                new OfficeWindowBlock(BlockSetType.IRON, FabricBlockSettings.copy(Blocks.GLASS_PANE)));
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
