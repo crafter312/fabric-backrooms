@@ -4,10 +4,9 @@ import net.minecraft.block.BlockEntityProvider;
 import net.minecraft.block.BlockSetType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.entity.LivingEntity;
+import net.minecraft.block.entity.BlockEntityTicker;
+import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.thesquire.backroomsmod.block.ModBlockEntities;
@@ -28,6 +27,17 @@ public class OfficeWindowBlock extends FramedWindowBlock implements BlockEntityP
         return new OfficeWindowBlockEntity(pos, state);
     }
 
+    @Nullable
+    @Override
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
+        return validateTicker(type, ModBlockEntities.OFFICE_WINDOW, OfficeWindowBlockEntity::staticTick);
+    }
+
+    @Nullable
+    protected static <E extends BlockEntity, A extends BlockEntity> BlockEntityTicker<A> validateTicker(BlockEntityType<A> givenType, BlockEntityType<E> expectedType, BlockEntityTicker<? super E> ticker) {
+        return expectedType == givenType ? (BlockEntityTicker<A>)ticker : null;
+    }
+
     @Override
     public BlockState onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
         Optional<OfficeWindowBlockEntity> optional = world.getBlockEntity(pos, ModBlockEntities.OFFICE_WINDOW);
@@ -36,12 +46,4 @@ public class OfficeWindowBlock extends FramedWindowBlock implements BlockEntityP
         return super.onBreak(world, pos, state, player);
     }
 
-    @Override
-    public void onPlaced(World world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack itemStack) {
-        super.onPlaced(world, pos, state, placer, itemStack);
-        if (world.isClient()) return;
-
-        Optional<OfficeWindowBlockEntity> optional = world.getBlockEntity(pos, ModBlockEntities.OFFICE_WINDOW);
-        optional.ifPresent(blockEntity -> blockEntity.initPortal((ServerWorld) world, state));
-    }
 }

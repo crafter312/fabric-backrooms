@@ -67,6 +67,7 @@ Backrooms level 4 dimension:
 - bare infinite office space with alternating rooms and random hallways
 - fluorescent light feature in ceiling
 - accessed via office-style elevator found in level 2
+- windows provide view of void dimension with alternating weather pattern
 
 Other features:
   - "no-clipping" (teleporting) into Backrooms Level 0 when taking suffocation or void damage; this currently happens 1% of the time (might change in the future)

@@ -10,3 +10,4 @@
 - fixed items missing from creative inventory tabs
 - added `OfficeWindowBlock` and `OfficeWindowBlockEntity`
   - places portal behind window with view of void dimension to display weather
+- added feature to Level 4 dimension which places rows of `OfficeWindowBlock` in the wall providing views of void dimension

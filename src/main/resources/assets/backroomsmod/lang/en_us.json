@@ -18,6 +18,7 @@
   "block.backroomsmod.elevator_door": "Elevator Door",
   "block.backroomsmod.dummie_button": "Elevator Button",
   "block.backroomsmod.office_window": "Office Window",
+  "block.backroomsmod.framed_window": "Framed Window",
 
   "_comment2": "Mod Items",
   "item.backroomsmod.raw_bismuthinite": "Raw Bismuthinite",

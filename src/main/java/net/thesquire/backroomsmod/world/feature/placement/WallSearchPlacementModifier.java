@@ -88,7 +88,7 @@ public class WallSearchPlacementModifier extends PlacementModifier {
                 candidateCenter = new BlockPos(startX + center, currentY, startZ + dz);
 
                 // Run the comprehensive multi-block verification step
-                Optional<BlockPos> verifiedPos = testWall(context, random, candidateCenter);
+                Optional<BlockPos> verifiedPos = testWall(context, candidateCenter);
                 if (verifiedPos.isPresent()) return Stream.of(verifiedPos.get());
             }
         }
@@ -103,7 +103,7 @@ public class WallSearchPlacementModifier extends PlacementModifier {
                 candidateCenter = new BlockPos(startX + dx, currentY, startZ + center);
 
                 // Run the comprehensive multi-block verification step
-                Optional<BlockPos> verifiedPos = testWall(context, random, candidateCenter);
+                Optional<BlockPos> verifiedPos = testWall(context, candidateCenter);
                 if (verifiedPos.isPresent()) return Stream.of(verifiedPos.get());
             }
         }
@@ -111,7 +111,7 @@ public class WallSearchPlacementModifier extends PlacementModifier {
         return Stream.empty();
     }
 
-    private Optional<BlockPos> testWall(FeaturePlacementContext context, Random random, BlockPos pos) {
+    private Optional<BlockPos> testWall(FeaturePlacementContext context, BlockPos pos) {
         StructureWorldAccess world = context.getWorld();
 
         // Single mutable instances used for all checks to prevent GC allocation overhead

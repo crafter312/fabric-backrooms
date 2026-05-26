@@ -1,12 +1,14 @@
 package net.thesquire.backroomsmod.block.entity;
 
 import net.minecraft.block.BlockState;
+import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3i;
+import net.minecraft.world.World;
 import net.thesquire.backroomsmod.BackroomsMod;
 import net.thesquire.backroomsmod.block.ModBlockEntities;
 import net.thesquire.backroomsmod.block.custom.OfficeWindowBlock;
@@ -14,9 +16,10 @@ import net.thesquire.backroomsmod.dimension.ModDimensionKeys;
 import net.thesquire.backroomsmod.util.ModUtils;
 import qouteall.imm_ptl.core.portal.Portal;
 
-public class OfficeWindowBlockEntity extends PortalPlacerBlockEntity {
+public class OfficeWindowBlockEntity extends PortalPlacerBlockEntity implements BlockEntityTicker<OfficeWindowBlockEntity> {
 
     private float offset;
+    private boolean needsPortalInit; // New field
 
     public OfficeWindowBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlockEntities.OFFICE_WINDOW, pos, state);
@@ -25,6 +28,22 @@ public class OfficeWindowBlockEntity extends PortalPlacerBlockEntity {
         this.height = 1;
         this.width = 1;
         this.origin = this.getPortalOrigin(state);
+        this.needsPortalInit = true; // Initialize to true
+    }
+
+    @Override
+    public void tick(World world, BlockPos pos, BlockState state, OfficeWindowBlockEntity officeWindowBlockEntity) {
+        if (world.isClient()) return;
+        if (!officeWindowBlockEntity.needsPortalInit) return;
+        if (world instanceof ServerWorld serverWorld) {
+            officeWindowBlockEntity.initPortal(serverWorld, state);
+            officeWindowBlockEntity.needsPortalInit = false; // Portal initialized, no longer needed
+            officeWindowBlockEntity.markDirty(); // Mark dirty to save the state
+        }
+    }
+
+    public static void staticTick(World world, BlockPos pos, BlockState state, OfficeWindowBlockEntity officeWindowBlockEntity) {
+        officeWindowBlockEntity.tick(world, pos, state, officeWindowBlockEntity);
     }
 
     @Override
@@ -56,12 +75,18 @@ public class OfficeWindowBlockEntity extends PortalPlacerBlockEntity {
     @Override
     protected void writeNbt(NbtCompound nbt) {
         nbt.putFloat("offset", this.offset);
+        nbt.putBoolean("needsPortalInit", this.needsPortalInit); // Save new field
         super.writeNbt(nbt);
     }
 
     @Override
     public void readNbt(NbtCompound nbt) {
         this.offset = nbt.getFloat("offset");
+        if (nbt.contains("needsPortalInit")) { // Check if tag exists for backward compatibility
+            this.needsPortalInit = nbt.getBoolean("needsPortalInit"); // Load new field
+        } else {
+            this.needsPortalInit = true; // Default to true if not found (e.g., old saves)
+        }
         super.readNbt(nbt);
     }
 

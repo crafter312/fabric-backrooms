@@ -59,6 +59,7 @@ public class ModBlocks {
     public static Block PIPE_BLOCK;
     public static Block IRON_BUTTON;
     public static Block DUMMIE_BUTTON;
+    public static Block FRAMED_WINDOW;
 
     // Blocks with a GUI or BlockEntity
     public static Block INDUSTRIAL_ALLOY_SMELTER;
@@ -96,6 +97,8 @@ public class ModBlocks {
                 new ButtonBlock(BlockSetType.IRON, 20, FabricBlockSettings.create().noCollision().strength(0.5f).requiresTool().pistonBehavior(PistonBehavior.DESTROY)));
         DUMMIE_BUTTON = registerBlockWithoutBlockItem("dummie_button",
                 new ButtonBlock(BlockSetType.IRON, 20, FabricBlockSettings.create().noCollision().strength(0.5f).requiresTool().pistonBehavior(PistonBehavior.DESTROY)));
+        FRAMED_WINDOW = registerBlock("framed_window",
+                new FramedWindowBlock(BlockSetType.IRON, FabricBlockSettings.copy(Blocks.GLASS_PANE)));
 
         //////// REGISTER BLOCKS WITH GUI OR BLOCK ENTITY ////////
 
