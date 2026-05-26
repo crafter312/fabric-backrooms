@@ -1,0 +1,29 @@
+{
+  "type": "backroomsmod:window",
+  "config": {
+    "blockState": {
+      "Name": "backroomsmod:office_window",
+      "Properties": {
+        "facing": "north",
+        "hinge": "left",
+        "open": "false",
+        "powered": "false",
+        "waterlogged": "false"
+      }
+    },
+    "numWindows": {
+      "type": "minecraft:uniform",
+      "value": {
+        "max_inclusive": 6,
+        "min_inclusive": 1
+      }
+    },
+    "spacing": {
+      "type": "minecraft:uniform",
+      "value": {
+        "max_inclusive": 2,
+        "min_inclusive": 1
+      }
+    }
+  }
+}

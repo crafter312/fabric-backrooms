@@ -1,0 +1,36 @@
+{
+  "feature": "backroomsmod:level_4_windows",
+  "placement": [
+    {
+      "type": "minecraft:count",
+      "count": 2
+    },
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "type": "minecraft:height_range",
+      "height": {
+        "type": "minecraft:uniform",
+        "max_inclusive": {
+          "absolute": 22
+        },
+        "min_inclusive": {
+          "absolute": 22
+        }
+      }
+    },
+    {
+      "type": "minecraft:wall_search",
+      "height": 3,
+      "test_condition": {
+        "type": "minecraft:matching_blocks",
+        "blocks": "minecraft:white_concrete"
+      },
+      "width": 3
+    },
+    {
+      "type": "minecraft:biome"
+    }
+  ]
+}
