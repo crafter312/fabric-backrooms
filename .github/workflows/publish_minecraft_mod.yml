@@ -6,7 +6,7 @@ env:                                              #Environment variables that ca
   MINECRAFT_VERSION: 1.20.4
   JAVA_VERSION: 17
   MOD_VERSION: 0.8.1-1.20.4
-  MOD_RELEASE_NAME: Immersive Portals 0.8.1 for Minecraft 1.20.4
+  MOD_RELEASE_NAME: Immersive Backrooms 0.8.1 for Minecraft 1.20.4
 
 permissions:
   contents: write
