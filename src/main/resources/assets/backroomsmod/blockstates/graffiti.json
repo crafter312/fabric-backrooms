@@ -1,0 +1,40 @@
+{
+  "variants": {
+    "facing=north": [
+      { "model": "backroomsmod:block/graffiti/exit_1", "y": 180 },
+      { "model": "backroomsmod:block/graffiti/exit_2", "y": 180 },
+      { "model": "backroomsmod:block/graffiti/map_1", "y": 180 },
+      { "model": "backroomsmod:block/graffiti/map_2", "y": 180 },
+      { "model": "backroomsmod:block/graffiti/map_3", "y": 180 },
+      { "model": "backroomsmod:block/graffiti/text_1", "y": 180 },
+      { "model": "backroomsmod:block/graffiti/text_2", "y": 180 }
+    ],
+    "facing=east": [
+      { "model": "backroomsmod:block/graffiti/exit_1", "y": 270 },
+      { "model": "backroomsmod:block/graffiti/exit_2", "y": 270 },
+      { "model": "backroomsmod:block/graffiti/map_1", "y": 270 },
+      { "model": "backroomsmod:block/graffiti/map_2", "y": 270 },
+      { "model": "backroomsmod:block/graffiti/map_3", "y": 270 },
+      { "model": "backroomsmod:block/graffiti/text_1", "y": 270 },
+      { "model": "backroomsmod:block/graffiti/text_2", "y": 270 }
+    ],
+    "facing=south": [
+      { "model": "backroomsmod:block/graffiti/exit_1" },
+      { "model": "backroomsmod:block/graffiti/exit_2" },
+      { "model": "backroomsmod:block/graffiti/map_1" },
+      { "model": "backroomsmod:block/graffiti/map_2" },
+      { "model": "backroomsmod:block/graffiti/map_3" },
+      { "model": "backroomsmod:block/graffiti/text_1" },
+      { "model": "backroomsmod:block/graffiti/text_2" }
+    ],
+    "facing=west": [
+      { "model": "backroomsmod:block/graffiti/exit_1", "y": 90 },
+      { "model": "backroomsmod:block/graffiti/exit_2", "y": 90 },
+      { "model": "backroomsmod:block/graffiti/map_1", "y": 90 },
+      { "model": "backroomsmod:block/graffiti/map_2", "y": 90 },
+      { "model": "backroomsmod:block/graffiti/map_3", "y": 90 },
+      { "model": "backroomsmod:block/graffiti/text_1", "y": 90 },
+      { "model": "backroomsmod:block/graffiti/text_2", "y": 90 }
+    ]
+  }
+}

@@ -40,6 +40,9 @@ public class BackroomsModClient implements ClientModInitializer {
                 ModBlocks.OFFICE_WINDOW,
                 ModBlocks.FRAMED_WINDOW);
 
+        BlockRenderLayerMap.INSTANCE.putBlocks(RenderLayer.getTranslucent(),
+                ModBlocks.GRAFFITI);
+
         BackroomsMod.LOGGER.info("Client initialization finished for " + BackroomsMod.MOD_ID);
     }
 
