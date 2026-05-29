@@ -15,7 +15,6 @@ import net.minecraft.world.event.GameEvent;
 import net.thesquire.backroomsmod.BackroomsMod;
 import net.thesquire.backroomsmod.block.ModBlockEntities;
 import net.thesquire.backroomsmod.block.ModBlockProperties;
-import net.thesquire.backroomsmod.block.entity.FlickeringBlockEntity;
 import net.thesquire.backroomsmod.config.ModConfig;
 import net.thesquire.backroomsmod.event.ModGameEvents;
 import net.thesquire.backroomsmod.event.custom.BlackoutListener;

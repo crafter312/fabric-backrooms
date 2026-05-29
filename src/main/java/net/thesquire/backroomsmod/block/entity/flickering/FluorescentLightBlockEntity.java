@@ -3,7 +3,6 @@ package net.thesquire.backroomsmod.block.entity.flickering;
 import net.minecraft.block.BlockState;
 import net.minecraft.util.math.BlockPos;
 import net.thesquire.backroomsmod.block.ModBlockEntities;
-import net.thesquire.backroomsmod.block.entity.FlickeringBlockEntity;
 
 public class FluorescentLightBlockEntity extends FlickeringBlockEntity {
 

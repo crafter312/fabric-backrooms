@@ -1,4 +1,4 @@
-package net.thesquire.backroomsmod.block.entity;
+package net.thesquire.backroomsmod.block.entity.flickering;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
