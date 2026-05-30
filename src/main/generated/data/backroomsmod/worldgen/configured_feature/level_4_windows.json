@@ -11,6 +11,7 @@
         "waterlogged": "false"
       }
     },
+    "inWall": true,
     "numWindows": {
       "type": "minecraft:uniform",
       "value": {

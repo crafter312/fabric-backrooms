@@ -26,8 +26,10 @@ public class ModWindowFeature extends Feature<ModWindowFeatureConfig> {
         Random random = context.getRandom();
 
         BlockState blockState = config.blockState();
+
         int numWindows = config.numWindows().get(random);
         int spacing = config.spacing().get(random);
+        boolean inWall = config.inWall();
 
         Direction facingDirection = null;
 
@@ -61,7 +63,7 @@ public class ModWindowFeature extends Feature<ModWindowFeatureConfig> {
 
         // Attempt to place the first block at the origin if the wall is solid there
         if (isWallSolid(world, pos, facingDirection)) {
-            world.setBlockState(pos, blockState, Block.NOTIFY_ALL);
+            world.setBlockState(inWall ? pos : pos.offset(facingDirection), blockState, Block.NOTIFY_ALL);
             placedCount = 1;
         } else {
             return false; // Cannot place the first block, so return
@@ -69,12 +71,12 @@ public class ModWindowFeature extends Feature<ModWindowFeatureConfig> {
 
         // Try placing in one horizontal direction
         Direction firstPlacementDir = facingDirection.rotateYClockwise();
-        placedCount += placeWindowsSegment(world, pos, facingDirection, firstPlacementDir, blockState, numWindows - placedCount, spacing);
+        placedCount += placeWindowsSegment(world, pos, facingDirection, firstPlacementDir, blockState, numWindows - placedCount, spacing, inWall);
 
         // If not all windows are placed, try the other horizontal direction
         if (placedCount < numWindows) {
             Direction secondPlacementDir = facingDirection.rotateYCounterclockwise();
-            placedCount += placeWindowsSegment(world, pos, facingDirection, secondPlacementDir, blockState, numWindows - placedCount, spacing);
+            placedCount += placeWindowsSegment(world, pos, facingDirection, secondPlacementDir, blockState, numWindows - placedCount, spacing, inWall);
         }
 
         return placedCount > 0; // Return true if at least one window was placed
@@ -95,7 +97,7 @@ public class ModWindowFeature extends Feature<ModWindowFeatureConfig> {
      */
     private int placeWindowsSegment(StructureWorldAccess world, BlockPos startPos, Direction wallFacingDirection,
                                     Direction horizontalPlacementDirection, BlockState blockState,
-                                    int numWindowsToAttempt, int spacing) {
+                                    int numWindowsToAttempt, int spacing, boolean inWall) {
         int placedInThisSegment = 0;
 
         for (int i = 1; i <= numWindowsToAttempt; i++) {
@@ -104,7 +106,7 @@ public class ModWindowFeature extends Feature<ModWindowFeatureConfig> {
             BlockPos candidatePos = startPos.offset(horizontalPlacementDirection, i * (spacing + 1));
 
             if (isWallSolid(world, candidatePos, wallFacingDirection)) {
-                world.setBlockState(candidatePos, blockState, Block.NOTIFY_ALL);
+                world.setBlockState(inWall ? candidatePos : candidatePos.offset(wallFacingDirection), blockState, Block.NOTIFY_ALL);
                 placedInThisSegment++;
             } else {
                 break; // Wall is not solid, stop placing in this direction

@@ -17,8 +17,8 @@ import java.util.stream.Stream;
 public class WallSearchPlacementModifier extends PlacementModifier {
 
     public static final Codec<WallSearchPlacementModifier> MODIFIER_CODEC = RecordCodecBuilder.create(instance -> instance.group(
-            Codec.intRange(3, Integer.MAX_VALUE).fieldOf("width").forGetter(WallSearchPlacementModifier::getWidth),
-            Codec.intRange(3, Integer.MAX_VALUE).fieldOf("height").forGetter(WallSearchPlacementModifier::getHeight),
+            Codec.intRange(1, Integer.MAX_VALUE).fieldOf("width").forGetter(WallSearchPlacementModifier::getWidth),
+            Codec.intRange(1, Integer.MAX_VALUE).fieldOf("height").forGetter(WallSearchPlacementModifier::getHeight),
             BlockPredicate.BASE_CODEC.fieldOf("test_condition").forGetter(WallSearchPlacementModifier::getTestCondition)
     ).apply(instance, instance.stable(WallSearchPlacementModifier::new)));
 

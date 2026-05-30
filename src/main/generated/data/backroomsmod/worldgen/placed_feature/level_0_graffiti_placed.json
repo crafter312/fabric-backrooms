@@ -1,0 +1,36 @@
+{
+  "feature": "backroomsmod:graffiti",
+  "placement": [
+    {
+      "type": "minecraft:rarity_filter",
+      "chance": 10
+    },
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "type": "minecraft:height_range",
+      "height": {
+        "type": "minecraft:uniform",
+        "max_inclusive": {
+          "absolute": 21
+        },
+        "min_inclusive": {
+          "absolute": 21
+        }
+      }
+    },
+    {
+      "type": "minecraft:wall_search",
+      "height": 1,
+      "test_condition": {
+        "type": "minecraft:matching_blocks",
+        "blocks": "backroomsmod:yellow_wallpaper"
+      },
+      "width": 3
+    },
+    {
+      "type": "minecraft:biome"
+    }
+  ]
+}

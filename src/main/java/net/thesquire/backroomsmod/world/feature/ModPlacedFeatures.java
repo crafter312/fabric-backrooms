@@ -33,6 +33,7 @@ public class ModPlacedFeatures {
     public static RegistryKey<PlacedFeature> LEVEL_0_THIN_CROOKED_WALL_PLACED_KEY = registerKey("level_0_thin_crooked_wall_placed");
     public static RegistryKey<PlacedFeature> LEVEL_0_FLUORESCENT_LIGHT_PLACED_KEY = registerKey("level_0_fluorescent_light_placed");
     public static RegistryKey<PlacedFeature> LEVEL_0_FLUORESCENT_LIGHT_FLICKERING_PLACED_KEY = registerKey("level_0_fluorescent_light_flickering_placed");
+    public static RegistryKey<PlacedFeature> LEVEL_0_GRAFFITI_PLACED_KEY = registerKey("level_0_graffiti_placed");
 
     // level 1 features
     public static RegistryKey<PlacedFeature> LEVEL_1_WALL_LIGHTS_PLACED_KEY = registerKey("level_1_wall_lights_placed");
@@ -67,6 +68,7 @@ public class ModPlacedFeatures {
                 densityFunctionRegistryEntryLookup.getOrThrow(ModDensityFunctions.BASE_3D_NOISE_LEVEL_4_KEY),
                 densityFunctionRegistryEntryLookup.getOrThrow(ModDensityFunctions.GRID_WALLS_LEVEL_4_KEY));
         PlacementModifier level4WallWindowsTest = new WallSearchPlacementModifier(3, 3, BlockPredicate.matchingBlocks(Blocks.WHITE_CONCRETE));
+        PlacementModifier level0WallGrafitiTest = new WallSearchPlacementModifier(3, 1, BlockPredicate.matchingBlocks(ModBlocks.YELLOW_WALLPAPER));
 
         // fixed y values
         PlacementModifier y20 = HeightRangePlacementModifier.uniform(YOffset.fixed(20), YOffset.fixed(20));
@@ -98,6 +100,9 @@ public class ModPlacedFeatures {
         register(context, LEVEL_0_FLUORESCENT_LIGHT_FLICKERING_PLACED_KEY,
                 configuredFeatureRegistryEntryLookup.getOrThrow(ModConfiguredFeatures.FLUORESCENT_LIGHT_FLICKERING_KEY),
                 modifiersWithRarity(100, y24, lightBlockModifier));
+        register(context, LEVEL_0_GRAFFITI_PLACED_KEY,
+                configuredFeatureRegistryEntryLookup.getOrThrow(ModConfiguredFeatures.GRAFFITI_KEY),
+                modifiersWithRarity(10, y21, level0WallGrafitiTest));
 
         register(context, LEVEL_1_WALL_LIGHTS_PLACED_KEY,
                 configuredFeatureRegistryEntryLookup.getOrThrow(ModConfiguredFeatures.WALL_LIGHTS_KEY),

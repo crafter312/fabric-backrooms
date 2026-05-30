@@ -1,0 +1,15 @@
+{
+  "type": "backroomsmod:window",
+  "config": {
+    "blockState": {
+      "Name": "backroomsmod:graffiti",
+      "Properties": {
+        "facing": "north",
+        "waterlogged": "false"
+      }
+    },
+    "inWall": false,
+    "numWindows": 1,
+    "spacing": 1
+  }
+}

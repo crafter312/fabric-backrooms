@@ -30,6 +30,7 @@ public class ModConfiguredFeatures {
     public static final RegistryKey<ConfiguredFeature<?, ?>> FLUORESCENT_LIGHT_FLICKERING_KEY = registerKey("fluorescent_light_flickering");
     public static final RegistryKey<ConfiguredFeature<?, ?>> CONCRETE_PUDDLE_KEY = registerKey("concrete_puddle");
     public static final RegistryKey<ConfiguredFeature<?, ?>> WALL_LIGHTS_KEY = registerKey("wall_lights");
+    public static final RegistryKey<ConfiguredFeature<?, ?>> GRAFFITI_KEY = registerKey("graffiti");
 
     // level 0 features
     public static final RegistryKey<ConfiguredFeature<?, ?>> LEVEL_0_WALL_KEY = registerKey("level_0_wall");
@@ -91,6 +92,8 @@ public class ModConfiguredFeatures {
         register(context, CONCRETE_PUDDLE_KEY, Feature.ORE, new OreFeatureConfig(Level1PuddleTarget, 30, 0f));
         register(context, WALL_LIGHTS_KEY, ModFeatures.WALL_MOUNTABLE, new ModWallMountableFeatureConfig(
                 ModBlocks.MOUNTABLE_FLUORESCENT_LIGHT.getDefaultState(), ConstantIntProvider.create(18), 0.02f, 0.1f));
+        register(context, GRAFFITI_KEY, ModFeatures.WINDOW, new ModWindowFeatureConfig(
+                ModBlocks.GRAFFITI.getDefaultState(), ConstantIntProvider.create(1), ConstantIntProvider.create(1), false));
 
         register(context, LEVEL_0_WALL_KEY, ModFeatures.WALL, new ModSimpleWallFeatureConfig(Level0WallTarget,
                 ConstantIntProvider.create(4), UniformIntProvider.create(4, 8), UniformIntProvider.create(4, 8)));
@@ -121,7 +124,7 @@ public class ModConfiguredFeatures {
         register(context, LEVEL_4_THIN_CROOKED_WALL_KEY, ModFeatures.THIN_WALL, new ModThinWallFeatureConfig(level4WallTarget,
                 UniformIntProvider.create(2, 3), UniformIntProvider.create(8, 14), ConstantIntProvider.create(4), false));
         register(context, LEVEL_4_WINDOWS_KEY, ModFeatures.WINDOW, new ModWindowFeatureConfig(
-                ModBlocks.OFFICE_WINDOW.getDefaultState(), UniformIntProvider.create(1, 6), UniformIntProvider.create(1, 2)));
+                ModBlocks.OFFICE_WINDOW.getDefaultState(), UniformIntProvider.create(1, 6), UniformIntProvider.create(1, 2), true));
     }
 
     public static RegistryKey<ConfiguredFeature<?, ?>> registerKey(String name) {

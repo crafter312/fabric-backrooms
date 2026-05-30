@@ -37,7 +37,7 @@ public class ModBiomes {
     // biome music
     public static final MusicSound NORMAL_MUSIC = null;
     public static final MusicSound NO_MUSIC = new MusicSound(ModSounds.NO_MUSIC, Integer.MAX_VALUE, Integer.MAX_VALUE, false);
-    public static final MusicSound LEVEL_0_DARK_MUSIC = new MusicSound(ModSounds.LEVEL_0_DARK_MUSIC, 2000, 14000, false);
+    public static final MusicSound LEVEL_0_DARK_MUSIC = new MusicSound(ModSounds.LEVEL_0_DARK_MUSIC, 1000, 10000, false);
 
     // different biome effect parameters
     private static final int defaultFogColor = 12638463;
@@ -71,6 +71,8 @@ public class ModBiomes {
                 placedFeatureRegistryEntryLookup.getOrThrow(ModPlacedFeatures.LEVEL_0_FLUORESCENT_LIGHT_FLICKERING_PLACED_KEY));
         level0BiomeBuilder.feature(GenerationStep.Feature.LOCAL_MODIFICATIONS,
                 placedFeatureRegistryEntryLookup.getOrThrow(ModPlacedFeatures.LEVEL_0_FLUORESCENT_LIGHT_PLACED_KEY));
+        level0BiomeBuilder.feature(GenerationStep.Feature.LOCAL_MODIFICATIONS,
+                placedFeatureRegistryEntryLookup.getOrThrow(ModPlacedFeatures.LEVEL_0_GRAFFITI_PLACED_KEY));
 
         // level 0 dark biome settings
         SpawnSettings.Builder level0DarkSpawnBuilder = new SpawnSettings.Builder();
@@ -85,6 +87,8 @@ public class ModBiomes {
                 placedFeatureRegistryEntryLookup.getOrThrow(ModPlacedFeatures.LEVEL_0_WALL_PLACED_KEY));
         level0DarkBiomeBuilder.feature(GenerationStep.Feature.LOCAL_MODIFICATIONS,
                 placedFeatureRegistryEntryLookup.getOrThrow(ModPlacedFeatures.LEVEL_0_FLUORESCENT_LIGHT_FLICKERING_PLACED_KEY));
+        level0DarkBiomeBuilder.feature(GenerationStep.Feature.LOCAL_MODIFICATIONS,
+                placedFeatureRegistryEntryLookup.getOrThrow(ModPlacedFeatures.LEVEL_0_GRAFFITI_PLACED_KEY));
 
         // level 1 biome settings
         SpawnSettings.Builder level1SpawnBuilder = new SpawnSettings.Builder();
