@@ -119,7 +119,7 @@ public class ModBlocks {
                 new ElevatorButton(FabricBlockSettings.copy(IRON_BUTTON), BlockSetType.IRON, 20));
         ELEVATOR_DOOR = registerBlock("elevator_door",
                 new ElevatorDoor(FabricBlockSettings.copy(Blocks.IRON_DOOR), ModBlockSetTypes.ELEVATOR));
-        OFFICE_WINDOW = registerBlock("office_window",
+        OFFICE_WINDOW = registerBlockWithoutBlockItem("office_window",
                 new OfficeWindowBlock(BlockSetType.IRON, FabricBlockSettings.copy(Blocks.GLASS_PANE)));
     }
 

@@ -147,7 +147,7 @@ public class ModPlacedFeatures {
                 modifiersWithCount(4, y25, lightBlockModifier));
         register(context, LEVEL_4_WINDOWS_PLACED_KEY,
                 configuredFeatureRegistryEntryLookup.getOrThrow(ModConfiguredFeatures.LEVEL_4_WINDOWS_KEY),
-                modifiersWithCount(2, y22, level4WallWindowsTest));
+                modifiersWithRarity(2, y22, level4WallWindowsTest));
     }
 
     public static RegistryKey<PlacedFeature> registerKey(String name) {

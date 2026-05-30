@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "backroomsmod:item/office_window"
+    "layer0": "backroomsmod:item/framed_window"
   }
 }
