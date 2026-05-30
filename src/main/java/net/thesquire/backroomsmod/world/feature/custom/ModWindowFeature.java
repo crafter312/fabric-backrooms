@@ -59,7 +59,7 @@ public class ModWindowFeature extends Feature<ModWindowFeatureConfig> {
             blockState = blockState.with(Properties.FACING, facingDirection);
         }
 
-        int placedCount = 0;
+        int placedCount;
 
         // Attempt to place the first block at the origin if the wall is solid there
         if (isWallSolid(world, pos, facingDirection)) {
