@@ -18,6 +18,222 @@
     {
       "when": { "facing": "west" },
       "apply": { "model": "backroomsmod:block/abandoned_supplies/with_carpet/backpack", "y": 90 }
+    },
+    {
+      "when": {
+        "AND": [
+          { "facing": "north" },
+          { "has_almond_water": true }
+        ]
+      },
+      "apply": { "model": "backroomsmod:block/abandoned_supplies/with_carpet/almond_water", "y": 180 }
+    },
+    {
+      "when": {
+        "AND": [
+          { "facing": "east" },
+          { "has_almond_water": true }
+        ]
+      },
+      "apply": { "model": "backroomsmod:block/abandoned_supplies/with_carpet/almond_water", "y": 270 }
+    },
+    {
+      "when": {
+        "AND": [
+          { "facing": "south" },
+          { "has_almond_water": true }
+        ]
+      },
+      "apply": { "model": "backroomsmod:block/abandoned_supplies/with_carpet/almond_water" }
+    },
+    {
+      "when": {
+        "AND": [
+          { "facing": "west" },
+          { "has_almond_water": true }
+        ]
+      },
+      "apply": { "model": "backroomsmod:block/abandoned_supplies/with_carpet/almond_water", "y": 90 }
+    },
+    {
+      "when": {
+        "AND": [
+          { "facing": "north" },
+          { "has_spray_paint": true }
+        ]
+      },
+      "apply": { "model": "backroomsmod:block/abandoned_supplies/with_carpet/spray_paint", "y": 180 }
+    },
+    {
+      "when": {
+        "AND": [
+          { "facing": "east" },
+          { "has_spray_paint": true }
+        ]
+      },
+      "apply": { "model": "backroomsmod:block/abandoned_supplies/with_carpet/spray_paint", "y": 270 }
+    },
+    {
+      "when": {
+        "AND": [
+          { "facing": "south" },
+          { "has_spray_paint": true }
+        ]
+      },
+      "apply": { "model": "backroomsmod:block/abandoned_supplies/with_carpet/spray_paint" }
+    },
+    {
+      "when": {
+        "AND": [
+          { "facing": "west" },
+          { "has_spray_paint": true }
+        ]
+      },
+      "apply": { "model": "backroomsmod:block/abandoned_supplies/with_carpet/spray_paint", "y": 90 }
+    },
+    {
+      "when": {
+        "AND": [
+          { "facing": "north" },
+          { "has_oak_logs": true }
+        ]
+      },
+      "apply": { "model": "backroomsmod:block/abandoned_supplies/with_carpet/oak_log", "y": 180 }
+    },
+    {
+      "when": {
+        "AND": [
+          { "facing": "east" },
+          { "has_oak_logs": true }
+        ]
+      },
+      "apply": { "model": "backroomsmod:block/abandoned_supplies/with_carpet/oak_log", "y": 270 }
+    },
+    {
+      "when": {
+        "AND": [
+          { "facing": "south" },
+          { "has_oak_logs": true }
+        ]
+      },
+      "apply": { "model": "backroomsmod:block/abandoned_supplies/with_carpet/oak_log" }
+    },
+    {
+      "when": {
+        "AND": [
+          { "facing": "west" },
+          { "has_oak_logs": true }
+        ]
+      },
+      "apply": { "model": "backroomsmod:block/abandoned_supplies/with_carpet/oak_log", "y": 90 }
+    },
+    {
+      "when": {
+        "AND": [
+          { "facing": "north" },
+          { "has_sticks": true }
+        ]
+      },
+      "apply": { "model": "backroomsmod:block/abandoned_supplies/with_carpet/sticks", "y": 180 }
+    },
+    {
+      "when": {
+        "AND": [
+          { "facing": "east" },
+          { "has_sticks": true }
+        ]
+      },
+      "apply": { "model": "backroomsmod:block/abandoned_supplies/with_carpet/sticks", "y": 270 }
+    },
+    {
+      "when": {
+        "AND": [
+          { "facing": "south" },
+          { "has_sticks": true }
+        ]
+      },
+      "apply": { "model": "backroomsmod:block/abandoned_supplies/with_carpet/sticks" }
+    },
+    {
+      "when": {
+        "AND": [
+          { "facing": "west" },
+          { "has_sticks": true }
+        ]
+      },
+      "apply": { "model": "backroomsmod:block/abandoned_supplies/with_carpet/sticks", "y": 90 }
+    },
+    {
+      "when": {
+        "AND": [
+          { "facing": "north" },
+          { "has_flint_and_steel": true }
+        ]
+      },
+      "apply": { "model": "backroomsmod:block/abandoned_supplies/with_carpet/flint_and_steel", "y": 180 }
+    },
+    {
+      "when": {
+        "AND": [
+          { "facing": "east" },
+          { "has_flint_and_steel": true }
+        ]
+      },
+      "apply": { "model": "backroomsmod:block/abandoned_supplies/with_carpet/flint_and_steel", "y": 270 }
+    },
+    {
+      "when": {
+        "AND": [
+          { "facing": "south" },
+          { "has_flint_and_steel": true }
+        ]
+      },
+      "apply": { "model": "backroomsmod:block/abandoned_supplies/with_carpet/flint_and_steel" }
+    },
+    {
+      "when": {
+        "AND": [
+          { "facing": "west" },
+          { "has_flint_and_steel": true }
+        ]
+      },
+      "apply": { "model": "backroomsmod:block/abandoned_supplies/with_carpet/flint_and_steel", "y": 90 }
+    },
+    {
+      "when": {
+        "AND": [
+          { "facing": "north" },
+          { "has_coal": true }
+        ]
+      },
+      "apply": { "model": "backroomsmod:block/abandoned_supplies/with_carpet/coal", "y": 180 }
+    },
+    {
+      "when": {
+        "AND": [
+          { "facing": "east" },
+          { "has_coal": true }
+        ]
+      },
+      "apply": { "model": "backroomsmod:block/abandoned_supplies/with_carpet/coal", "y": 270 }
+    },
+    {
+      "when": {
+        "AND": [
+          { "facing": "south" },
+          { "has_coal": true }
+        ]
+      },
+      "apply": { "model": "backroomsmod:block/abandoned_supplies/with_carpet/coal" }
+    },
+    {
+      "when": {
+        "AND": [
+          { "facing": "west" },
+          { "has_coal": true }
+        ]
+      },
+      "apply": { "model": "backroomsmod:block/abandoned_supplies/with_carpet/coal", "y": 90 }
     }
   ]
 }

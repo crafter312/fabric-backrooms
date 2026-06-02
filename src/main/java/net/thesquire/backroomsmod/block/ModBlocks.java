@@ -122,7 +122,7 @@ public class ModBlocks {
                 new ElevatorDoor(FabricBlockSettings.copy(Blocks.IRON_DOOR), ModBlockSetTypes.ELEVATOR));
         OFFICE_WINDOW = registerBlockWithoutBlockItem("office_window",
                 new OfficeWindowBlock(BlockSetType.IRON, FabricBlockSettings.copy(Blocks.GLASS_PANE)));
-        ABANDONED_SUPPLIES = registerBlock("abandoned_supplies",
+        ABANDONED_SUPPLIES = registerBlockWithoutBlockItem("abandoned_supplies",
                 new AbandonedSuppliesBlock(FabricBlockSettings.copy(Blocks.WHITE_WOOL)));
     }
 

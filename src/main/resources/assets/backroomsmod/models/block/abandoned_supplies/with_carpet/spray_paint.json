@@ -2,8 +2,8 @@
 	"format_version": "1.9.0",
 	"credit": "Made with Blockbench",
 	"textures": {
-		"0": "spray_paint",
-		"particle": "spray_paint"
+		"0": "backroomsmod:block/abandoned_supplies/spray_paint",
+		"particle": "backroomsmod:block/abandoned_supplies/spray_paint"
 	},
 	"elements": [
 		{

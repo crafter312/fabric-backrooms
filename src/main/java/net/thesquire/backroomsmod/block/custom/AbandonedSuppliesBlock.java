@@ -6,12 +6,22 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.block.ShapeContext;
 import net.minecraft.state.StateManager;
+import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
+import net.thesquire.backroomsmod.block.ModBlockProperties;
 
 public class AbandonedSuppliesBlock extends HorizontalFacingBlock {
+
+    public static final BooleanProperty HAS_ALMOND_WATER = ModBlockProperties.HAS_ALMOND_WATER;
+    public static final BooleanProperty HAS_SPRAY_PAINT = ModBlockProperties.HAS_SPRAY_PAINT;
+    public static final BooleanProperty HAS_OAK_LOGS = ModBlockProperties.HAS_OAK_LOGS;
+    public static final BooleanProperty HAS_STICKS = ModBlockProperties.HAS_STICKS;
+    public static final BooleanProperty HAS_FLINT_AND_STEEL = ModBlockProperties.HAS_FLINT_AND_STEEL;
+    public static final BooleanProperty HAS_COAL = ModBlockProperties.HAS_COAL;
 
     private static final VoxelShape NORTH_SHAPE = VoxelShapes.union(
         VoxelShapes.cuboid(0.024999999999999856, 0, -0.024999999999999967, 1.025, 0.0625, 0.9750000000000001),
@@ -37,6 +47,15 @@ public class AbandonedSuppliesBlock extends HorizontalFacingBlock {
 
     public AbandonedSuppliesBlock(Settings settings) {
         super(settings);
+        this.setDefaultState(this.getDefaultState()
+                .with(FACING, Direction.NORTH)
+                .with(HAS_ALMOND_WATER, false)
+                .with(HAS_SPRAY_PAINT, false)
+                .with(HAS_OAK_LOGS, false)
+                .with(HAS_STICKS, false)
+                .with(HAS_FLINT_AND_STEEL, false)
+                .with(HAS_COAL, false)
+        );
     }
 
     @Override
@@ -65,7 +84,15 @@ public class AbandonedSuppliesBlock extends HorizontalFacingBlock {
 
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-        builder.add(FACING);
+        builder.add(
+                FACING,
+                HAS_ALMOND_WATER,
+                HAS_SPRAY_PAINT,
+                HAS_OAK_LOGS,
+                HAS_STICKS,
+                HAS_FLINT_AND_STEEL,
+                HAS_COAL
+        );
     }
 
 }

@@ -20,6 +20,7 @@
   "block.backroomsmod.office_window": "Office Window",
   "block.backroomsmod.framed_window": "Framed Window",
   "block.backroomsmod.graffiti": "Graffiti",
+  "block.backroomsmod.abandoned_supplies": "Abandoned Supplies",
 
   "_comment2": "Mod Items",
   "item.backroomsmod.raw_bismuthinite": "Raw Bismuthinite",
@@ -38,6 +39,7 @@
   "item.backroomsmod.ln2_coolant_cell": "LN2 Coolant Cell",
   "item.backroomsmod.superconductor_magnet": "Superconducting Magnet",
   "item.backroomsmod.almond_water": "Almond Water",
+  "item.backroomsmod.spray_paint": "Spray Paint",
 
   "_comment3": "Sound Subtitles",
   "sound.backroomsmod.music.none": "",
