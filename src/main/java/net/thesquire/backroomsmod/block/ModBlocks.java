@@ -71,6 +71,7 @@ public class ModBlocks {
     public static Block ELEVATOR_BUTTON;
     public static Block ELEVATOR_DOOR;
     public static Block OFFICE_WINDOW;
+    public static Block ABANDONED_SUPPLIES;
 
     public static void registerModBlocks() {
         BackroomsMod.LOGGER.info("Registering mod blocks for " + BackroomsMod.MOD_ID);
@@ -121,6 +122,8 @@ public class ModBlocks {
                 new ElevatorDoor(FabricBlockSettings.copy(Blocks.IRON_DOOR), ModBlockSetTypes.ELEVATOR));
         OFFICE_WINDOW = registerBlockWithoutBlockItem("office_window",
                 new OfficeWindowBlock(BlockSetType.IRON, FabricBlockSettings.copy(Blocks.GLASS_PANE)));
+        ABANDONED_SUPPLIES = registerBlock("abandoned_supplies",
+                new AbandonedSuppliesBlock(FabricBlockSettings.copy(Blocks.WHITE_WOOL)));
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////

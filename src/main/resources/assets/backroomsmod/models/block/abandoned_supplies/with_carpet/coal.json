@@ -1,0 +1,141 @@
+{
+	"format_version": "1.9.0",
+	"credit": "Made with Blockbench",
+	"parent": "block/block",
+	"textures": {
+		"8": "minecraft:item/coal",
+		"particle": "minecraft:item/coal"
+	},
+	"elements": [
+		{
+			"name": "coal_0",
+			"from": [4.35, 0.95, 13.3],
+			"to": [5.35, 1.2, 16.55],
+			"rotation": {"angle": 22.5, "axis": "y", "origin": [3.1, 0.95, 12.8]},
+			"faces": {
+				"north": {"uv": [9, 2, 5, 3], "texture": "#8"},
+				"east": {"uv": [8, 2, 9, 15], "rotation": 90, "texture": "#8"},
+				"south": {"uv": [5, 14, 9, 15], "texture": "#8"},
+				"west": {"uv": [5, 2, 6, 15], "rotation": 270, "texture": "#8"},
+				"up": {"uv": [5, 2, 9, 15], "texture": "#8"}
+			}
+		},
+		{
+			"name": "coal_1",
+			"from": [4.1, 0.95, 13.55],
+			"to": [4.35, 1.2, 16.3],
+			"rotation": {"angle": 22.5, "axis": "y", "origin": [3.1, 0.95, 12.8]},
+			"faces": {
+				"north": {"uv": [5, 3, 4, 4], "texture": "#8"},
+				"south": {"uv": [4, 13, 5, 14], "texture": "#8"},
+				"west": {"uv": [4, 3, 5, 14], "rotation": 270, "texture": "#8"},
+				"up": {"uv": [4, 3, 5, 14], "texture": "#8"}
+			}
+		},
+		{
+			"name": "coal_2",
+			"from": [5.35, 0.95, 13.55],
+			"to": [5.6, 1.2, 16.3],
+			"rotation": {"angle": 22.5, "axis": "y", "origin": [3.1, 0.95, 12.8]},
+			"faces": {
+				"north": {"uv": [10, 3, 9, 4], "texture": "#8"},
+				"east": {"uv": [9, 3, 10, 14], "rotation": 90, "texture": "#8"},
+				"south": {"uv": [9, 13, 10, 14], "texture": "#8"},
+				"up": {"uv": [9, 3, 10, 14], "texture": "#8"}
+			}
+		},
+		{
+			"name": "coal_3",
+			"from": [3.85, 0.95, 13.8],
+			"to": [4.1, 1.2, 16.05],
+			"rotation": {"angle": 22.5, "axis": "y", "origin": [3.1, 0.95, 12.8]},
+			"faces": {
+				"north": {"uv": [4, 4, 3, 5], "texture": "#8"},
+				"south": {"uv": [3, 12, 4, 13], "texture": "#8"},
+				"west": {"uv": [3, 4, 4, 13], "rotation": 270, "texture": "#8"},
+				"up": {"uv": [3, 4, 4, 13], "texture": "#8"}
+			}
+		},
+		{
+			"name": "coal_4",
+			"from": [5.6, 0.95, 13.8],
+			"to": [5.85, 1.2, 16.3],
+			"rotation": {"angle": 22.5, "axis": "y", "origin": [3.1, 0.95, 12.8]},
+			"faces": {
+				"north": {"uv": [11, 4, 10, 5], "texture": "#8"},
+				"east": {"uv": [10, 4, 11, 14], "rotation": 90, "texture": "#8"},
+				"south": {"uv": [10, 13, 11, 14], "texture": "#8"},
+				"up": {"uv": [10, 4, 11, 14], "texture": "#8"}
+			}
+		},
+		{
+			"name": "coal_5",
+			"from": [5.85, 0.95, 14.05],
+			"to": [6.1, 1.2, 16.3],
+			"rotation": {"angle": 22.5, "axis": "y", "origin": [3.1, 0.95, 12.8]},
+			"faces": {
+				"north": {"uv": [12, 5, 11, 6], "texture": "#8"},
+				"east": {"uv": [11, 5, 12, 14], "rotation": 90, "texture": "#8"},
+				"south": {"uv": [11, 13, 12, 14], "texture": "#8"},
+				"up": {"uv": [11, 5, 12, 14], "texture": "#8"}
+			}
+		},
+		{
+			"name": "coal_6",
+			"from": [6.1, 0.95, 14.3],
+			"to": [6.35, 1.2, 16.3],
+			"rotation": {"angle": 22.5, "axis": "y", "origin": [3.1, 0.95, 12.8]},
+			"faces": {
+				"north": {"uv": [13, 6, 12, 7], "texture": "#8"},
+				"east": {"uv": [12, 6, 13, 14], "rotation": 90, "texture": "#8"},
+				"south": {"uv": [12, 13, 13, 14], "texture": "#8"},
+				"up": {"uv": [12, 6, 13, 14], "texture": "#8"}
+			}
+		},
+		{
+			"name": "coal_7",
+			"from": [3.6, 0.95, 14.55],
+			"to": [3.85, 1.2, 15.8],
+			"rotation": {"angle": 22.5, "axis": "y", "origin": [3.1, 0.95, 12.8]},
+			"faces": {
+				"north": {"uv": [3, 7, 2, 8], "texture": "#8"},
+				"south": {"uv": [2, 11, 3, 12], "texture": "#8"},
+				"west": {"uv": [2, 7, 3, 12], "rotation": 270, "texture": "#8"},
+				"up": {"uv": [2, 7, 3, 12], "texture": "#8"}
+			}
+		},
+		{
+			"name": "coal_8",
+			"from": [6.35, 0.95, 14.55],
+			"to": [6.6, 1.2, 16.05],
+			"rotation": {"angle": 22.5, "axis": "y", "origin": [3.1, 0.95, 12.8]},
+			"faces": {
+				"north": {"uv": [14, 7, 13, 8], "texture": "#8"},
+				"east": {"uv": [13, 7, 14, 13], "rotation": 90, "texture": "#8"},
+				"south": {"uv": [13, 12, 14, 13], "texture": "#8"},
+				"up": {"uv": [13, 7, 14, 13], "texture": "#8"}
+			}
+		},
+		{
+			"name": "coal_9",
+			"from": [6.6, 0.95, 15.05],
+			"to": [6.85, 1.2, 15.8],
+			"rotation": {"angle": 22.5, "axis": "y", "origin": [3.1, 0.95, 12.8]},
+			"faces": {
+				"north": {"uv": [15, 9, 14, 10], "texture": "#8"},
+				"east": {"uv": [14, 9, 15, 12], "rotation": 90, "texture": "#8"},
+				"south": {"uv": [14, 11, 15, 12], "texture": "#8"},
+				"up": {"uv": [14, 9, 15, 12], "texture": "#8"}
+			}
+		}
+	],
+	"groups": [
+		{
+			"name": "coal",
+			"origin": [8, 8, 8],
+			"scope": 0,
+			"color": 0,
+			"children": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+		}
+	]
+}

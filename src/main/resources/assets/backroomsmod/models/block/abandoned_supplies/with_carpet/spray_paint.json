@@ -1,0 +1,81 @@
+{
+	"format_version": "1.9.0",
+	"credit": "Made with Blockbench",
+	"textures": {
+		"0": "spray_paint",
+		"particle": "spray_paint"
+	},
+	"elements": [
+		{
+			"name": "can",
+			"from": [2, 1, 12.4],
+			"to": [4, 6, 14.4],
+			"rotation": {"angle": 0, "axis": "y", "origin": [2, 1, 11.4]},
+			"faces": {
+				"north": {"uv": [0, 0, 2, 5], "texture": "#0"},
+				"east": {"uv": [2, 0, 4, 5], "texture": "#0"},
+				"south": {"uv": [4, 0, 6, 5], "texture": "#0"},
+				"west": {"uv": [0, 5, 2, 10], "texture": "#0"},
+				"up": {"uv": [4, 7, 2, 5], "texture": "#0"},
+				"down": {"uv": [2, 7, 5, 10], "texture": "#0"}
+			}
+		},
+		{
+			"name": "nozzle",
+			"from": [2.5, 6, 12.9],
+			"to": [3.5, 7, 13.9],
+			"rotation": {"angle": 0, "axis": "y", "origin": [1.5, 6, 11.9]},
+			"faces": {
+				"north": {"uv": [4, 5, 5, 6], "texture": "#0"},
+				"east": {"uv": [5, 5, 6, 6], "texture": "#0"},
+				"south": {"uv": [6, 0, 7, 1], "texture": "#0"},
+				"west": {"uv": [6, 1, 7, 2], "texture": "#0"},
+				"up": {"uv": [7, 3, 6, 2], "texture": "#0"}
+			}
+		}
+	],
+	"display": {
+		"thirdperson_righthand": {
+			"translation": [5, 3, -6.25]
+		},
+		"thirdperson_lefthand": {
+			"translation": [-5, 3, -6.25]
+		},
+		"firstperson_righthand": {
+			"translation": [1.25, 8, 0]
+		},
+		"firstperson_lefthand": {
+			"translation": [-8.75, 8, 0]
+		},
+		"ground": {
+			"rotation": [90, 0, 0],
+			"translation": [10, 9, 11.75],
+			"scale": [2, 2, 2]
+		},
+		"gui": {
+			"translation": [12.75, 10, 0],
+			"scale": [2.5, 2.5, 2.5]
+		},
+		"head": {
+			"translation": [10, 20.4, -10.75],
+			"scale": [2, 2, 2]
+		},
+		"fixed": {
+			"translation": [10, 8, -11.75],
+			"scale": [2, 2, 2]
+		},
+		"on_shelf": {
+			"translation": [15, 1, -16.75],
+			"scale": [3, 3, 3]
+		}
+	},
+	"groups": [
+		{
+			"name": "spray_paint",
+			"origin": [8, 8, 8],
+			"scope": 0,
+			"color": 0,
+			"children": [0, 1]
+		}
+	]
+}

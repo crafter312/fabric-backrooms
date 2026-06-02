@@ -38,7 +38,8 @@ public class BackroomsModClient implements ClientModInitializer {
                 ModBlocks.ELEVATOR_BUTTON,
                 ModBlocks.ELEVATOR_DOOR,
                 ModBlocks.OFFICE_WINDOW,
-                ModBlocks.FRAMED_WINDOW);
+                ModBlocks.FRAMED_WINDOW,
+                ModBlocks.ABANDONED_SUPPLIES);
 
         BlockRenderLayerMap.INSTANCE.putBlocks(RenderLayer.getTranslucent(),
                 ModBlocks.GRAFFITI);

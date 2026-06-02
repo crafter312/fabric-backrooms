@@ -1,0 +1,36 @@
+{
+  "multipart": [
+    {
+      "when": { "facing": "north" },
+      "apply": { "model": "minecraft:block/light_gray_carpet", "y": 180 }
+    },
+    {
+      "when": { "facing": "north" },
+      "apply": { "model": "backroomsmod:block/abandoned_supplies/with_carpet/backpack", "y": 180 }
+    },
+    {
+      "when": { "facing": "east" },
+      "apply": { "model": "minecraft:block/light_gray_carpet", "y": 270 }
+    },
+    {
+      "when": { "facing": "east" },
+      "apply": { "model": "backroomsmod:block/abandoned_supplies/with_carpet/backpack", "y": 270 }
+    },
+    {
+      "when": { "facing": "south" },
+      "apply": { "model": "minecraft:block/light_gray_carpet" }
+    },
+    {
+      "when": { "facing": "south" },
+      "apply": { "model": "backroomsmod:block/abandoned_supplies/with_carpet/backpack" }
+    },
+    {
+      "when": { "facing": "west" },
+      "apply": { "model": "minecraft:block/light_gray_carpet", "y": 90 }
+    },
+    {
+      "when": { "facing": "west" },
+      "apply": { "model": "backroomsmod:block/abandoned_supplies/with_carpet/backpack", "y": 90 }
+    }
+  ]
+}

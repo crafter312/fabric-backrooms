@@ -31,6 +31,7 @@ public class ModItems {
     public static Item INDIUM_INGOT;
     public static Item SUPERCONDUCTOR_MAGNET_COIL;
     public static Item SUPERCONDUCTOR_MAGNET;
+    public static Item SPRAY_PAINT;
 
     // food items
     public static Item ALMOND_WATER;
@@ -54,6 +55,7 @@ public class ModItems {
         INDIUM_INGOT = registerSimpleItem("indium_ingot");
         SUPERCONDUCTOR_MAGNET_COIL = registerSimpleItem("superconductor_magnet_coil");
         SUPERCONDUCTOR_MAGNET = registerSimpleItem("superconductor_magnet");
+        SPRAY_PAINT = registerSimpleItem("spray_paint");
 
         // food items
         ALMOND_WATER = registerItem("almond_water", new Drink(new FabricItemSettings().food(ModFoodComponents.ALMOND_WATER)
