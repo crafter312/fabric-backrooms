@@ -30,12 +30,7 @@ public class OfficeWindowBlock extends FramedWindowBlock implements BlockEntityP
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-        return validateTicker(type, ModBlockEntities.OFFICE_WINDOW, OfficeWindowBlockEntity::staticTick);
-    }
-
-    @Nullable
-    protected static <E extends BlockEntity, A extends BlockEntity> BlockEntityTicker<A> validateTicker(BlockEntityType<A> givenType, BlockEntityType<E> expectedType, BlockEntityTicker<? super E> ticker) {
-        return expectedType == givenType ? (BlockEntityTicker<A>)ticker : null;
+        return ModBlockWithEntity.checkType(type, ModBlockEntities.OFFICE_WINDOW, OfficeWindowBlockEntity::staticTick);
     }
 
     @Override
