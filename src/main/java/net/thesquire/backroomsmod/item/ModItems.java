@@ -55,11 +55,11 @@ public class ModItems {
         INDIUM_INGOT = registerSimpleItem("indium_ingot");
         SUPERCONDUCTOR_MAGNET_COIL = registerSimpleItem("superconductor_magnet_coil");
         SUPERCONDUCTOR_MAGNET = registerSimpleItem("superconductor_magnet");
-        SPRAY_PAINT = registerSimpleItem("spray_paint");
+        SPRAY_PAINT = registerItem("spray_paint", new Item(new FabricItemSettings().maxCount(1).maxDamage(16)));
 
         // food items
         ALMOND_WATER = registerItem("almond_water", new Drink(new FabricItemSettings().food(ModFoodComponents.ALMOND_WATER)
-                .recipeRemainder(Items.GLASS_BOTTLE)));
+                .recipeRemainder(Items.GLASS_BOTTLE).maxCount(16)));
 
         // items with tooltips
         LOW_TEMP_SOLDER_INGOT = registerSimpleItemWithTooltip("low_temp_solder_ingot",

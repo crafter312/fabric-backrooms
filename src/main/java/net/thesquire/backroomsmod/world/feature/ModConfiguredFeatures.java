@@ -114,7 +114,7 @@ public class ModConfiguredFeatures {
                 placedFeatureRegistryEntryLookup.getOrThrow(ModPlacedFeatures.LEVEL_1_PUDDLE_PLACED_KEY),
                 new Vec3i(0, -5, 0)));
         register(context, LEVEL_1_LOOT_CHEST_KEY, ModFeatures.LOOT_CHEST,
-                new ModLootChestFeatureConfig(BackroomsMod.makeId("chests/level_1_supplies")));
+                new ModLootChestFeatureConfig(BackroomsMod.makeId("chests/almond_water")));
 
         register(context, LEVEL_2_PIPE_NETWORK_KEY, ModFeatures.PIPE_NETWORK,
                 ModPipeNetworkFeatureConfig.of(ModBlocks.PIPE_BLOCK.getDefaultState(), 1.0f, ConstantIntProvider.create(3), BlockPredicate.replaceable()));
