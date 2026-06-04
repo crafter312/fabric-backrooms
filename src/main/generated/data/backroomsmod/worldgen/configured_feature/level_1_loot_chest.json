@@ -1,6 +1,14 @@
 {
   "type": "backroomsmod:loot_chest",
   "config": {
-    "lootTableKey": "backroomsmod:chests/almond_water"
+    "lootTableKey": "backroomsmod:chests/almond_water",
+    "lootableContainer": {
+      "Name": "minecraft:barrel",
+      "Properties": {
+        "facing": "north",
+        "open": "false"
+      }
+    },
+    "preferFacingOutwards": true
   }
 }

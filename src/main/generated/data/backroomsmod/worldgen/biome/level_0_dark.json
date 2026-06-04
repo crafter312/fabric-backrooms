@@ -27,7 +27,8 @@
       "backroomsmod:level_0_thin_straight_wall_placed",
       "backroomsmod:level_0_wall_placed",
       "backroomsmod:level_0_fluorescent_light_flickering_placed",
-      "backroomsmod:level_0_graffiti_placed"
+      "backroomsmod:level_0_graffiti_placed",
+      "backroomsmod:level_0_abandoned_supplies_placed"
     ]
   ],
   "has_precipitation": false,

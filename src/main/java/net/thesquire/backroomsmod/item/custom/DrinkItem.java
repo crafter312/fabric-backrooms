@@ -28,9 +28,10 @@ public class DrinkItem extends Item {
         user.eatFood(world, stack);
 
         PlayerEntity playerEntity = user instanceof PlayerEntity ? (PlayerEntity) user : null;
-        if (playerEntity == null || !playerEntity.getAbilities().creativeMode) {
-            if(stack.isEmpty()) return new ItemStack(getRecipeRemainder());
-            else if(playerEntity != null) playerEntity.getInventory().offerOrDrop(new ItemStack(getRecipeRemainder()));
+        Item remainder = getRecipeRemainder();
+        if ((playerEntity == null || !playerEntity.getAbilities().creativeMode) && remainder != null) {
+            if(stack.isEmpty()) return new ItemStack(remainder);
+            else if(playerEntity != null) playerEntity.getInventory().offerOrDrop(new ItemStack(remainder));
         }
 
         return stack;

@@ -36,6 +36,7 @@ public class ModConfiguredFeatures {
     public static final RegistryKey<ConfiguredFeature<?, ?>> LEVEL_0_WALL_KEY = registerKey("level_0_wall");
     public static final RegistryKey<ConfiguredFeature<?, ?>> LEVEL_0_THIN_STRAIGHT_WALL_KEY = registerKey("level_0_thin_straight_wall");
     public static final RegistryKey<ConfiguredFeature<?, ?>> LEVEL_0_THIN_CROOKED_WALL_KEY = registerKey("level_0_thin_crooked_wall");
+    public static final RegistryKey<ConfiguredFeature<?, ?>> LEVEL_0_ABANDONED_SUPPLIES_KEY = registerKey("level_0_abandoned_supplies");
 
     // level 1 features
     public static final RegistryKey<ConfiguredFeature<?, ?>> LEVEL_1_DRIPPING_CONCRETE_KEY = registerKey("level_1_dripping_concrete");
@@ -101,6 +102,9 @@ public class ModConfiguredFeatures {
                 UniformIntProvider.create(1, 3), UniformIntProvider.create(8, 12), ConstantIntProvider.create(4), true));
         register(context, LEVEL_0_THIN_CROOKED_WALL_KEY, ModFeatures.THIN_WALL, new ModThinWallFeatureConfig(Level0WallTarget,
                 UniformIntProvider.create(3, 6), UniformIntProvider.create(8, 14), ConstantIntProvider.create(4), false));
+        register(context, LEVEL_0_ABANDONED_SUPPLIES_KEY, ModFeatures.LOOT_CHEST,
+                new ModLootChestFeatureConfig(BackroomsMod.makeId("chests/abandoned_supplies"),
+                        ModBlocks.ABANDONED_SUPPLIES.getDefaultState(), false));
 
         register(context, LEVEL_1_DRIPPING_CONCRETE_KEY, Feature.REPLACE_SINGLE_BLOCK, new EmeraldOreFeatureConfig(Level1DrippingConcreteTarget));
         register(context, LEVEL_1_REBAR_CONCRETE_KEY, ModFeatures.FLAT_ORE_FEATURE,
@@ -114,7 +118,8 @@ public class ModConfiguredFeatures {
                 placedFeatureRegistryEntryLookup.getOrThrow(ModPlacedFeatures.LEVEL_1_PUDDLE_PLACED_KEY),
                 new Vec3i(0, -5, 0)));
         register(context, LEVEL_1_LOOT_CHEST_KEY, ModFeatures.LOOT_CHEST,
-                new ModLootChestFeatureConfig(BackroomsMod.makeId("chests/almond_water")));
+                new ModLootChestFeatureConfig(BackroomsMod.makeId("chests/almond_water"),
+                        Blocks.BARREL.getDefaultState(), true));
 
         register(context, LEVEL_2_PIPE_NETWORK_KEY, ModFeatures.PIPE_NETWORK,
                 ModPipeNetworkFeatureConfig.of(ModBlocks.PIPE_BLOCK.getDefaultState(), 1.0f, ConstantIntProvider.create(3), BlockPredicate.replaceable()));

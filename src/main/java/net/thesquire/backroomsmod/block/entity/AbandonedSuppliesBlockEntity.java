@@ -1,5 +1,6 @@
 package net.thesquire.backroomsmod.block.entity;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntity;
@@ -17,6 +18,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.WorldAccess;
 import net.thesquire.backroomsmod.block.ModBlockEntities;
 import net.thesquire.backroomsmod.block.ModBlocks;
 import net.thesquire.backroomsmod.block.custom.AbandonedSuppliesBlock;
@@ -25,7 +27,7 @@ import net.thesquire.backroomsmod.item.ModItems;
 
 public class AbandonedSuppliesBlockEntity extends BlockEntity implements ImplementedInventory {
 
-    private final DefaultedList<ItemStack> items = DefaultedList.ofSize(9, ItemStack.EMPTY);
+    private final DefaultedList<ItemStack> items = DefaultedList.ofSize(27, ItemStack.EMPTY);
 
     public AbandonedSuppliesBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlockEntities.ABANDONED_SUPPLIES, pos, state);
@@ -38,10 +40,16 @@ public class AbandonedSuppliesBlockEntity extends BlockEntity implements Impleme
 
     @Override
     public void markDirty() {
+        super.markDirty();
         if (this.world == null || this.world.isClient()) return;
 
+        this.updateBlockState(this.world);
+    }
+
+    public void updateBlockState(WorldAccess activeWorld) {
+
         // First, create default BlockState with the facing property of the previous state
-        BlockState oldState = this.world.getBlockState(this.pos);
+        BlockState oldState = activeWorld.getBlockState(this.pos);
         if (!oldState.isOf(ModBlocks.ABANDONED_SUPPLIES)) return;
         BlockState newState = oldState.getBlock().getDefaultState().with(AbandonedSuppliesBlock.FACING, oldState.get(AbandonedSuppliesBlock.FACING));
 
@@ -66,7 +74,18 @@ public class AbandonedSuppliesBlockEntity extends BlockEntity implements Impleme
 
         // Finally, tell the world to set the new BlockState and mark the block entity as clean
         if (newState == oldState) return;
-        this.world.setBlockState(this.pos, newState);
+        activeWorld.setBlockState(this.pos, newState, Block.NOTIFY_ALL);
+    }
+
+    private void fillLoot(Identifier lootTableId, long seed) {
+        if (this.world instanceof ServerWorld serverWorld) {
+            LootTable lootTable = serverWorld.getServer().getLootManager().getLootTable(lootTableId);
+            LootContextParameterSet context = new LootContextParameterSet.Builder(serverWorld)
+                    .add(LootContextParameters.ORIGIN, Vec3d.ofCenter(this.pos))
+                    .build(LootContextTypes.CHEST);
+            lootTable.supplyInventory(this, context, seed);
+            this.markDirty();
+        }
     }
 
     @Override
@@ -77,15 +96,7 @@ public class AbandonedSuppliesBlockEntity extends BlockEntity implements Impleme
         if (nbt.contains("LootTable", NbtElement.STRING_TYPE)) {
             Identifier lootTableId = new Identifier(nbt.getString("LootTable"));
             long seed = nbt.getLong("LootTableSeed");
-
-            if (this.world instanceof ServerWorld serverWorld) {
-                LootTable lootTable = serverWorld.getServer().getLootManager().getLootTable(lootTableId);
-                LootContextParameterSet context = new LootContextParameterSet.Builder(serverWorld)
-                        .add(LootContextParameters.ORIGIN, Vec3d.ofCenter(this.pos))
-                        .build(LootContextTypes.CHEST);
-                lootTable.supplyInventory(this, context, seed);
-                this.markDirty();
-            }
+            this.fillLoot(lootTableId, seed);
         }
         else {
             Inventories.readNbt(nbt, items);
@@ -97,4 +108,5 @@ public class AbandonedSuppliesBlockEntity extends BlockEntity implements Impleme
         super.writeNbt(nbt);
         Inventories.writeNbt(nbt, items);
     }
+
 }

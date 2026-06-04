@@ -1,0 +1,19 @@
+{
+  "type": "backroomsmod:loot_chest",
+  "config": {
+    "lootTableKey": "backroomsmod:chests/abandoned_supplies",
+    "lootableContainer": {
+      "Name": "backroomsmod:abandoned_supplies",
+      "Properties": {
+        "facing": "north",
+        "has_almond_water": "false",
+        "has_coal": "false",
+        "has_flint_and_steel": "false",
+        "has_oak_logs": "false",
+        "has_spray_paint": "false",
+        "has_sticks": "false"
+      }
+    },
+    "preferFacingOutwards": false
+  }
+}

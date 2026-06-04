@@ -55,6 +55,7 @@ public class PipeBlock extends ConnectingBlock {
     ).reduce((v1, v2) -> VoxelShapes.combineAndSimplify(v1, v2, BooleanBiFunction.OR)).get();
 
     ////////////////////////////////////////////
+
     public PipeBlock(Settings settings) {
         super(0.3125f, settings);
         setDefaultState(getDefaultState()

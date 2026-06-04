@@ -73,6 +73,8 @@ public class ModBiomes {
                 placedFeatureRegistryEntryLookup.getOrThrow(ModPlacedFeatures.LEVEL_0_FLUORESCENT_LIGHT_PLACED_KEY));
         level0BiomeBuilder.feature(GenerationStep.Feature.LOCAL_MODIFICATIONS,
                 placedFeatureRegistryEntryLookup.getOrThrow(ModPlacedFeatures.LEVEL_0_GRAFFITI_PLACED_KEY));
+        level0BiomeBuilder.feature(GenerationStep.Feature.LOCAL_MODIFICATIONS,
+                placedFeatureRegistryEntryLookup.getOrThrow(ModPlacedFeatures.LEVEL_0_ABANDONED_SUPPLIES_PLACED_KEY));
 
         // level 0 dark biome settings
         SpawnSettings.Builder level0DarkSpawnBuilder = new SpawnSettings.Builder();
@@ -89,6 +91,8 @@ public class ModBiomes {
                 placedFeatureRegistryEntryLookup.getOrThrow(ModPlacedFeatures.LEVEL_0_FLUORESCENT_LIGHT_FLICKERING_PLACED_KEY));
         level0DarkBiomeBuilder.feature(GenerationStep.Feature.LOCAL_MODIFICATIONS,
                 placedFeatureRegistryEntryLookup.getOrThrow(ModPlacedFeatures.LEVEL_0_GRAFFITI_PLACED_KEY));
+        level0DarkBiomeBuilder.feature(GenerationStep.Feature.LOCAL_MODIFICATIONS,
+                placedFeatureRegistryEntryLookup.getOrThrow(ModPlacedFeatures.LEVEL_0_ABANDONED_SUPPLIES_PLACED_KEY));
 
         // level 1 biome settings
         SpawnSettings.Builder level1SpawnBuilder = new SpawnSettings.Builder();
