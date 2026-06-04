@@ -12,7 +12,8 @@ import net.minecraft.registry.Registry;
 import net.minecraft.text.Text;
 import net.minecraft.world.World;
 import net.thesquire.backroomsmod.BackroomsMod;
-import net.thesquire.backroomsmod.item.custom.Drink;
+import net.thesquire.backroomsmod.item.custom.DrinkItem;
+import net.thesquire.backroomsmod.item.custom.SprayPaintItem;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -55,13 +56,13 @@ public class ModItems {
         INDIUM_INGOT = registerSimpleItem("indium_ingot");
         SUPERCONDUCTOR_MAGNET_COIL = registerSimpleItem("superconductor_magnet_coil");
         SUPERCONDUCTOR_MAGNET = registerSimpleItem("superconductor_magnet");
-        SPRAY_PAINT = registerItem("spray_paint", new Item(new FabricItemSettings().maxCount(1).maxDamage(16)));
 
-        // food items
-        ALMOND_WATER = registerItem("almond_water", new Drink(new FabricItemSettings().food(ModFoodComponents.ALMOND_WATER)
+        // Not simple items
+        SPRAY_PAINT = registerItem("spray_paint", new SprayPaintItem(new FabricItemSettings().maxCount(1).maxDamage(16)));
+        ALMOND_WATER = registerItem("almond_water", new DrinkItem(new FabricItemSettings().food(ModFoodComponents.ALMOND_WATER)
                 .recipeRemainder(Items.GLASS_BOTTLE).maxCount(16)));
 
-        // items with tooltips
+        // Items with tooltips
         LOW_TEMP_SOLDER_INGOT = registerSimpleItemWithTooltip("low_temp_solder_ingot",
                 "item.backroomsmod.low_temp_solder_ingot.tooltip_1", "item.backroomsmod.low_temp_solder_ingot.tooltip_2");
         LN2_COOLANT_CELL = registerSimpleItemWithTooltip("ln2_coolant_cell",

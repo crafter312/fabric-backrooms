@@ -8,8 +8,8 @@ import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.UseAction;
 import net.minecraft.world.World;
 
-public class Drink extends Item {
-    public Drink(Settings settings) {
+public class DrinkItem extends Item {
+    public DrinkItem(Settings settings) {
         super(settings);
     }
 
