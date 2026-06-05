@@ -29,6 +29,7 @@ public class OfficeWindowBlockEntity extends PortalPlacerBlockEntity implements 
         this.width = 1;
         this.origin = this.getPortalOrigin(state);
         this.needsPortalInit = true; // Initialize to true
+        this.destinationY = 100.0;
     }
 
     @Override

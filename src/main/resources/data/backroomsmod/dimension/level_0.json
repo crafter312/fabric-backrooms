@@ -3,19 +3,19 @@
   "generator": {
     "type": "minecraft:noise",
     "seed": 1177471420,
-    "settings": "backroomsmod:blank",
+    "settings": "backroomsmod:level_0",
     "biome_source": {
       "type": "minecraft:multi_noise",
       "biomes": [
         {
           "biome": "backroomsmod:level_0",
           "parameters": {
-            "temperature": 0.2,
+            "temperature": 0.6,
             "humidity": 0,
             "continentalness": 2,
             "erosion": 2,
-            "weirdness": -2,
-            "depth": 1,
+            "weirdness": -1.9,
+            "depth": 1.05,
             "offset": 0
           }
         },
@@ -23,11 +23,11 @@
           "biome": "backroomsmod:level_0_dark",
           "parameters": {
             "temperature": -1,
-            "humidity": -0.2,
+            "humidity": 0,
             "continentalness": 2,
             "erosion": 2,
             "weirdness": -2,
-            "depth": 1,
+            "depth": 0.9,
             "offset": 0
           }
         }
