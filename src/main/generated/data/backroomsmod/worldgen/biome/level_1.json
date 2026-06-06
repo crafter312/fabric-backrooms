@@ -12,7 +12,7 @@
     "music": {
       "max_delay": 2147483647,
       "min_delay": 2147483647,
-      "replace_current_music": false,
+      "replace_current_music": true,
       "sound": "backroomsmod:music.none"
     },
     "sky_color": 7907327,

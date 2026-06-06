@@ -4,6 +4,7 @@ import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.sound.BlockSoundGroup;
+import net.minecraft.sound.MusicSound;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.Identifier;
@@ -11,10 +12,9 @@ import net.thesquire.backroomsmod.BackroomsMod;
 
 public class ModSounds {
 
-    public static RegistryEntry.Reference<SoundEvent> NO_MUSIC;
-
-    public static RegistryEntry.Reference<SoundEvent> LEVEL_0_DARK_MUSIC;
-    public static RegistryEntry.Reference<SoundEvent> LEVEL_0_LOOP;
+    public static RegistryEntry.Reference<SoundEvent> NO_MUSIC_REF;
+    public static RegistryEntry.Reference<SoundEvent> LEVEL_0_DARK_MUSIC_REF;
+    public static RegistryEntry.Reference<SoundEvent> LEVEL_0_LOOP_REF;
 
     public static SoundEvent LEVEL_1_DRIP;
     public static SoundEvent WAREHOUSE_CONCRETE_STEP;
@@ -23,6 +23,9 @@ public class ModSounds {
     public static BlockSoundGroup WAREHOUSE_CONCRETE;
     public static BlockSoundGroup WAREHOUSE_CONCRETE_WATERLOGGED;
 
+    public static MusicSound NO_MUSIC;
+    public static MusicSound LEVEL_0_DARK_MUSIC;
+
     ////////////////////////////////////////////////////////////////////////////////////
 
     public static void registerModSounds() {
@@ -30,13 +33,13 @@ public class ModSounds {
 
         registerSounds();
         makeSoundGroups();
+        createMusicSounds();
     }
 
     private static void registerSounds() {
-        NO_MUSIC = registerSoundEventReference("music.none");
-
-        LEVEL_0_DARK_MUSIC = registerSoundEventReference("level_0.music.dark");
-        LEVEL_0_LOOP = registerSoundEventReference("level_0.ambient.loop");
+        NO_MUSIC_REF = registerSoundEventReference("music.none");
+        LEVEL_0_DARK_MUSIC_REF = registerSoundEventReference("level_0.music.dark");
+        LEVEL_0_LOOP_REF = registerSoundEventReference("level_0.ambient.loop");
 
         LEVEL_1_DRIP = registerSoundEvent("level_1.ambient.drip");
         WAREHOUSE_CONCRETE_STEP = registerSoundEvent("level_1.warehouse_concrete.step");
@@ -61,6 +64,11 @@ public class ModSounds {
                 SoundEvents.BLOCK_STONE_PLACE,
                 SoundEvents.BLOCK_STONE_HIT,
                 SoundEvents.BLOCK_STONE_FALL);
+    }
+
+    private static void createMusicSounds() {
+        NO_MUSIC = new MusicSound(ModSounds.NO_MUSIC_REF, Integer.MAX_VALUE, Integer.MAX_VALUE, true);
+        LEVEL_0_DARK_MUSIC = new MusicSound(ModSounds.LEVEL_0_DARK_MUSIC_REF, 1200, 6000, true);
     }
 
     private static SoundEvent registerSoundEvent(String name) {

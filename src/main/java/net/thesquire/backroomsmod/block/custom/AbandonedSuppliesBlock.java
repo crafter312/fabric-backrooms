@@ -3,6 +3,8 @@ package net.thesquire.backroomsmod.block.custom;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.util.ItemScatterer;
@@ -102,16 +104,19 @@ public class AbandonedSuppliesBlock extends HorizontalFacingBlock implements Blo
         return new AbandonedSuppliesBlockEntity(pos, state);
     }
 
-    @SuppressWarnings("deprecation")
     @Override
-    public void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {
-        if (!state.isOf(newState.getBlock()) && !moved) {
-            BlockEntity blockEntity = world.getBlockEntity(pos);
-            if (blockEntity instanceof AbandonedSuppliesBlockEntity abandonedSuppliesBlockEntity) {
-                ItemScatterer.spawn(world, pos, abandonedSuppliesBlockEntity);
-                world.updateComparators(pos, this);
-            }
+    public BlockState onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
+        BlockEntity blockEntity = world.getBlockEntity(pos);
+        if (blockEntity instanceof AbandonedSuppliesBlockEntity abandonedSuppliesBlockEntity) {
+            ItemScatterer.spawn(world, pos, abandonedSuppliesBlockEntity);
+            world.updateComparators(pos, this);
         }
-        super.onStateReplaced(state, world, pos, newState, moved);
+        return super.onBreak(world, pos, state, player);
+    }
+
+    @Override
+    public void afterBreak(World world, PlayerEntity player, BlockPos pos, BlockState state, @Nullable BlockEntity blockEntity, ItemStack tool) {
+        super.afterBreak(world, player, pos, state, blockEntity, tool);
+        if (!world.isClient()) world.setBlockState(pos, Blocks.LIGHT_GRAY_CARPET.getDefaultState());
     }
 }

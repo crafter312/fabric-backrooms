@@ -10,9 +10,9 @@
       "tick_delay": 6000
     },
     "music": {
-      "max_delay": 10000,
-      "min_delay": 1000,
-      "replace_current_music": false,
+      "max_delay": 6000,
+      "min_delay": 1200,
+      "replace_current_music": true,
       "sound": "backroomsmod:level_0.music.dark"
     },
     "sky_color": 7907327,
