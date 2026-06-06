@@ -47,9 +47,10 @@ public class SprayPaintItem extends Item {
         if (hitResult.getType() == HitResult.Type.BLOCK) {
             BlockHitResult blockHitResult = (BlockHitResult) hitResult;
             Direction side = blockHitResult.getSide();
+            BlockPos wallPos = blockHitResult.getBlockPos();
 
-            // Check if the player is looking at a wall (horizontal direction)
-            if (side.getAxis().isHorizontal()) {
+            // Check if the player is looking at a wall (horizontal direction, side of block is full square)
+            if (side.getAxis().isHorizontal() && world.getBlockState(wallPos).isSideSolidFullSquare(world, wallPos, side)) {
                 BlockPos targetPos = blockHitResult.getBlockPos().offset(side);
 
                 // Ensure the target space is replaceable (like air)
