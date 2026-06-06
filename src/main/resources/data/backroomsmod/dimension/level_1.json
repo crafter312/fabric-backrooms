@@ -2,7 +2,6 @@
   "type": "backroomsmod:backrooms_midnight",
   "generator": {
     "type": "minecraft:noise",
-    "seed": 1302846298,
     "settings": "backroomsmod:level_1",
     "biome_source": {
       "type": "minecraft:fixed",

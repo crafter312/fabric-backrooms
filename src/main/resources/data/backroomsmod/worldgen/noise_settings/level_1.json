@@ -38,17 +38,7 @@
       "max_exclusive": 24.5,
       "when_in_range": {
         "type": "minecraft:max",
-        "argument1": {
-          "type": "backroomsmod:square_columns",
-          "x_params": {
-            "spacing": 13,
-            "column_size": 2
-          },
-          "z_params": {
-            "spacing": 13,
-            "column_size": 2
-          }
-        },
+        "argument1": "backroomsmod:level_1/square_columns",
         "argument2": {
           "type": "minecraft:range_choice",
           "input": "minecraft:y",

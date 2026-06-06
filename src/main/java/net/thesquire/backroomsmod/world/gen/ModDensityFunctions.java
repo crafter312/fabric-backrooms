@@ -1,5 +1,6 @@
 package net.thesquire.backroomsmod.world.gen;
 
+import com.mojang.datafixers.util.Pair;
 import net.minecraft.registry.*;
 import net.minecraft.util.dynamic.CodecHolder;
 import net.minecraft.util.math.noise.InterpolatedNoiseSampler;
@@ -11,13 +12,16 @@ import net.thesquire.backroomsmod.world.gen.densityfunction.SquareColumns;
 public class ModDensityFunctions {
 
     public static final RegistryKey<DensityFunction> BASE_3D_NOISE_LEVEL_1_KEY = ModDensityFunctions.of("level_1/base_3d_noise");
+    public static final RegistryKey<DensityFunction> SQUARE_COLUMNS_LEVEL_1_KEY = ModDensityFunctions.of("level_1/square_columns");
     public static final RegistryKey<DensityFunction> GRID_WALLS_LEVEL_1_KEY = ModDensityFunctions.of("level_1/grid_walls");
     public static final RegistryKey<DensityFunction> GRID_WALLS_DOORS_LEVEL_1_KEY = ModDensityFunctions.of("level_1/grid_walls_doors");
 
     public static final RegistryKey<DensityFunction> BASE_3D_NOISE_LEVEL_2_KEY = ModDensityFunctions.of("level_2/base_3d_noise");
+    public static final RegistryKey<DensityFunction> SQUARE_COLUMNS_LEVEL_2_KEY = ModDensityFunctions.of("level_2/square_columns");
     public static final RegistryKey<DensityFunction> GRID_WALLS_LEVEL_2_KEY = ModDensityFunctions.of("level_2/grid_walls");
 
     public static final RegistryKey<DensityFunction> BASE_3D_NOISE_LEVEL_4_KEY = ModDensityFunctions.of("level_4/base_3d_noise");
+    public static final RegistryKey<DensityFunction> SQUARE_COLUMNS_LEVEL_4_KEY = ModDensityFunctions.of("level_4/square_columns");
     public static final RegistryKey<DensityFunction> GRID_WALLS_LEVEL_4_KEY = ModDensityFunctions.of("level_4/grid_walls");
     public static final RegistryKey<DensityFunction> GRID_WALLS_DOORS_LEVEL_4_KEY = ModDensityFunctions.of("level_4/grid_walls_doors");
 
@@ -26,27 +30,33 @@ public class ModDensityFunctions {
 
         context.register(BASE_3D_NOISE_LEVEL_1_KEY, InterpolatedNoiseSampler.createBase3dNoiseFunction(
                 30, 0.125, 80.0, 160.0, 8.0));
+        context.register(SQUARE_COLUMNS_LEVEL_1_KEY, new SquareColumns(
+                new Pair<>(13, 2), new Pair<>(13, 2))); // (x_spacing, x_column_size), (z_spacing, z_column_size)
         context.register(GRID_WALLS_LEVEL_1_KEY, new GridWalls(
                 densityFunctionRegistryEntryLookup.getOrThrow(BASE_3D_NOISE_LEVEL_1_KEY),
                 new GridWalls.GridWallsData(26, 2, 26, 2, false)));
         context.register(GRID_WALLS_DOORS_LEVEL_1_KEY, new GridWalls(
                 densityFunctionRegistryEntryLookup.getOrThrow(BASE_3D_NOISE_LEVEL_1_KEY),
-                new GridWalls.GridWallsData(26, 2, 26, 2, true,3)));
+                new GridWalls.GridWallsData(26, 2, 26, 2, 0., true,3)));
 
         context.register(BASE_3D_NOISE_LEVEL_2_KEY, InterpolatedNoiseSampler.createBase3dNoiseFunction(
                 60, 0.125, 80.0, 160.0, 8.0));
+        context.register(SQUARE_COLUMNS_LEVEL_2_KEY, new SquareColumns(
+                new Pair<>(3, 25), new Pair<>(2, 14))); // (x_spacing, x_column_size), (z_spacing, z_column_size)
         context.register(GRID_WALLS_LEVEL_2_KEY, new GridWalls(
                 densityFunctionRegistryEntryLookup.getOrThrow(BASE_3D_NOISE_LEVEL_2_KEY),
-                new GridWalls.GridWallsData(42, 4, 17, 2, false)));
+                new GridWalls.GridWallsData(42, 4, 17, 2, 0.1, false)));
 
         context.register(BASE_3D_NOISE_LEVEL_4_KEY, InterpolatedNoiseSampler.createBase3dNoiseFunction(
                 120, 0.125, 80.0, 160.0, 8.0));
+        context.register(SQUARE_COLUMNS_LEVEL_4_KEY, new SquareColumns(
+                new Pair<>(8, 2), new Pair<>(8, 2))); // (x_spacing, x_column_size), (z_spacing, z_column_size)
         context.register(GRID_WALLS_LEVEL_4_KEY, new GridWalls(
                 densityFunctionRegistryEntryLookup.getOrThrow(BASE_3D_NOISE_LEVEL_4_KEY),
                 new GridWalls.GridWallsData(15, 1, 15, 1, false)));
         context.register(GRID_WALLS_DOORS_LEVEL_4_KEY, new GridWalls(
                 densityFunctionRegistryEntryLookup.getOrThrow(BASE_3D_NOISE_LEVEL_4_KEY),
-                new GridWalls.GridWallsData(15, 1, 15, 1, true, 2)));
+                new GridWalls.GridWallsData(15, 1, 15, 1, 0., true, 2)));
     }
 
     public static void registerModDensityFunctions() {

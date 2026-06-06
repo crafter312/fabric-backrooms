@@ -23,7 +23,7 @@ public class OfficeWindowBlockEntity extends PortalPlacerBlockEntity implements 
 
     public OfficeWindowBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlockEntities.OFFICE_WINDOW, pos, state);
-        this.offset = -0.5f;
+        this.offset = -0.49f;
         this.dimensionTo = ModDimensionKeys.VOID;
         this.height = 1;
         this.width = 1;

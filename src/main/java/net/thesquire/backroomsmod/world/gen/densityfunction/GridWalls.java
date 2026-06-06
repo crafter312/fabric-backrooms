@@ -16,20 +16,25 @@ import java.util.function.Function;
 public class GridWalls implements DensityFunction.Base {
 
     private static final int MIN_DOOR_WIDTH = 1;
-    public record GridWallsData(int x_spacing, int x_wall_thickness, int z_spacing, int z_wall_thickness, boolean has_doors, int door_width) {
+    public record GridWallsData(int x_spacing, int x_wall_thickness, int z_spacing, int z_wall_thickness, double wall_threshold, boolean has_doors, int door_width) {
         public static final MapCodec<GridWallsData> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
                 Codec.INT.fieldOf("x_spacing").forGetter(GridWallsData::x_spacing),
                 Codec.INT.fieldOf("x_wall_thickness").forGetter(GridWallsData::x_wall_thickness),
                 Codec.INT.fieldOf("z_spacing").forGetter(GridWallsData::z_spacing),
                 Codec.INT.fieldOf("z_wall_thickness").forGetter(GridWallsData::z_wall_thickness),
+                Codec.DOUBLE.optionalFieldOf("wall_threshold", 0.).forGetter(GridWallsData::wall_threshold),
                 Codec.BOOL.optionalFieldOf("has_doors", false).forGetter(GridWallsData::has_doors),
                 Codec.INT.optionalFieldOf("door_width", MIN_DOOR_WIDTH).forGetter(GridWallsData::door_width)
         ).apply(instance, GridWallsData::new));
 
         ////////////////////////////////////////////////////////////////////////////////////
 
+        public GridWallsData(int x_spacing, int x_wall_thickness, int z_spacing, int z_wall_thickness, double wall_threshold, boolean has_doors) {
+            this(x_spacing, x_wall_thickness, z_spacing, z_wall_thickness, wall_threshold, has_doors, MIN_DOOR_WIDTH);
+        }
+
         public GridWallsData(int x_spacing, int x_wall_thickness, int z_spacing, int z_wall_thickness, boolean has_doors) {
-            this(x_spacing, x_wall_thickness, z_spacing, z_wall_thickness, has_doors, MIN_DOOR_WIDTH);
+            this(x_spacing, x_wall_thickness, z_spacing, z_wall_thickness, 0., has_doors, MIN_DOOR_WIDTH);
         }
     }
     private static final int MIN_TOTAL = 1;
@@ -63,6 +68,7 @@ public class GridWalls implements DensityFunction.Base {
                     .flatXmap(DOOR_CHECKER, DOOR_CHECKER).forGetter((provider) -> new GridWallsData(
                             provider.getX_spacing(), provider.getX_wall_thickness(),
                             provider.getZ_spacing(), provider.getZ_wall_thickness(),
+                            provider.getWall_threshold(),
                             provider.getHas_doors(), provider.getDoor_width()))
     ).apply(instance, GridWalls::new));
 
@@ -75,6 +81,7 @@ public class GridWalls implements DensityFunction.Base {
     private final int z_spacing;
     private final int x_wall_thickness;
     private final int z_wall_thickness;
+    private final double wall_threshold;
     private final boolean has_doors;
     private final int door_width;
 
@@ -89,6 +96,7 @@ public class GridWalls implements DensityFunction.Base {
         this.z_spacing = size_params.z_spacing();
         this.x_wall_thickness = size_params.x_wall_thickness();
         this.z_wall_thickness = size_params.z_wall_thickness();
+        this.wall_threshold = size_params.wall_threshold();
         this.has_doors = size_params.has_doors();
         this.door_width = size_params.door_width();
 
@@ -113,11 +121,11 @@ public class GridWalls implements DensityFunction.Base {
 
         boolean x_result = ((1L << x_mod) & this.x_mask) != 0;
         boolean z_result = ((1L << z_mod) & this.z_mask) != 0;
-        if(!(x_result || z_result)) return -1;
+        if(!(x_result || z_result)) return -1; // so -1 is air, and 1 is blocks
 
         double sample = this.noise.value().sample(new UnblendedNoisePos((x / this.x_total) - x_is_neg, 0, (z / this.z_total) - z_is_neg));
-        double is_wall = Math.signum(sample);
-        if(!this.has_doors || (x_result && z_result) || is_wall < 0) return is_wall;
+        double is_wall = (sample > this.wall_threshold) ? 1.0 : -1.0; // higher wall threshold means it is less likely for the wall to generate
+        if(!this.has_doors || (x_result && z_result) || (is_wall < 0)) return is_wall;
 
         double scaled_sample = MathHelper.clamp(Math.abs(sample), 0d, 1d) * 10000d;
         double new_sample = scaled_sample - (int) scaled_sample;
@@ -150,6 +158,7 @@ public class GridWalls implements DensityFunction.Base {
     public int getZ_spacing() { return this.z_spacing; }
     public int getX_wall_thickness() { return this.x_wall_thickness; }
     public int getZ_wall_thickness() { return this.z_wall_thickness; }
+    public double getWall_threshold() { return this.wall_threshold; }
     public boolean getHas_doors() { return this.has_doors; }
     public int getDoor_width() { return this.door_width; }
 

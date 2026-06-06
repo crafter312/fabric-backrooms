@@ -1,0 +1,11 @@
+{
+  "type": "backroomsmod:square_columns",
+  "x_params": {
+    "column_size": 2,
+    "spacing": 13
+  },
+  "z_params": {
+    "column_size": 2,
+    "spacing": 13
+  }
+}
