@@ -20,6 +20,7 @@ import net.thesquire.backroomsmod.sound.ModSounds;
 import net.thesquire.backroomsmod.util.ModServerboundPackets;
 import net.thesquire.backroomsmod.util.mixin.MixinCallbacks;
 import net.thesquire.backroomsmod.world.ModWorldGen;
+import net.thesquire.backroomsmod.world.activity.SectionActivityTracker;
 import net.thesquire.backroomsmod.world.feature.ModFeatures;
 import net.thesquire.backroomsmod.world.feature.placement.ModPlacementModifierTypes;
 import net.thesquire.backroomsmod.world.gen.ModDensityFunctions;
@@ -49,12 +50,13 @@ public class BackroomsMod implements ModInitializer {
 
 		ServerLifecycleEvents.SERVER_STARTED.register(server -> {
 			ServerWorld serverWorld = server.getWorld(ModDimensionKeys.LEVEL_0);
-			if(serverWorld == null) LOGGER.error("Failed to initialize level 0 portal storage", new NullPointerException());
+			if (serverWorld == null) LOGGER.error("Failed to initialize level 0 portal storage", new NullPointerException());
 			portalStorage = PortalStorage.get(serverWorld);
 			portalStorage.markDirty();
 		});
 
 		ServerTickEvents.START_WORLD_TICK.register(VoidWeather::handleWeather);
+		ServerTickEvents.END_WORLD_TICK.register(SectionActivityTracker::TrackSectionPlayerTickData);
 
 		ModDimensionKeys.registerDimensionKeys();
 		ModServerboundPackets.registerServerboundPackets();

@@ -4,16 +4,17 @@
   "package": "net.thesquire.backroomsmod.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
-    "PlayerEntityMixin",
-    "PickaxeItemMixin",
+    "BlockItemMixin",
     "DoorBlockMixin",
-    "WallMountedBlockMixin",
+    "PickaxeItemMixin",
+    "PlayerEntityMixin",
+    "ServerWorldMixin",
     "UnmodifiableLevelPropertiesMixin",
-    "ServerWorldMixin"
+    "WallMountedBlockMixin"
   ],
   "client": [
-    "WaterDripMixin",
-    "IntegratedServerLoaderMixin"
+    "IntegratedServerLoaderMixin",
+    "WaterDripMixin"
   ],
   "injectors": {
     "defaultRequire": 1
