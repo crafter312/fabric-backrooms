@@ -3,6 +3,7 @@ package net.thesquire.backroomsmod;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
 import net.thesquire.backroomsmod.block.ModBlockEntities;
@@ -39,6 +40,7 @@ public class BackroomsMod implements ModInitializer {
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
 	public static PortalStorage portalStorage;
+	public static SectionActivityTracker activityTracker;
 
 	@Override
 	public void onInitialize() {
@@ -48,15 +50,19 @@ public class BackroomsMod implements ModInitializer {
 
 		new Configuration(ModConfig.class, BackroomsMod.MOD_ID);
 
+		// Register all Fabric event triggered static functions
 		ServerLifecycleEvents.SERVER_STARTED.register(server -> {
 			ServerWorld serverWorld = server.getWorld(ModDimensionKeys.LEVEL_0);
 			if (serverWorld == null) LOGGER.error("Failed to initialize level 0 portal storage", new NullPointerException());
 			portalStorage = PortalStorage.get(serverWorld);
 			portalStorage.markDirty();
 		});
-
 		ServerTickEvents.START_WORLD_TICK.register(VoidWeather::handleWeather);
 		ServerTickEvents.END_WORLD_TICK.register(SectionActivityTracker::TrackSectionPlayerTickData);
+		ServerWorldEvents.LOAD.register((server, world) -> {
+			if (world.getRegistryKey() != ServerWorld.OVERWORLD) return;
+			activityTracker = world.getPersistentStateManager().getOrCreate(SectionActivityTracker.TYPE, "backroomsmod_chunk_section_activity");
+		});
 
 		ModDimensionKeys.registerDimensionKeys();
 		ModServerboundPackets.registerServerboundPackets();
