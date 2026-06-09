@@ -81,8 +81,8 @@ public class SectionActivityTracker extends PersistentState {
         SectionActivityData data = ACTIVITY_MAP.computeIfAbsent(sectionPos, key -> SectionActivityData.makeDefault());
         data.incrementBlocks();
         BackroomsMod.activityTracker.markDirty();
-        //if ((data.getBlocksPlaced() % 5) == 0)
-        //    BackroomsMod.LOGGER.info("{} blocks placed in {}", data.getBlocksPlaced(), sectionPos);
+        if ((data.getBlocksPlaced() % 5) == 0)
+            BackroomsMod.LOGGER.info("[PersistentState]: {} blocks placed in {}", data.getBlocksPlaced(), sectionPos);
     }
 
     public static void TrackSectionPlayerTickData(ServerWorld world) {
@@ -91,8 +91,8 @@ public class SectionActivityTracker extends PersistentState {
             SectionActivityData data = ACTIVITY_MAP.computeIfAbsent(sectionPos, key -> SectionActivityData.makeDefault());
             data.incrementTicks();
             BackroomsMod.activityTracker.markDirty();
-            //if ((data.getTicksSpent() % 100) == 0)
-            //    BackroomsMod.LOGGER.info("{} ticks spent by all players in {}", data.getTicksSpent(), sectionPos);
+            if ((data.getTicksSpent() % 100) == 0)
+                BackroomsMod.LOGGER.info("[PersistentState]: {} ticks spent by all players in {}", data.getTicksSpent(), sectionPos);
         }
     }
 

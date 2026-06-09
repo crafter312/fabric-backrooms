@@ -21,6 +21,7 @@ import net.thesquire.backroomsmod.sound.ModSounds;
 import net.thesquire.backroomsmod.util.ModServerboundPackets;
 import net.thesquire.backroomsmod.util.mixin.MixinCallbacks;
 import net.thesquire.backroomsmod.world.ModWorldGen;
+import net.thesquire.backroomsmod.world.activity.DatabaseManager;
 import net.thesquire.backroomsmod.world.activity.SectionActivityTracker;
 import net.thesquire.backroomsmod.world.feature.ModFeatures;
 import net.thesquire.backroomsmod.world.feature.placement.ModPlacementModifierTypes;
@@ -50,6 +51,9 @@ public class BackroomsMod implements ModInitializer {
 
 		new Configuration(ModConfig.class, BackroomsMod.MOD_ID);
 
+		// Initialize SQL database used for storing and tracking chunk section activity data
+		DatabaseManager.initialize();
+
 		// Register all Fabric event triggered static functions
 		ServerLifecycleEvents.SERVER_STARTED.register(server -> {
 			ServerWorld serverWorld = server.getWorld(ModDimensionKeys.LEVEL_0);
@@ -59,6 +63,7 @@ public class BackroomsMod implements ModInitializer {
 		});
 		ServerTickEvents.START_WORLD_TICK.register(VoidWeather::handleWeather);
 		ServerTickEvents.END_WORLD_TICK.register(SectionActivityTracker::TrackSectionPlayerTickData);
+		ServerTickEvents.END_WORLD_TICK.register(DatabaseManager::logTickSpent);
 		ServerWorldEvents.LOAD.register((server, world) -> {
 			if (world.getRegistryKey() != ServerWorld.OVERWORLD) return;
 			activityTracker = world.getPersistentStateManager().getOrCreate(SectionActivityTracker.TYPE, "backroomsmod_chunk_section_activity");
