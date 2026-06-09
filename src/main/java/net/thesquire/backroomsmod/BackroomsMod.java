@@ -3,7 +3,6 @@ package net.thesquire.backroomsmod;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.WorldSavePath;
@@ -23,7 +22,6 @@ import net.thesquire.backroomsmod.util.ModServerboundPackets;
 import net.thesquire.backroomsmod.util.mixin.MixinCallbacks;
 import net.thesquire.backroomsmod.world.ModWorldGen;
 import net.thesquire.backroomsmod.world.activity.DatabaseManager;
-import net.thesquire.backroomsmod.world.activity.SectionActivityTracker;
 import net.thesquire.backroomsmod.world.feature.ModFeatures;
 import net.thesquire.backroomsmod.world.feature.placement.ModPlacementModifierTypes;
 import net.thesquire.backroomsmod.world.gen.ModDensityFunctions;
@@ -44,7 +42,6 @@ public class BackroomsMod implements ModInitializer {
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
 	public static PortalStorage portalStorage;
-	public static SectionActivityTracker activityTracker;
 
 	@Override
 	public void onInitialize() {
@@ -66,12 +63,7 @@ public class BackroomsMod implements ModInitializer {
 			portalStorage = PortalStorage.get(serverWorld);
 			portalStorage.markDirty();
 		});
-		ServerWorldEvents.LOAD.register((server, world) -> {
-			if (world.getRegistryKey() != ServerWorld.OVERWORLD) return;
-			activityTracker = world.getPersistentStateManager().getOrCreate(SectionActivityTracker.TYPE, "backroomsmod_chunk_section_activity");
-		});
 		ServerTickEvents.START_WORLD_TICK.register(VoidWeather::handleWeather);
-		ServerTickEvents.END_WORLD_TICK.register(SectionActivityTracker::TrackSectionPlayerTickData);
 		ServerTickEvents.END_WORLD_TICK.register(DatabaseManager::logTickSpent);
 		ServerLifecycleEvents.SERVER_STOPPING.register(server -> {
 			DatabaseManager.close();
