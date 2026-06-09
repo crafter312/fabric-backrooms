@@ -57,6 +57,12 @@ dependencies {
 
 	// Optional REI dependency
 	optionalClientDependency("me.shedaniel:RoughlyEnoughItems-fabric:${project.rei_version}", true)
+
+	// Add SQLite JDBC Driver
+	implementation "org.xerial:sqlite-jdbc:${project.sqlitejdbc_version}"
+
+	// Tell Fabric Loom to include this jar inside final mod jar
+	include "org.xerial:sqlite-jdbc:${project.sqlitejdbc_version}"
 }
 
 def optionalClientDependency(String dep, runtime = true) {
