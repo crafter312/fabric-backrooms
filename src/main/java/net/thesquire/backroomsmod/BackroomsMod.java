@@ -6,6 +6,7 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.WorldSavePath;
 import net.thesquire.backroomsmod.block.ModBlockEntities;
 import net.thesquire.backroomsmod.block.ModBlocks;
 import net.thesquire.backroomsmod.config.ModConfig;
@@ -30,6 +31,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reborncore.common.config.Configuration;
 
+import java.io.File;
+
 //TODO fix level 2 portal generating close to level 1 portal destination
 
 public class BackroomsMod implements ModInitializer {
@@ -51,22 +54,27 @@ public class BackroomsMod implements ModInitializer {
 
 		new Configuration(ModConfig.class, BackroomsMod.MOD_ID);
 
-		// Initialize SQL database used for storing and tracking chunk section activity data
-		DatabaseManager.initialize();
-
 		// Register all Fabric event triggered static functions
+		ServerLifecycleEvents.SERVER_STARTING.register(server -> {
+			var minecraftPath = server.getSavePath(WorldSavePath.ROOT);
+			File worldDir = minecraftPath.toFile();
+			DatabaseManager.initialize(worldDir);
+		});
 		ServerLifecycleEvents.SERVER_STARTED.register(server -> {
 			ServerWorld serverWorld = server.getWorld(ModDimensionKeys.LEVEL_0);
 			if (serverWorld == null) LOGGER.error("Failed to initialize level 0 portal storage", new NullPointerException());
 			portalStorage = PortalStorage.get(serverWorld);
 			portalStorage.markDirty();
 		});
-		ServerTickEvents.START_WORLD_TICK.register(VoidWeather::handleWeather);
-		ServerTickEvents.END_WORLD_TICK.register(SectionActivityTracker::TrackSectionPlayerTickData);
-		ServerTickEvents.END_WORLD_TICK.register(DatabaseManager::logTickSpent);
 		ServerWorldEvents.LOAD.register((server, world) -> {
 			if (world.getRegistryKey() != ServerWorld.OVERWORLD) return;
 			activityTracker = world.getPersistentStateManager().getOrCreate(SectionActivityTracker.TYPE, "backroomsmod_chunk_section_activity");
+		});
+		ServerTickEvents.START_WORLD_TICK.register(VoidWeather::handleWeather);
+		ServerTickEvents.END_WORLD_TICK.register(SectionActivityTracker::TrackSectionPlayerTickData);
+		ServerTickEvents.END_WORLD_TICK.register(DatabaseManager::logTickSpent);
+		ServerLifecycleEvents.SERVER_STOPPING.register(server -> {
+			DatabaseManager.close();
 		});
 
 		ModDimensionKeys.registerDimensionKeys();

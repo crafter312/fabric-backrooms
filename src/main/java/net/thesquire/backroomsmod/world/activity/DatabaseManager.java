@@ -6,6 +6,7 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.ChunkSectionPos;
 import net.thesquire.backroomsmod.BackroomsMod;
 
+import java.io.File;
 import java.sql.*;
 
 public class DatabaseManager {
@@ -16,21 +17,51 @@ public class DatabaseManager {
     private static PreparedStatement getBlocksPlacedStatement;
     private static PreparedStatement getTicksSpentStatement;
 
-    public static void initialize() {
+    public static void initialize(File worldDir) {
         try {
-            String url = "jdbc:sqlite::memory:";
+            File dbFile = new File(worldDir, "backrooms_activity.db");
+            String url = "jdbc:sqlite:" + dbFile.getAbsolutePath();
             connection = DriverManager.getConnection(url);
 
             // Tell SQLite to wait up to 5000 milliseconds for a lock to clear before throwing an error
-            connection.createStatement().execute("PRAGMA busy_timeout = 5000;");
+            try (Statement stmt = connection.createStatement()) {
+                stmt.execute("PRAGMA busy_timeout = 5000;");
+            }
 
             createTable();
             prepareStatements();
 
-            BackroomsMod.LOGGER.info("Successfully initialized SQL database for chunk activity for {}", BackroomsMod.MOD_ID);
+            BackroomsMod.LOGGER.info("Successfully initialized SQL chunk section activity database for {}", BackroomsMod.MOD_ID);
         }
         catch (SQLException e) {
             e.printStackTrace();
+        }
+    }
+
+    /**
+     * Closes the database connection cleanly when the server shuts down
+     */
+    public static void close() {
+        try {
+            if (blockPlacementStatement != null) blockPlacementStatement.close();
+            if (serverTickStatement != null) serverTickStatement.close();
+            if (getBlocksPlacedStatement != null) getBlocksPlacedStatement.close();
+            if (getTicksSpentStatement != null) getTicksSpentStatement.close();
+
+            if (connection != null && !connection.isClosed()) {
+                connection.close();
+                BackroomsMod.LOGGER.info("Database connection closed safely for {}", BackroomsMod.MOD_ID);
+            }
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+        finally {
+            blockPlacementStatement = null;
+            serverTickStatement = null;
+            getBlocksPlacedStatement = null;
+            getTicksSpentStatement = null;
+            connection = null;
         }
     }
 
