@@ -16,6 +16,7 @@ public class DatabaseManager {
     private static PreparedStatement serverTickStatement;
     private static PreparedStatement getBlocksPlacedStatement;
     private static PreparedStatement getTicksSpentStatement;
+    private static PreparedStatement getBlockMaskStatement;
 
     public static void initialize(File worldDir) {
         try {
@@ -26,6 +27,8 @@ public class DatabaseManager {
             // Tell SQLite to wait up to 5000 milliseconds for a lock to clear before throwing an error
             try (Statement stmt = connection.createStatement()) {
                 stmt.execute("PRAGMA busy_timeout = 5000;");
+                stmt.execute("PRAGMA journal_mode = WAL;");
+                stmt.execute("PRAGMA synchronous = NORMAL;");
             }
 
             createTable();
@@ -47,6 +50,7 @@ public class DatabaseManager {
             if (serverTickStatement != null) serverTickStatement.close();
             if (getBlocksPlacedStatement != null) getBlocksPlacedStatement.close();
             if (getTicksSpentStatement != null) getTicksSpentStatement.close();
+            if (getBlockMaskStatement != null) getBlockMaskStatement.close();
 
             if (connection != null && !connection.isClosed()) {
                 connection.close();
@@ -61,6 +65,7 @@ public class DatabaseManager {
             serverTickStatement = null;
             getBlocksPlacedStatement = null;
             getTicksSpentStatement = null;
+            getBlockMaskStatement = null;
             connection = null;
         }
     }
@@ -75,6 +80,7 @@ public class DatabaseManager {
                 "z INTEGER, " +
                 "blocks_placed INTEGER DEFAULT 0, " +
                 "ticks_spent INTEGER DEFAULT 0, " +
+                "block_mask BLOB, " +
                 "PRIMARY KEY (x, y, z)" +
                 ");";
 
@@ -104,18 +110,27 @@ public class DatabaseManager {
         // Template to look up ticks_spent for a specific x, y, and z coordinate
         String selectTickSql = "SELECT ticks_spent FROM chunk_activity WHERE x = ? AND y = ? AND z = ?;";
         getTicksSpentStatement = connection.prepareStatement(selectTickSql);
+
+        // Template to look up block_mask for a specitic x, y, and z coordinate
+        String selectBlockMaskSql = "SELECT block_mask FROM chunk_activity WHERE x = ? AND y = ? AND z = ?;";
+        getBlockMaskStatement = connection.prepareStatement(selectBlockMaskSql);
     }
 
     public static void logBlockPlacement(ItemPlacementContext context) {
         ChunkSectionPos sectionPos = ChunkSectionPos.from(context.getBlockPos());
+        int x = sectionPos.getX();
+        int y = sectionPos.getY();
+        int z = sectionPos.getZ();
         try {
             // Plug your coordinates into the question marks: 1st ?, 2nd ?, and 3rd ?
-            blockPlacementStatement.setInt(1, sectionPos.getX());
-            blockPlacementStatement.setInt(2, sectionPos.getY());
-            blockPlacementStatement.setInt(3, sectionPos.getZ());
+            blockPlacementStatement.setInt(1, x);
+            blockPlacementStatement.setInt(2, y);
+            blockPlacementStatement.setInt(3, z);
 
             // Tell Java to execute the template
             blockPlacementStatement.executeUpdate();
+
+            
         } catch (SQLException e) {
             e.printStackTrace();
         }
