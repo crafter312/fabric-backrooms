@@ -3,6 +3,7 @@ package net.thesquire.backroomsmod;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
+import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.WorldSavePath;
@@ -59,15 +60,14 @@ public class BackroomsMod implements ModInitializer {
 		});
 		ServerLifecycleEvents.SERVER_STARTED.register(server -> {
 			ServerWorld serverWorld = server.getWorld(ModDimensionKeys.LEVEL_0);
-			if (serverWorld == null) LOGGER.error("Failed to initialize level 0 portal storage", new NullPointerException());
+			if (serverWorld == null) throw new NullPointerException("Failed to initialize level 0 portal storage");
 			portalStorage = PortalStorage.get(serverWorld);
 			portalStorage.markDirty();
 		});
 		ServerTickEvents.START_WORLD_TICK.register(VoidWeather::handleWeather);
 		ServerTickEvents.END_WORLD_TICK.register(DatabaseManager::logTickSpent);
-		ServerLifecycleEvents.SERVER_STOPPING.register(server -> {
-			DatabaseManager.close();
-		});
+		ServerLifecycleEvents.SERVER_STOPPING.register(server -> DatabaseManager.close());
+		PlayerBlockBreakEvents.AFTER.register(DatabaseManager::logPlayerBlockBreak);
 
 		ModDimensionKeys.registerDimensionKeys();
 		ModServerboundPackets.registerServerboundPackets();

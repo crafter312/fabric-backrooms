@@ -1,18 +1,26 @@
 package net.thesquire.backroomsmod.world.activity;
 
+import net.minecraft.block.BlockState;
+import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkSectionPos;
+import net.minecraft.world.World;
 import net.thesquire.backroomsmod.BackroomsMod;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.sql.*;
+import java.util.BitSet;
 
 public class DatabaseManager {
 
     private static Connection connection;
     private static PreparedStatement blockPlacementStatement;
+    private static PreparedStatement blockBreakStatement;
     private static PreparedStatement serverTickStatement;
     private static PreparedStatement getBlocksPlacedStatement;
     private static PreparedStatement getTicksSpentStatement;
@@ -37,7 +45,7 @@ public class DatabaseManager {
             BackroomsMod.LOGGER.info("Successfully initialized SQL chunk section activity database for {}", BackroomsMod.MOD_ID);
         }
         catch (SQLException e) {
-            e.printStackTrace();
+            BackroomsMod.LOGGER.error("[SQL Database]: error while initializing database", e);
         }
     }
 
@@ -47,6 +55,7 @@ public class DatabaseManager {
     public static void close() {
         try {
             if (blockPlacementStatement != null) blockPlacementStatement.close();
+            if (blockBreakStatement != null) blockBreakStatement.close();
             if (serverTickStatement != null) serverTickStatement.close();
             if (getBlocksPlacedStatement != null) getBlocksPlacedStatement.close();
             if (getTicksSpentStatement != null) getTicksSpentStatement.close();
@@ -58,10 +67,11 @@ public class DatabaseManager {
             }
         }
         catch (SQLException e) {
-            e.printStackTrace();
+            BackroomsMod.LOGGER.error("[SQL Database]: error while closing database", e);
         }
         finally {
             blockPlacementStatement = null;
+            blockBreakStatement = null;
             serverTickStatement = null;
             getBlocksPlacedStatement = null;
             getTicksSpentStatement = null;
@@ -92,10 +102,17 @@ public class DatabaseManager {
 
     private static void prepareStatements() throws SQLException {
         // Template for when a block is placed:
-        // Try to insert a fresh row with 1 block placed. If x, y, and z already exists, just add 1 to blocks_placed.
-        String blockSql = "INSERT INTO chunk_activity (x, y, z, blocks_placed, ticks_spent) VALUES (?, ?, ?, 1, 0) " +
-                "ON CONFLICT(x, y, z) DO UPDATE SET blocks_placed = blocks_placed + 1;";
-        blockPlacementStatement = connection.prepareStatement(blockSql);
+        // Try to insert a fresh row with 1 block placed. If x, y, and z already exist, just add 1 to blocks_placed.
+        String blockPlaceSql = "INSERT INTO chunk_activity (x, y, z, blocks_placed, ticks_spent, block_mask) VALUES (?, ?, ?, 1, 0, ?) " +
+                "ON CONFLICT(x, y, z) DO UPDATE SET blocks_placed = blocks_placed + 1, block_mask = ?;";
+        blockPlacementStatement = connection.prepareStatement(blockPlaceSql);
+
+        // Template for when a block is broken:
+        // Try to insert a fresh row with 0 blocks placed. If x, y, and z already exist, subtract a block, but never
+        // go below zero.
+        String blockBreakSql = "INSERT INTO chunk_activity (x, y, z, blocks_placed, ticks_spent, block_mask) VALUES (?, ?, ?, 0, 0, ?) " +
+                "ON CONFLICT(x, y, z) DO UPDATE SET blocks_placed = MAX(0, blocks_placed - 1), block_mask = ?;";
+        blockBreakStatement = connection.prepareStatement(blockBreakSql);
 
         // Template for when a chunk section is ticked:
         // Try to insert a fresh row with 1 tick spent. If x, y, and z already exists, just add 1 to ticks_spent.
@@ -117,27 +134,92 @@ public class DatabaseManager {
     }
 
     public static void logBlockPlacement(ItemPlacementContext context) {
-        ChunkSectionPos sectionPos = ChunkSectionPos.from(context.getBlockPos());
+        BlockPos pos = context.getBlockPos();
+        ChunkSectionPos sectionPos = ChunkSectionPos.from(pos);
         int x = sectionPos.getX();
         int y = sectionPos.getY();
         int z = sectionPos.getZ();
         try {
-            // Plug your coordinates into the question marks: 1st ?, 2nd ?, and 3rd ?
+
+            // Get existing blocks placed mask if it exists
+            BitSet bitSet;
+            try (var rs = getBlockMaskStatement.executeQuery()) {
+                if (rs.next()) {
+                    byte[] bytes = rs.getBytes("block_mask");
+                    bitSet = (bytes != null) ? BitSet.valueOf(bytes) : new BitSet(4096);
+                }
+                else {
+                    bitSet = new BitSet(4096);
+                }
+            }
+
+            // Calculate flat index and flip bit to true
+            short bitIndex = ChunkSectionPos.packLocal(pos);
+            bitSet.set(bitIndex, true);
+
+            // Copy the variable-length BitSet bytes into our fixed 512-byte buffer (4096 bits, for size of chunk section)
+            byte[] updatedBytes = new byte[512];
+            byte[] rawBitSetBytes = bitSet.toByteArray();
+            System.arraycopy(rawBitSetBytes, 0, updatedBytes, 0, Math.min(rawBitSetBytes.length, updatedBytes.length));
+
+            // Plug values to write into the question marks: 1st ?, 2nd ?, 3rd ?, 4th ?, and 5th ?
             blockPlacementStatement.setInt(1, x);
             blockPlacementStatement.setInt(2, y);
             blockPlacementStatement.setInt(3, z);
-
-            // Tell Java to execute the template
+            blockPlacementStatement.setBytes(4, updatedBytes);
+            blockPlacementStatement.setBytes(5, updatedBytes);
             blockPlacementStatement.executeUpdate();
-
-            
         } catch (SQLException e) {
-            e.printStackTrace();
+            BackroomsMod.LOGGER.error("[SQL Database]: error while logging block placement", e);
         }
 
-        int blocksPlaced = getBlocksPlaced(sectionPos);
-        if ((blocksPlaced % 5) == 0)
-            BackroomsMod.LOGGER.info("[SQL Database]: {} blocks placed in {}", blocksPlaced, sectionPos);
+        //int blocksPlaced = getBlocksPlaced(sectionPos);
+        //if ((blocksPlaced % 5) == 0)
+        //    BackroomsMod.LOGGER.info("[SQL Database]: {} blocks placed in {}", blocksPlaced, sectionPos);
+    }
+
+    public static void logPlayerBlockBreak(World world, PlayerEntity player, BlockPos pos, BlockState state, @Nullable BlockEntity blockEntity) {
+        ChunkSectionPos sectionPos = ChunkSectionPos.from(pos);
+        int x = sectionPos.getX();
+        int y = sectionPos.getY();
+        int z = sectionPos.getZ();
+        try {
+
+            // Get existing blocks placed mask if it exists
+            BitSet bitSet;
+            try (var rs = getBlockMaskStatement.executeQuery()) {
+                if (rs.next()) {
+                    byte[] bytes = rs.getBytes("block_mask");
+                    bitSet = (bytes != null) ? BitSet.valueOf(bytes) : new BitSet(4096);
+                }
+                else {
+                    bitSet = new BitSet(4096);
+                }
+            }
+
+            // Calculate flat index and flip bit to false
+            short bitIndex = ChunkSectionPos.packLocal(pos);
+            bitSet.set(bitIndex, false);
+
+            // Copy the variable-length BitSet bytes into our fixed 512-byte buffer (4096 bits, for size of chunk section)
+            byte[] updatedBytes = new byte[512];
+            byte[] rawBitSetBytes = bitSet.toByteArray();
+            System.arraycopy(rawBitSetBytes, 0, updatedBytes, 0, Math.min(rawBitSetBytes.length, updatedBytes.length));
+
+            // Plug values to write into the question marks: 1st ?, 2nd ?, 3rd ?, 4th ?, and 5th ?
+            blockBreakStatement.setInt(1, x);
+            blockBreakStatement.setInt(2, y);
+            blockBreakStatement.setInt(3, z);
+            blockBreakStatement.setBytes(4, updatedBytes);
+            blockBreakStatement.setBytes(5, updatedBytes);
+            blockBreakStatement.executeUpdate();
+        } catch (SQLException e) {
+            BackroomsMod.LOGGER.error("[SQL Database]: error while logging player block break", e);
+        }
+
+        //int blocksPlaced = getBlocksPlaced(sectionPos);
+        //if ((blocksPlaced % 5) == 0)
+        //    BackroomsMod.LOGGER.info("[SQL Database]: {} blocks placed in {}", blocksPlaced, sectionPos);
     }
 
     public static void logTickSpent(ServerWorld world) {
@@ -152,12 +234,12 @@ public class DatabaseManager {
                 // Tell Java to execute the template
                 serverTickStatement.executeUpdate();
             } catch (SQLException e) {
-                e.printStackTrace();
+                BackroomsMod.LOGGER.error("[SQL Database]: error while logging player tick spent in chunk section", e);
             }
 
-            int ticksSpent = getTicksSpent(sectionPos);
-            if ((ticksSpent % 100) == 0)
-                BackroomsMod.LOGGER.info("[SQL Database]: {} ticks spent by all players in {}", ticksSpent, sectionPos);
+            //int ticksSpent = getTicksSpent(sectionPos);
+            //if ((ticksSpent % 100) == 0)
+            //    BackroomsMod.LOGGER.info("[SQL Database]: {} ticks spent by all players in {}", ticksSpent, sectionPos);
         }
     }
 
@@ -181,7 +263,7 @@ public class DatabaseManager {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            BackroomsMod.LOGGER.error("[SQL Database]: error while getting blocks placed data", e);
         }
         return 0;
     }
@@ -206,7 +288,7 @@ public class DatabaseManager {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            BackroomsMod.LOGGER.error("[SQL Database]: error while getting ticks spent data", e);
         }
         return 0;
     }
