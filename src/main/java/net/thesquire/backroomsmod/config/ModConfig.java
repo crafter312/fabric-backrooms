@@ -30,4 +30,10 @@ public class ModConfig {
     @Config(config = "events", category = "blackout", key = "MaxBlackoutRange", comment = "Maximum range for a blackout GameEvent")
     public static int maxBlackoutRange = 64;
 
+    @Config(config = "events", category = "backrooms_memory", key = "DatabaseBlocksPlacedThreshold", comment = "Threshold for blocks placed by all players per chunk section above which the Backrooms 'remembers'")
+    public static int databaseBlocksPlacedThreshold = 32;
+
+    @Config(config = "events", category = "backrooms_memory", key = "DatabaseTicksSpentThreshold", comment = "Threshold for ticks spent by all players per chunk section above which the Backrooms 'remembers'")
+    public static int databaseTicksSpentThreshold = 12000;
+
 }

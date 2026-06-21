@@ -10,6 +10,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkSectionPos;
 import net.minecraft.world.World;
 import net.thesquire.backroomsmod.BackroomsMod;
+import net.thesquire.backroomsmod.config.ModConfig;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
@@ -25,6 +26,7 @@ public class DatabaseManager {
     private static PreparedStatement getBlocksPlacedStatement;
     private static PreparedStatement getTicksSpentStatement;
     private static PreparedStatement getBlockMaskStatement;
+    private static PreparedStatement getStatusFlagsStatement;
 
     public static void initialize(File worldDir) {
         try {
@@ -60,6 +62,7 @@ public class DatabaseManager {
             if (getBlocksPlacedStatement != null) getBlocksPlacedStatement.close();
             if (getTicksSpentStatement != null) getTicksSpentStatement.close();
             if (getBlockMaskStatement != null) getBlockMaskStatement.close();
+            if (getStatusFlagsStatement != null) getStatusFlagsStatement.close();
 
             if (connection != null && !connection.isClosed()) {
                 connection.close();
@@ -76,6 +79,7 @@ public class DatabaseManager {
             getBlocksPlacedStatement = null;
             getTicksSpentStatement = null;
             getBlockMaskStatement = null;
+            getStatusFlagsStatement = null;
             connection = null;
         }
     }
@@ -84,14 +88,14 @@ public class DatabaseManager {
      * Sets up the data columns (like defining a custom Class/Object structure in SQL)
      */
     private static void createTable() throws SQLException {
-        String sql = "CREATE TABLE IF NOT EXISTS chunk_activity (" +
-                "x INTEGER, " +
-                "y INTEGER, " +
-                "z INTEGER, " +
-                "blocks_placed INTEGER DEFAULT 0, " +
-                "ticks_spent INTEGER DEFAULT 0, " +
-                "block_mask BLOB, " +
-                "PRIMARY KEY (x, y, z)" +
+        String sql =
+                "CREATE TABLE IF NOT EXISTS chunk_activity (" +
+                "  x INTEGER, y INTEGER, z INTEGER, " +
+                "  blocks_placed INTEGER DEFAULT 0, " +
+                "  ticks_spent INTEGER DEFAULT 0, " +
+                "  block_mask BLOB DEFAULT NULL, " +
+                "  status_flags INTEGER DEFAULT 0, " +
+                "  PRIMARY KEY (x, y, z)" +
                 ");";
 
         // Create a temporary statement runner, execute the text, and close it
@@ -103,21 +107,44 @@ public class DatabaseManager {
     private static void prepareStatements() throws SQLException {
         // Template for when a block is placed:
         // Try to insert a fresh row with 1 block placed. If x, y, and z already exist, just add 1 to blocks_placed.
-        String blockPlaceSql = "INSERT INTO chunk_activity (x, y, z, blocks_placed, ticks_spent, block_mask) VALUES (?, ?, ?, 1, 0, ?) " +
-                "ON CONFLICT(x, y, z) DO UPDATE SET blocks_placed = blocks_placed + 1, block_mask = ?;";
+        String blockPlaceSql =
+                "INSERT INTO chunk_activity (x, y, z, blocks_placed, ticks_spent, block_mask, status_flags) " +
+                "VALUES (?, ?, ?, 1, 0, ?, 0) " +
+                "ON CONFLICT(x, y, z) DO UPDATE SET " +
+                "  blocks_placed = blocks_placed + 1, " +
+                "  block_mask = ?, " +
+                "  status_flags = CASE " +
+                "    WHEN (blocks_placed + 1) >= " + ModConfig.databaseBlocksPlacedThreshold + " THEN status_flags | 2 " +
+                "    ELSE status_flags " +
+                "  END;";
         blockPlacementStatement = connection.prepareStatement(blockPlaceSql);
 
         // Template for when a block is broken:
         // Try to insert a fresh row with 0 blocks placed. If x, y, and z already exist, subtract a block, but never
         // go below zero.
-        String blockBreakSql = "INSERT INTO chunk_activity (x, y, z, blocks_placed, ticks_spent, block_mask) VALUES (?, ?, ?, 0, 0, ?) " +
-                "ON CONFLICT(x, y, z) DO UPDATE SET blocks_placed = MAX(0, blocks_placed - 1), block_mask = ?;";
+        String blockBreakSql =
+                "INSERT INTO chunk_activity (x, y, z, blocks_placed, ticks_spent, block_mask, status_flags) " +
+                "VALUES (?, ?, ?, 0, 0, ?, 0) " +
+                "ON CONFLICT(x, y, z) DO UPDATE SET " +
+                "  blocks_placed = MAX(0, blocks_placed - 1), " +
+                "  block_mask = ?, " +
+                "  status_flags = CASE " +
+                "    WHEN (blocks_placed - 1) <= " + (int)(ModConfig.databaseBlocksPlacedThreshold * 0.75) + " THEN status_flags & ~2 " +
+                "    ELSE status_flags " +
+                "  END;";
         blockBreakStatement = connection.prepareStatement(blockBreakSql);
 
         // Template for when a chunk section is ticked:
         // Try to insert a fresh row with 1 tick spent. If x, y, and z already exists, just add 1 to ticks_spent.
-        String tickSql = "INSERT INTO chunk_activity (x, y, z, blocks_placed, ticks_spent) VALUES (?, ?, ?, 0, 1) " +
-                "ON CONFLICT(x, y, z) DO UPDATE SET ticks_spent = ticks_spent + 1;";
+        String tickSql =
+                "INSERT INTO chunk_activity (x, y, z, blocks_placed, ticks_spent, status_flags) " +
+                "VALUES (?, ?, ?, 0, 1, 0) " +
+                "ON CONFLICT(x, y, z) DO UPDATE SET " +
+                "  ticks_spent = ticks_spent + 1, " +
+                "  status_flags = CASE " +
+                "    WHEN (ticks_spent + 1) >= " + ModConfig.databaseTicksSpentThreshold + " THEN status_flags | 1 " +
+                "    ELSE status_flags " +
+                "  END;";
         serverTickStatement = connection.prepareStatement(tickSql);
 
         // Template to look up blocks_placed for a specific x, y, and z coordinate
@@ -131,6 +158,10 @@ public class DatabaseManager {
         // Template to look up block_mask for a specitic x, y, and z coordinate
         String selectBlockMaskSql = "SELECT block_mask FROM chunk_activity WHERE x = ? AND y = ? AND z = ?;";
         getBlockMaskStatement = connection.prepareStatement(selectBlockMaskSql);
+
+        // Template to look up status_flags for a specific x, y, and z coordinate
+        String selectStatusFlags = "SELECT status_flags FROM chunk_activity WHERE x = ? AND y = ? AND z = ?;";
+        getStatusFlagsStatement = connection.prepareStatement(selectStatusFlags);
     }
 
     public static void logBlockPlacement(ItemPlacementContext context) {
@@ -140,6 +171,9 @@ public class DatabaseManager {
         int y = sectionPos.getY();
         int z = sectionPos.getZ();
         try {
+            getBlockMaskStatement.setInt(1, x);
+            getBlockMaskStatement.setInt(2, y);
+            getBlockMaskStatement.setInt(3, z);
 
             // Get existing blocks placed mask if it exists
             BitSet bitSet;
@@ -174,8 +208,12 @@ public class DatabaseManager {
         }
 
         //int blocksPlaced = getBlocksPlaced(sectionPos);
-        //if ((blocksPlaced % 5) == 0)
+        //int statusFlags = getStatusFlags(sectionPos);
+        //if ((blocksPlaced % 5) == 0) {
         //    BackroomsMod.LOGGER.info("[SQL Database]: {} blocks placed in {}", blocksPlaced, sectionPos);
+        //    BackroomsMod.LOGGER.info("[SQL Database]: Current status flags are {}", statusFlags);
+        //    if ((statusFlags & 2) == 2) BackroomsMod.LOGGER.info("[SQL Database]: blocks placed threshold of {} exceeded", ModConfig.databaseBlocksPlacedThreshold);
+        //}
     }
 
     public static void logPlayerBlockBreak(World world, PlayerEntity player, BlockPos pos, BlockState state, @Nullable BlockEntity blockEntity) {
@@ -184,6 +222,9 @@ public class DatabaseManager {
         int y = sectionPos.getY();
         int z = sectionPos.getZ();
         try {
+            getBlockMaskStatement.setInt(1, x);
+            getBlockMaskStatement.setInt(2, y);
+            getBlockMaskStatement.setInt(3, z);
 
             // Get existing blocks placed mask if it exists
             BitSet bitSet;
@@ -226,7 +267,6 @@ public class DatabaseManager {
         for (ServerPlayerEntity player : world.getPlayers()) {
             ChunkSectionPos sectionPos = ChunkSectionPos.from(player.getPos());
             try {
-                // Plug your coordinates into the question marks
                 serverTickStatement.setInt(1, sectionPos.getX());
                 serverTickStatement.setInt(2, sectionPos.getY());
                 serverTickStatement.setInt(3, sectionPos.getZ());
@@ -246,10 +286,11 @@ public class DatabaseManager {
     /**
      * Looks up the number of blocks placed in a specific chunk section.
      * Returns 0 if no data exists yet.
+     * @param sectionPos the {@link net.minecraft.util.math.ChunkSectionPos ChunkSectionPos} for the relevant chunk section
+     * @return the number of blocks placed in the specified chunk section by all players
      */
-    private static int getBlocksPlaced(ChunkSectionPos sectionPos) {
+    public static int getBlocksPlaced(ChunkSectionPos sectionPos) {
         try {
-            // Plug the coordinates into the query template
             getBlocksPlacedStatement.setInt(1, sectionPos.getX());
             getBlocksPlacedStatement.setInt(2, sectionPos.getY());
             getBlocksPlacedStatement.setInt(3, sectionPos.getZ());
@@ -271,10 +312,11 @@ public class DatabaseManager {
     /**
      * Looks up the number of ticks spent by all players in a specific
      * chunk section. Returns 0 if no data exists yet.
+     * @param sectionPos the {@link net.minecraft.util.math.ChunkSectionPos ChunkSectionPos} for the relevant chunk section
+     * @return the number of ticks spent in the specified chunk section by all players
      */
-    private static int getTicksSpent(ChunkSectionPos sectionPos) {
+    public static int getTicksSpent(ChunkSectionPos sectionPos) {
         try {
-            // Plug the coordinates into the query template
             getTicksSpentStatement.setInt(1, sectionPos.getX());
             getTicksSpentStatement.setInt(2, sectionPos.getY());
             getTicksSpentStatement.setInt(3, sectionPos.getZ());
@@ -289,6 +331,65 @@ public class DatabaseManager {
             }
         } catch (SQLException e) {
             BackroomsMod.LOGGER.error("[SQL Database]: error while getting ticks spent data", e);
+        }
+        return 0;
+    }
+
+    /**
+     * Looks up the 4096 bit mask for a particular chunk section denoting
+     * which blocks in the section have been placed by a player and which
+     * naturally or by other means.
+     * @param sectionPos the {@link net.minecraft.util.math.ChunkSectionPos ChunkSectionPos} for the relevant chunk section
+     * @return the {@link java.util.BitSet BitSet} mask for the specified chunk section, returns empty if null from database
+     */
+    @Nullable
+    public static BitSet getBlockMask(ChunkSectionPos sectionPos) {
+        BitSet bitSet = null;
+        try {
+            getBlockMaskStatement.setInt(1, sectionPos.getX());
+            getBlockMaskStatement.setInt(2, sectionPos.getY());
+            getBlockMaskStatement.setInt(3, sectionPos.getZ());
+
+            // Get existing blocks placed mask if it exists
+            try (var resultSet = getBlockMaskStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    byte[] bytes = resultSet.getBytes("block_mask");
+                    bitSet = (bytes != null) ? BitSet.valueOf(bytes) : new BitSet(4096);
+                }
+                else {
+                    bitSet = new BitSet(4096);
+                }
+            }
+        } catch (SQLException e) {
+            BackroomsMod.LOGGER.error("[SQL Database]: error while getting block mask data", e);
+        }
+        return bitSet;
+    }
+
+    /**
+     * Looks up the "memory" status flags for a specific chunk section.
+     * These flags say if the relevant thresholds have been passed, in
+     * which case the Backrooms should "remember" the player-placed
+     * blocks in this section by copying them into the Backrooms.
+     * @param sectionPos the {@link net.minecraft.util.math.ChunkSectionPos ChunkSectionPos} for the relevant chunk section
+     * @return 1st bit is ticks spent flag, 2nd bit is blocks placed flag
+     */
+    public static int getStatusFlags(ChunkSectionPos sectionPos) {
+        try {
+            getStatusFlagsStatement.setInt(1, sectionPos.getX());
+            getStatusFlagsStatement.setInt(2, sectionPos.getY());
+            getStatusFlagsStatement.setInt(3, sectionPos.getZ());
+
+            // Execute the query and get a "ResultSet" (a table of results)
+            try (var resultSet = getStatusFlagsStatement.executeQuery()) {
+                // If the database found a row matching these coordinates
+                if (resultSet.next()) {
+                    // Grab the integer from the "ticks_spent" column
+                    return resultSet.getInt("status_flags");
+                }
+            }
+        } catch (SQLException e) {
+            BackroomsMod.LOGGER.error("[SQL Database]: error while getting status flags data", e);
         }
         return 0;
     }
