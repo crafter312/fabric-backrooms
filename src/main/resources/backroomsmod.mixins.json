@@ -10,7 +10,8 @@
     "PlayerEntityMixin",
     "ServerWorldMixin",
     "UnmodifiableLevelPropertiesMixin",
-    "WallMountedBlockMixin"
+    "WallMountedBlockMixin",
+    "StructureTemplateAccessor"
   ],
   "client": [
     "IntegratedServerLoaderMixin",

@@ -26,6 +26,8 @@ public class GraffitiBlock extends HorizontalFacingBlock implements Waterloggabl
     private static final VoxelShape SOUTH_SHAPE = Block.createCuboidShape(0.0F, 0.0F, 0.0F, 16.0F, 16.0F, 1.0F);
     private static final VoxelShape NORTH_SHAPE = Block.createCuboidShape(0.0F, 0.0F, 15.0F, 16.0F, 16.0F, 16.0F);
 
+    /////////////////////////////////////////////////////////////////////////////////////
+
     public GraffitiBlock(Settings settings) {
         super(settings);
         this.setDefaultState(getDefaultState().with(FACING, Direction.NORTH).with(WATERLOGGED, false));
